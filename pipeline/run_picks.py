@@ -46,10 +46,18 @@ def parse_games(raw_games, name_map):
         try:
             bookmaker = game["bookmakers"][0]
             outcomes = bookmaker["markets"][0]["outcomes"]
-            home_spread = next(o["point"] for o in outcomes if o["name"] == home_dk)
-            away_spread = next(o["point"] for o in outcomes if o["name"] == away_dk)
-        except (IndexError, StopIteration, KeyError):
-            print(f"Could not parse spreads for {home_dk} vs {away_dk} — skipping")
+            by_name = {o["name"]: o["point"] for o in outcomes}
+            if home_dk in by_name and away_dk in by_name:
+                home_spread = by_name[home_dk]
+                away_spread = by_name[away_dk]
+            elif len(outcomes) == 2:
+                # Bookmaker outcome names don't match exactly — assign by position
+                home_spread = outcomes[0]["point"]
+                away_spread = outcomes[1]["point"]
+            else:
+                raise ValueError("Cannot resolve spread outcomes")
+        except (IndexError, KeyError, ValueError) as e:
+            print(f"Could not parse spreads for {home_dk} vs {away_dk} — skipping ({e})")
             continue
 
         games.append({
