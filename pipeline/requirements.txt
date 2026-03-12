@@ -1,0 +1,5 @@
+tensorflow==2.11.0
+pandas
+numpy
+requests
+psycopg2-binary
