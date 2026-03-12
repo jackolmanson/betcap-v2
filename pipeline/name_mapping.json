@@ -1,590 +1,737 @@
 {
   "ARKANSAS-PINE-BLUFF": {
     "display": "Arkansas Pine Bluff",
+    "espn_id": 2029,
     "sportsref": "ARKANSAS-PINE-BLUFF"
   },
   "Abilene Christian Wildcats": {
     "display": "Abilene Christian",
+    "espn_id": 2000,
     "sportsref": "ABILENE-CHRISTIAN"
   },
   "Air Force Falcons": {
     "display": "Air Force",
+    "espn_id": 2005,
     "sportsref": "AIR-FORCE"
   },
   "Akron Zips": {
     "display": "Akron",
+    "espn_id": 2006,
     "sportsref": "AKRON"
   },
   "Alabama A&M Bulldogs": {
     "display": "Alabama A&M",
+    "espn_id": 2010,
     "sportsref": "ALABAMA-AM"
   },
   "Alabama Crimson Tide": {
     "display": "Alabama",
+    "espn_id": 333,
     "sportsref": "ALABAMA"
   },
   "Alabama St Hornets": {
     "display": "Alabama State",
+    "espn_id": 2011,
     "sportsref": "ALABAMA-STATE"
   },
   "Albany Great Danes": {
     "display": "Albany Ny",
+    "espn_id": 399,
     "sportsref": "ALBANY-NY"
   },
   "Alcorn St Braves": {
     "display": "Alcorn State",
+    "espn_id": 2016,
     "sportsref": "ALCORN-STATE"
   },
   "American Eagles": {
     "display": "American",
+    "espn_id": 44,
     "sportsref": "AMERICAN"
   },
   "Appalachian St Mountaineers": {
     "display": "Appalachian State",
+    "espn_id": 2026,
     "sportsref": "APPALACHIAN-STATE"
   },
   "Arizona St Sun Devils": {
     "display": "Arizona State",
+    "espn_id": 9,
     "sportsref": "ARIZONA-STATE"
   },
   "Arizona Wildcats": {
     "display": "Arizona",
+    "espn_id": 12,
     "sportsref": "ARIZONA"
   },
   "Arkansas Razorbacks": {
     "display": "Arkansas",
+    "espn_id": 8,
     "sportsref": "ARKANSAS"
   },
   "Arkansas St Red Wolves": {
     "display": "Arkansas State",
+    "espn_id": 2032,
     "sportsref": "ARKANSAS-STATE"
   },
   "Arkansas-Pine Bluff Golden Lions": {
     "display": "Ark.-Pine Bluff",
+    "espn_id": 2029,
     "sportsref": "ARKANSAS-PINE-BLUFF"
   },
   "Army Knights": {
     "display": "Army",
+    "espn_id": 349,
     "sportsref": "ARMY"
   },
   "Auburn Tigers": {
     "display": "Auburn",
+    "espn_id": 2,
     "sportsref": "AUBURN"
   },
   "Austin Peay Governors": {
     "display": "Austin Peay",
+    "espn_id": 2046,
     "sportsref": "AUSTIN-PEAY"
   },
   "BYU Cougars": {
     "display": "Brigham Young",
+    "espn_id": 252,
     "sportsref": "BRIGHAM-YOUNG"
   },
   "Ball State Cardinals": {
     "display": "Ball State",
+    "espn_id": 2050,
     "sportsref": "BALL-STATE"
   },
   "Baylor Bears": {
     "display": "Baylor",
+    "espn_id": 239,
     "sportsref": "BAYLOR"
   },
   "Bellarmine Knights": {
     "display": "Bellarmine",
+    "espn_id": 91,
     "sportsref": "BELLARMINE"
   },
   "Belmont Bruins": {
     "display": "Belmont",
+    "espn_id": 2057,
     "sportsref": "BELMONT"
   },
   "Bethune-Cookman Wildcats": {
     "display": "Bethune Cookman",
+    "espn_id": 2065,
     "sportsref": "BETHUNE-COOKMAN"
   },
   "Binghamton Bearcats": {
     "display": "Binghamton",
+    "espn_id": 2066,
     "sportsref": "BINGHAMTON"
   },
   "Boise State Broncos": {
     "display": "Boise State",
+    "espn_id": 68,
     "sportsref": "BOISE-STATE"
   },
   "Boston College Eagles": {
     "display": "Boston College",
+    "espn_id": 103,
     "sportsref": "BOSTON-COLLEGE"
   },
   "Boston Univ. Terriers": {
     "display": "Boston University",
+    "espn_id": 104,
     "sportsref": "BOSTON-UNIVERSITY"
   },
   "Bowling Green Falcons": {
     "display": "Bowling Green",
+    "espn_id": 189,
     "sportsref": "BOWLING-GREEN"
   },
   "Bradley Braves": {
     "display": "Bradley",
+    "espn_id": 71,
     "sportsref": "BRADLEY"
   },
   "Brown Bears": {
     "display": "Brown",
+    "espn_id": 225,
     "sportsref": "BROWN"
   },
   "Bryant Bulldogs": {
     "display": "Bryant",
+    "espn_id": 2803,
     "sportsref": "BRYANT"
   },
   "Bucknell Bison": {
     "display": "Bucknell",
+    "espn_id": 2083,
     "sportsref": "BUCKNELL"
   },
   "Buffalo Bulls": {
     "display": "Buffalo",
+    "espn_id": 2084,
     "sportsref": "BUFFALO"
   },
   "Butler Bulldogs": {
     "display": "Butler",
+    "espn_id": 2086,
     "sportsref": "BUTLER"
   },
   "CSU Bakersfield Roadrunners": {
     "display": "Cal State Bakersfield",
+    "espn_id": 2934,
     "sportsref": "CAL-STATE-BAKERSFIELD"
   },
   "CSU Fullerton Titans": {
     "display": "Cal State Fullerton",
+    "espn_id": 2239,
     "sportsref": "CAL-STATE-FULLERTON"
   },
   "CSU Northridge Matadors": {
     "display": "Cal State Northridge",
+    "espn_id": 2463,
     "sportsref": "CAL-STATE-NORTHRIDGE"
   },
   "Cal Baptist Lancers": {
     "display": "California Baptist",
+    "espn_id": 2856,
     "sportsref": "CALIFORNIA-BAPTIST"
   },
   "Cal Poly Mustangs": {
     "display": "Cal Poly",
+    "espn_id": 13,
     "sportsref": "CAL-POLY"
   },
   "California Golden Bears": {
     "display": "California",
+    "espn_id": 25,
     "sportsref": "CALIFORNIA"
   },
   "Campbell Fighting Camels": {
     "display": "Campbell",
+    "espn_id": 2097,
     "sportsref": "CAMPBELL"
   },
   "Canisius Golden Griffins": {
     "display": "Canisius",
+    "espn_id": 2099,
     "sportsref": "CANISIUS"
   },
   "Central Arkansas Bears": {
     "display": "Central Arkansas",
+    "espn_id": 2110,
     "sportsref": "CENTRAL-ARKANSAS"
   },
   "Central Connecticut St Blue Devils": {
     "display": "Central Connecticut State",
+    "espn_id": 2115,
     "sportsref": "CENTRAL-CONNECTICUT-STATE"
   },
   "Central Michigan Chippewas": {
     "display": "Central Michigan",
+    "espn_id": 2117,
     "sportsref": "CENTRAL-MICHIGAN"
   },
   "Charleston Cougars": {
     "display": "College Of Charleston",
+    "espn_id": 232,
     "sportsref": "COLLEGE-OF-CHARLESTON"
   },
   "Charleston Southern Buccaneers": {
     "display": "Charleston Southern",
+    "espn_id": 2127,
     "sportsref": "CHARLESTON-SOUTHERN"
   },
   "Charlotte 49ers": {
     "display": "Charlotte",
+    "espn_id": 2429,
     "sportsref": "CHARLOTTE"
   },
   "Chattanooga Mocs": {
     "display": "Chattanooga",
+    "espn_id": 236,
     "sportsref": "CHATTANOOGA"
   },
   "Chicago St Cougars": {
     "display": "Chicago State",
+    "espn_id": 2130,
     "sportsref": "CHICAGO-STATE"
   },
   "Cincinnati Bearcats": {
     "display": "Cincinnati",
+    "espn_id": 2132,
     "sportsref": "CINCINNATI"
   },
   "Clemson Tigers": {
     "display": "Clemson",
+    "espn_id": 228,
     "sportsref": "CLEMSON"
   },
   "Cleveland St Vikings": {
     "display": "Cleveland State",
+    "espn_id": 325,
     "sportsref": "CLEVELAND-STATE"
   },
   "Coastal Carolina Chanticleers": {
     "display": "Coastal Carolina",
+    "espn_id": 324,
     "sportsref": "COASTAL-CAROLINA"
   },
   "Colgate Raiders": {
     "display": "Colgate",
+    "espn_id": 2142,
     "sportsref": "COLGATE"
   },
   "Colorado Buffaloes": {
     "display": "Colorado",
+    "espn_id": 38,
     "sportsref": "COLORADO"
   },
   "Colorado St Rams": {
     "display": "Colorado State",
+    "espn_id": 36,
     "sportsref": "COLORADO-STATE"
   },
   "Columbia Lions": {
     "display": "Columbia",
+    "espn_id": 171,
     "sportsref": "COLUMBIA"
   },
   "Coppin St Eagles": {
     "display": "Coppin State",
+    "espn_id": 2154,
     "sportsref": "COPPIN-STATE"
   },
   "Cornell Big Red": {
     "display": "Cornell",
+    "espn_id": 172,
     "sportsref": "CORNELL"
   },
   "Creighton Bluejays": {
     "display": "Creighton",
+    "espn_id": 156,
     "sportsref": "CREIGHTON"
   },
   "Dartmouth Big Green": {
     "display": "Dartmouth",
+    "espn_id": 159,
     "sportsref": "DARTMOUTH"
   },
   "Davidson Wildcats": {
     "display": "Davidson",
+    "espn_id": 2166,
     "sportsref": "DAVIDSON"
   },
   "Dayton Flyers": {
     "display": "Dayton",
+    "espn_id": 2168,
     "sportsref": "DAYTON"
   },
   "DePaul Blue Demons": {
     "display": "DePaul",
+    "espn_id": 305,
     "sportsref": "DEPAUL"
   },
   "Delaware Blue Hens": {
     "display": "Delaware",
+    "espn_id": 48,
     "sportsref": "DELAWARE"
   },
   "Delaware St Hornets": {
     "display": "Delaware State",
+    "espn_id": 2169,
     "sportsref": "DELAWARE-STATE"
   },
   "Denver Pioneers": {
     "display": "Denver",
+    "espn_id": 2172,
     "sportsref": "DENVER"
   },
   "Detroit Mercy Titans": {
     "display": "Detroit Mercy",
+    "espn_id": 2174,
     "sportsref": "DETROIT-MERCY"
   },
   "Drake Bulldogs": {
     "display": "Drake",
+    "espn_id": 2181,
     "sportsref": "DRAKE"
   },
   "Drexel Dragons": {
     "display": "Drexel",
+    "espn_id": 2182,
     "sportsref": "DREXEL"
   },
   "Duke Blue Devils": {
     "display": "Duke",
+    "espn_id": 150,
     "sportsref": "DUKE"
   },
   "Duquesne Dukes": {
     "display": "Duquesne",
+    "espn_id": 2184,
     "sportsref": "DUQUESNE"
   },
   "East Carolina Pirates": {
     "display": "East Carolina",
+    "espn_id": 151,
     "sportsref": "EAST-CAROLINA"
   },
   "East Tennessee St Buccaneers": {
     "display": "East Tennessee State",
+    "espn_id": 2193,
     "sportsref": "EAST-TENNESSEE-STATE"
   },
   "East Texas A&M Lions": {
     "display": "East Texas A&M",
+    "espn_id": 2837,
     "sportsref": "EAST-TEXAS-AM"
   },
   "Eastern Illinois Panthers": {
     "display": "Eastern Illinois",
+    "espn_id": 2197,
     "sportsref": "EASTERN-ILLINOIS"
   },
   "Eastern Kentucky Colonels": {
     "display": "Eastern Kentucky",
+    "espn_id": 2198,
     "sportsref": "EASTERN-KENTUCKY"
   },
   "Eastern Michigan Eagles": {
     "display": "Eastern Michigan",
+    "espn_id": 2199,
     "sportsref": "EASTERN-MICHIGAN"
   },
   "Eastern Washington Eagles": {
     "display": "Eastern Washington",
+    "espn_id": 331,
     "sportsref": "EASTERN-WASHINGTON"
   },
   "Elon Phoenix": {
     "display": "Elon",
+    "espn_id": 2210,
     "sportsref": "ELON"
   },
   "Evansville Purple Aces": {
     "display": "Evansville",
+    "espn_id": 339,
     "sportsref": "EVANSVILLE"
   },
   "Fairfield Stags": {
     "display": "Fairfield",
+    "espn_id": 2217,
     "sportsref": "FAIRFIELD"
   },
   "Fairleigh Dickinson Knights": {
     "display": "Fairleigh Dickinson",
+    "espn_id": 161,
     "sportsref": "FDU"
   },
   "Florida A&M Rattlers": {
     "display": "Florida A&M",
+    "espn_id": 50,
     "sportsref": "FLORIDA-AM"
   },
   "Florida Atlantic Owls": {
     "display": "Florida Atlantic",
+    "espn_id": 2226,
     "sportsref": "FLORIDA-ATLANTIC"
   },
   "Florida Gators": {
     "display": "Florida",
+    "espn_id": 57,
     "sportsref": "FLORIDA"
   },
   "Florida Gulf Coast Eagles": {
     "display": "Florida Gulf Coast",
+    "espn_id": 526,
     "sportsref": "FLORIDA-GULF-COAST"
   },
   "Florida Int'l Golden Panthers": {
     "display": "Florida International",
+    "espn_id": 2229,
     "sportsref": "FLORIDA-INTERNATIONAL"
   },
   "Florida St Seminoles": {
     "display": "Florida State",
+    "espn_id": 52,
     "sportsref": "FLORIDA-STATE"
   },
   "Fordham Rams": {
     "display": "Fordham",
+    "espn_id": 2230,
     "sportsref": "FORDHAM"
   },
   "Fresno St Bulldogs": {
     "display": "Fresno State",
+    "espn_id": 278,
     "sportsref": "FRESNO-STATE"
   },
   "Furman Paladins": {
     "display": "Furman",
+    "espn_id": 231,
     "sportsref": "FURMAN"
   },
   "GW Revolutionaries": {
     "display": "George Washington",
+    "espn_id": 45,
     "sportsref": "GEORGE-WASHINGTON"
   },
   "Gardner-Webb Bulldogs": {
     "display": "Gardner Webb",
+    "espn_id": 2241,
     "sportsref": "GARDNER-WEBB"
   },
   "George Mason Patriots": {
     "display": "George Mason",
+    "espn_id": 2244,
     "sportsref": "GEORGE-MASON"
   },
   "George Washington Colonials": {
     "display": "George Washington",
+    "espn_id": 45,
     "sportsref": "GEORGE-WASHINGTON"
   },
   "Georgetown Hoyas": {
     "display": "Georgetown",
+    "espn_id": 46,
     "sportsref": "GEORGETOWN"
   },
   "Georgia Bulldogs": {
     "display": "Georgia",
+    "espn_id": 61,
     "sportsref": "GEORGIA"
   },
   "Georgia Southern Eagles": {
     "display": "Georgia Southern",
+    "espn_id": 290,
     "sportsref": "GEORGIA-SOUTHERN"
   },
   "Georgia St Panthers": {
     "display": "Georgia State",
+    "espn_id": 2247,
     "sportsref": "GEORGIA-STATE"
   },
   "Georgia Tech Yellow Jackets": {
     "display": "Georgia Tech",
+    "espn_id": 59,
     "sportsref": "GEORGIA-TECH"
   },
   "Gonzaga Bulldogs": {
     "display": "Gonzaga",
+    "espn_id": 2250,
     "sportsref": "GONZAGA"
   },
   "Grambling St Tigers": {
     "display": "Grambling",
+    "espn_id": 2755,
     "sportsref": "GRAMBLING"
   },
   "Grand Canyon Antelopes": {
     "display": "Grand Canyon",
+    "espn_id": 2253,
     "sportsref": "GRAND-CANYON"
   },
   "Green Bay Phoenix": {
     "display": "Green Bay",
+    "espn_id": 2739,
     "sportsref": "GREEN-BAY"
   },
   "Hampton Pirates": {
     "display": "Hampton",
+    "espn_id": 2261,
     "sportsref": "HAMPTON"
   },
   "Harvard Crimson": {
     "display": "Harvard",
+    "espn_id": 108,
     "sportsref": "HARVARD"
   },
   "Hawai'i Rainbow Warriors": {
     "display": "Hawaii",
+    "espn_id": 62,
     "sportsref": "HAWAII"
   },
   "High Point Panthers": {
     "display": "High Point",
+    "espn_id": 2272,
     "sportsref": "HIGH-POINT"
   },
   "Hofstra Pride": {
     "display": "Hofstra",
+    "espn_id": 2275,
     "sportsref": "HOFSTRA"
   },
   "Holy Cross Crusaders": {
     "display": "Holy Cross",
+    "espn_id": 107,
     "sportsref": "HOLY-CROSS"
   },
   "Houston Christian Huskies": {
     "display": "Houston Christian",
+    "espn_id": 2277,
     "sportsref": "HOUSTON-CHRISTIAN"
   },
   "Houston Cougars": {
     "display": "Houston",
+    "espn_id": 248,
     "sportsref": "HOUSTON"
   },
   "Howard Bison": {
     "display": "Howard",
+    "espn_id": 47,
     "sportsref": "HOWARD"
   },
   "IU Indianapolis Jaguars": {
     "display": "IU Indy",
+    "espn_id": 85,
     "sportsref": "IU-INDY"
   },
   "IUPUI Jaguars": {
     "display": "Iupui",
+    "espn_id": 85,
     "sportsref": "IU-INDY"
   },
   "Idaho State Bengals": {
     "display": "Idaho State",
+    "espn_id": 304,
     "sportsref": "IDAHO-STATE"
   },
   "Idaho Vandals": {
     "display": "Idaho",
+    "espn_id": 70,
     "sportsref": "IDAHO"
   },
   "Illinois Fighting Illini": {
     "display": "Illinois",
+    "espn_id": 356,
     "sportsref": "ILLINOIS"
   },
   "Illinois St Redbirds": {
     "display": "Illinois State",
+    "espn_id": 2287,
     "sportsref": "ILLINOIS-STATE"
   },
   "Incarnate Word Cardinals": {
     "display": "Incarnate Word",
+    "espn_id": 2916,
     "sportsref": "INCARNATE-WORD"
   },
   "Indiana Hoosiers": {
     "display": "Indiana",
+    "espn_id": 84,
     "sportsref": "INDIANA"
   },
   "Indiana St Sycamores": {
     "display": "Indiana State",
+    "espn_id": 282,
     "sportsref": "INDIANA-STATE"
   },
   "Iona Gaels": {
     "display": "Iona",
+    "espn_id": 314,
     "sportsref": "IONA"
   },
   "Iowa Hawkeyes": {
     "display": "Iowa",
+    "espn_id": 2294,
     "sportsref": "IOWA"
   },
   "Iowa State Cyclones": {
     "display": "Iowa State",
+    "espn_id": 66,
     "sportsref": "IOWA-STATE"
   },
   "Jackson St Tigers": {
     "display": "Jackson State",
+    "espn_id": 2296,
     "sportsref": "JACKSON-STATE"
   },
   "Jacksonville Dolphins": {
     "display": "Jacksonville",
+    "espn_id": 294,
     "sportsref": "JACKSONVILLE"
   },
   "Jacksonville St Gamecocks": {
     "display": "Jacksonville State",
+    "espn_id": 55,
     "sportsref": "JACKSONVILLE-STATE"
   },
   "James Madison Dukes": {
     "display": "James Madison",
+    "espn_id": 256,
     "sportsref": "JAMES-MADISON"
   },
   "Kansas City Roos": {
     "display": "Kansas City",
+    "espn_id": 140,
     "sportsref": "KANSAS-CITY"
   },
   "Kansas Jayhawks": {
     "display": "Kansas",
+    "espn_id": 2305,
     "sportsref": "KANSAS"
   },
   "Kansas St Wildcats": {
     "display": "Kansas State",
+    "espn_id": 2306,
     "sportsref": "KANSAS-STATE"
   },
   "Kennesaw St Owls": {
     "display": "Kennesaw State",
+    "espn_id": 338,
     "sportsref": "KENNESAW-STATE"
   },
   "Kent State Golden Flashes": {
     "display": "Kent State",
+    "espn_id": 2309,
     "sportsref": "KENT-STATE"
   },
   "Kentucky Wildcats": {
     "display": "Kentucky",
+    "espn_id": 96,
     "sportsref": "KENTUCKY"
   },
   "LIU Sharks": {
     "display": "Long Island University",
+    "espn_id": 112358,
     "sportsref": "LONG-ISLAND-UNIVERSITY"
   },
   "LSU Tigers": {
     "display": "Louisiana State",
+    "espn_id": 99,
     "sportsref": "LOUISIANA-STATE"
   },
   "La Salle Explorers": {
     "display": "La Salle",
+    "espn_id": 2325,
     "sportsref": "LA-SALLE"
   },
   "Lafayette Leopards": {
     "display": "Lafayette",
+    "espn_id": 322,
     "sportsref": "LAFAYETTE"
   },
   "Lamar Cardinals": {
     "display": "Lamar",
+    "espn_id": 2320,
     "sportsref": "LAMAR"
   },
   "Le Moyne Dolphins": {
     "display": "Le Moyne",
+    "espn_id": 2330,
     "sportsref": "LE-MOYNE"
   },
   "Lehigh Mountain Hawks": {
     "display": "Lehigh",
+    "espn_id": 2329,
     "sportsref": "LEHIGH"
   },
   "Liberty Flames": {
     "display": "Liberty",
+    "espn_id": 2335,
     "sportsref": "LIBERTY"
   },
   "Lindenwood Lions": {
@@ -593,382 +740,477 @@
   },
   "Lipscomb Bisons": {
     "display": "Lipscomb",
+    "espn_id": 288,
     "sportsref": "LIPSCOMB"
   },
   "Little Rock Trojans": {
     "display": "Little Rock",
+    "espn_id": 2031,
     "sportsref": "LITTLE-ROCK"
   },
   "Long Beach St 49ers": {
     "display": "Long Beach State",
+    "espn_id": 299,
     "sportsref": "LONG-BEACH-STATE"
   },
   "Longwood Lancers": {
     "display": "Longwood",
+    "espn_id": 2344,
     "sportsref": "LONGWOOD"
   },
   "Louisiana Ragin' Cajuns": {
     "display": "Louisiana",
+    "espn_id": 309,
     "sportsref": "LOUISIANA"
   },
   "Louisiana Tech Bulldogs": {
     "display": "Louisiana Tech",
+    "espn_id": 2348,
     "sportsref": "LOUISIANA-TECH"
   },
   "Louisville Cardinals": {
     "display": "Louisville",
+    "espn_id": 97,
     "sportsref": "LOUISVILLE"
   },
   "Loyola (Chi) Ramblers": {
     "display": "Loyola Chicago",
+    "espn_id": 2350,
     "sportsref": "LOYOLA-IL"
   },
   "Loyola (MD) Greyhounds": {
     "display": "Loyola Md",
+    "espn_id": 2352,
     "sportsref": "LOYOLA-MD"
   },
   "Loyola Marymount Lions": {
     "display": "Loyola Marymount",
+    "espn_id": 2351,
     "sportsref": "LOYOLA-MARYMOUNT"
   },
   "Maine Black Bears": {
     "display": "Maine",
+    "espn_id": 311,
     "sportsref": "MAINE"
   },
   "Manhattan Jaspers": {
     "display": "Manhattan",
+    "espn_id": 2363,
     "sportsref": "MANHATTAN"
   },
   "Marist Red Foxes": {
     "display": "Marist",
+    "espn_id": 2368,
     "sportsref": "MARIST"
   },
   "Marquette Golden Eagles": {
     "display": "Marquette",
+    "espn_id": 269,
     "sportsref": "MARQUETTE"
   },
   "Marshall Thundering Herd": {
     "display": "Marshall",
+    "espn_id": 276,
     "sportsref": "MARSHALL"
   },
   "Maryland Terrapins": {
     "display": "Maryland",
+    "espn_id": 120,
     "sportsref": "MARYLAND"
   },
   "Maryland-Eastern Shore Hawks": {
     "display": "Maryland Eastern Shore",
+    "espn_id": 2379,
     "sportsref": "MARYLAND-EASTERN-SHORE"
   },
   "Massachusetts Minutemen": {
     "display": "Massachusetts",
+    "espn_id": 113,
     "sportsref": "MASSACHUSETTS"
   },
   "McNeese Cowboys": {
     "display": "Mcneese State",
+    "espn_id": 2377,
     "sportsref": "MCNEESE-STATE"
   },
   "Memphis Tigers": {
     "display": "Memphis",
+    "espn_id": 235,
     "sportsref": "MEMPHIS"
   },
   "Mercer Bears": {
     "display": "Mercer",
+    "espn_id": 2382,
     "sportsref": "MERCER"
   },
   "Mercyhurst Lakers": {
     "display": "Mercyhurst",
+    "espn_id": 2385,
     "sportsref": "MERCYHURST"
   },
   "Merrimack Warriors": {
     "display": "Merrimack",
+    "espn_id": 2771,
     "sportsref": "MERRIMACK"
   },
   "Miami (OH) RedHawks": {
     "display": "Miami (OH)",
+    "espn_id": 193,
     "sportsref": "MIAMI-OH"
   },
   "Miami Hurricanes": {
     "display": "Miami (FL)",
+    "espn_id": 2390,
     "sportsref": "MIAMI-FL"
   },
   "Michigan St Spartans": {
     "display": "Michigan State",
+    "espn_id": 127,
     "sportsref": "MICHIGAN-STATE"
   },
   "Michigan Wolverines": {
     "display": "Michigan",
+    "espn_id": 130,
     "sportsref": "MICHIGAN"
   },
   "Middle Tennessee Blue Raiders": {
     "display": "Middle Tennessee",
+    "espn_id": 2393,
     "sportsref": "MIDDLE-TENNESSEE"
   },
   "Milwaukee Panthers": {
     "display": "Milwaukee",
+    "espn_id": 270,
     "sportsref": "MILWAUKEE"
   },
   "Minnesota Golden Gophers": {
     "display": "Minnesota",
+    "espn_id": 135,
     "sportsref": "MINNESOTA"
   },
   "Miss Valley St Delta Devils": {
     "display": "Mississippi Valley State",
+    "espn_id": 2400,
     "sportsref": "MISSISSIPPI-VALLEY-STATE"
   },
   "Mississippi St Bulldogs": {
     "display": "Mississippi State",
+    "espn_id": 344,
     "sportsref": "MISSISSIPPI-STATE"
   },
   "Missouri St Bears": {
     "display": "Missouri State",
+    "espn_id": 2623,
     "sportsref": "MISSOURI-STATE"
   },
   "Missouri Tigers": {
     "display": "Missouri",
+    "espn_id": 142,
     "sportsref": "MISSOURI"
   },
   "Monmouth Hawks": {
     "display": "Monmouth",
+    "espn_id": 2405,
     "sportsref": "MONMOUTH"
   },
   "Montana Grizzlies": {
     "display": "Montana",
+    "espn_id": 149,
     "sportsref": "MONTANA"
   },
   "Montana State Bobcats": {
     "display": "Montana State",
+    "espn_id": 147,
     "sportsref": "MONTANA-STATE"
   },
   "Morehead St Eagles": {
     "display": "Morehead State",
+    "espn_id": 2413,
     "sportsref": "MOREHEAD-STATE"
   },
   "Morgan St Bears": {
     "display": "Morgan State",
+    "espn_id": 2415,
     "sportsref": "MORGAN-STATE"
   },
   "Mount St. Mary's Mountaineers": {
     "display": "Mount St. Mary's",
+    "espn_id": 116,
     "sportsref": "MOUNT-ST-MARYS"
   },
   "Murray St Racers": {
     "display": "Murray State",
+    "espn_id": 93,
     "sportsref": "MURRAY-STATE"
   },
   "N Colorado Bears": {
     "display": "Northern Colorado",
+    "espn_id": 2458,
     "sportsref": "NORTHERN-COLORADO"
   },
   "NC State Wolfpack": {
     "display": "NC State",
+    "espn_id": 152,
     "sportsref": "NC-STATE"
   },
   "NJIT Highlanders": {
     "display": "NJIT",
+    "espn_id": 2885,
     "sportsref": "NJIT"
   },
   "Navy Midshipmen": {
     "display": "Navy",
+    "espn_id": 2426,
     "sportsref": "NAVY"
   },
   "Nebraska Cornhuskers": {
     "display": "Nebraska",
+    "espn_id": 158,
     "sportsref": "NEBRASKA"
   },
   "Nevada Wolf Pack": {
     "display": "Nevada",
+    "espn_id": 2440,
     "sportsref": "NEVADA"
   },
   "New Hampshire Wildcats": {
     "display": "New Hampshire",
+    "espn_id": 160,
     "sportsref": "NEW-HAMPSHIRE"
   },
   "New Haven Chargers": {
     "display": "New Haven",
+    "espn_id": 2441,
     "sportsref": "NEW-HAVEN"
   },
   "New Mexico Lobos": {
     "display": "New Mexico",
+    "espn_id": 167,
     "sportsref": "NEW-MEXICO"
   },
   "New Mexico St Aggies": {
     "display": "New Mexico St",
+    "espn_id": 167,
     "sportsref": "NEW-MEXICO-STATE"
   },
   "New Orleans Privateers": {
     "display": "New Orleans",
+    "espn_id": 2443,
     "sportsref": "NEW-ORLEANS"
   },
   "Niagara Purple Eagles": {
     "display": "Niagara",
+    "espn_id": 315,
     "sportsref": "NIAGARA"
   },
   "Nicholls St Colonels": {
     "display": "Nicholls State",
+    "espn_id": 2447,
     "sportsref": "NICHOLLS-STATE"
   },
   "Norfolk St Spartans": {
     "display": "Norfolk State",
+    "espn_id": 2450,
     "sportsref": "NORFOLK-STATE"
   },
   "North Alabama Lions": {
     "display": "North Alabama",
+    "espn_id": 2453,
     "sportsref": "NORTH-ALABAMA"
   },
   "North Carolina A&T Aggies": {
     "display": "North Carolina At",
+    "espn_id": 2448,
     "sportsref": "NORTH-CAROLINA-AT"
   },
   "North Carolina Central Eagles": {
     "display": "North Carolina Central",
+    "espn_id": 2428,
     "sportsref": "NORTH-CAROLINA-CENTRAL"
   },
   "North Carolina Tar Heels": {
     "display": "North Carolina",
+    "espn_id": 153,
     "sportsref": "NORTH-CAROLINA"
   },
   "North Dakota Fighting Hawks": {
     "display": "North Dakota",
+    "espn_id": 155,
     "sportsref": "NORTH-DAKOTA"
   },
   "North Dakota St Bison": {
     "display": "North Dakota State",
+    "espn_id": 2449,
     "sportsref": "NORTH-DAKOTA-STATE"
   },
   "North Florida Ospreys": {
     "display": "North Florida",
+    "espn_id": 2454,
     "sportsref": "NORTH-FLORIDA"
   },
   "North Texas Mean Green": {
     "display": "North Texas",
+    "espn_id": 249,
     "sportsref": "NORTH-TEXAS"
   },
   "Northeastern Huskies": {
     "display": "Northeastern",
+    "espn_id": 111,
     "sportsref": "NORTHEASTERN"
   },
   "Northern Arizona Lumberjacks": {
     "display": "Northern Arizona",
+    "espn_id": 2464,
     "sportsref": "NORTHERN-ARIZONA"
   },
   "Northern Illinois Huskies": {
     "display": "Northern Illinois",
+    "espn_id": 2459,
     "sportsref": "NORTHERN-ILLINOIS"
   },
   "Northern Iowa Panthers": {
     "display": "Northern Iowa",
+    "espn_id": 2460,
     "sportsref": "NORTHERN-IOWA"
   },
   "Northern Kentucky Norse": {
     "display": "Northern Kentucky",
+    "espn_id": 94,
     "sportsref": "NORTHERN-KENTUCKY"
   },
   "Northwestern St Demons": {
     "display": "Northwestern State",
+    "espn_id": 2466,
     "sportsref": "NORTHWESTERN-STATE"
   },
   "Northwestern Wildcats": {
     "display": "Northwestern",
+    "espn_id": 77,
     "sportsref": "NORTHWESTERN"
   },
   "Notre Dame Fighting Irish": {
     "display": "Notre Dame",
+    "espn_id": 87,
     "sportsref": "NOTRE-DAME"
   },
   "Oakland Golden Grizzlies": {
     "display": "Oakland",
+    "espn_id": 2473,
     "sportsref": "OAKLAND"
   },
   "Ohio Bobcats": {
     "display": "Ohio",
+    "espn_id": 195,
     "sportsref": "OHIO"
   },
   "Ohio State Buckeyes": {
     "display": "Ohio State",
+    "espn_id": 194,
     "sportsref": "OHIO-STATE"
   },
   "Oklahoma Sooners": {
     "display": "Oklahoma",
+    "espn_id": 201,
     "sportsref": "OKLAHOMA"
   },
   "Oklahoma St Cowboys": {
     "display": "Oklahoma State",
+    "espn_id": 197,
     "sportsref": "OKLAHOMA-STATE"
   },
   "Old Dominion Monarchs": {
     "display": "Old Dominion",
+    "espn_id": 295,
     "sportsref": "OLD-DOMINION"
   },
   "Ole Miss Rebels": {
     "display": "Ole Miss",
+    "espn_id": 145,
     "sportsref": "MISSISSIPPI"
   },
   "Omaha Mavericks": {
     "display": "Omaha",
+    "espn_id": 2437,
     "sportsref": "OMAHA"
   },
   "Oral Roberts Golden Eagles": {
     "display": "Oral Roberts",
+    "espn_id": 198,
     "sportsref": "ORAL-ROBERTS"
   },
   "Oregon Ducks": {
     "display": "Oregon",
+    "espn_id": 2483,
     "sportsref": "OREGON"
   },
   "Oregon St Beavers": {
     "display": "Oregon State",
+    "espn_id": 204,
     "sportsref": "OREGON-STATE"
   },
   "Pacific Tigers": {
     "display": "Pacific",
+    "espn_id": 279,
     "sportsref": "PACIFIC"
   },
   "Penn State Nittany Lions": {
     "display": "Penn State",
+    "espn_id": 213,
     "sportsref": "PENN-STATE"
   },
   "Pennsylvania Quakers": {
     "display": "Pennsylvania",
+    "espn_id": 219,
     "sportsref": "PENNSYLVANIA"
   },
   "Pepperdine Waves": {
     "display": "Pepperdine",
+    "espn_id": 2492,
     "sportsref": "PEPPERDINE"
   },
   "Pittsburgh Panthers": {
     "display": "Pittsburgh",
+    "espn_id": 221,
     "sportsref": "PITTSBURGH"
   },
   "Portland Pilots": {
     "display": "Portland",
+    "espn_id": 2501,
     "sportsref": "PORTLAND"
   },
   "Portland St Vikings": {
     "display": "Portland State",
+    "espn_id": 2502,
     "sportsref": "PORTLAND-STATE"
   },
   "Prairie View Panthers": {
     "display": "Prairie View",
+    "espn_id": 2504,
     "sportsref": "PRAIRIE-VIEW"
   },
   "Presbyterian Blue Hose": {
     "display": "Presbyterian",
+    "espn_id": 2506,
     "sportsref": "PRESBYTERIAN"
   },
   "Princeton Tigers": {
     "display": "Princeton",
+    "espn_id": 163,
     "sportsref": "PRINCETON"
   },
   "Providence Friars": {
     "display": "Providence",
+    "espn_id": 2507,
     "sportsref": "PROVIDENCE"
   },
   "Purdue Boilermakers": {
     "display": "Purdue",
+    "espn_id": 2509,
     "sportsref": "PURDUE"
   },
   "Purdue Fort Wayne Mastodons": {
     "display": "Purdue Fort Wayne",
+    "espn_id": 2870,
     "sportsref": "PURDUE-FORT-WAYNE"
   },
   "Queens University Royals": {
@@ -977,138 +1219,172 @@
   },
   "Quinnipiac Bobcats": {
     "display": "Quinnipiac",
+    "espn_id": 2514,
     "sportsref": "QUINNIPIAC"
   },
   "Radford Highlanders": {
     "display": "Radford",
+    "espn_id": 2515,
     "sportsref": "RADFORD"
   },
   "Rhode Island Rams": {
     "display": "Rhode Island",
+    "espn_id": 227,
     "sportsref": "RHODE-ISLAND"
   },
   "Rice Owls": {
     "display": "Rice",
+    "espn_id": 242,
     "sportsref": "RICE"
   },
   "Richmond Spiders": {
     "display": "Richmond",
+    "espn_id": 257,
     "sportsref": "RICHMOND"
   },
   "Rider Broncs": {
     "display": "Rider",
+    "espn_id": 2520,
     "sportsref": "RIDER"
   },
   "Robert Morris Colonials": {
     "display": "Robert Morris",
+    "espn_id": 2523,
     "sportsref": "ROBERT-MORRIS"
   },
   "Rutgers Scarlet Knights": {
     "display": "Rutgers",
+    "espn_id": 164,
     "sportsref": "RUTGERS"
   },
   "SE Louisiana Lions": {
     "display": "Southeastern Louisiana",
+    "espn_id": 2545,
     "sportsref": "SOUTHEASTERN-LOUISIANA"
   },
   "SE Missouri St Redhawks": {
     "display": "Southeast Missouri State",
+    "espn_id": 2546,
     "sportsref": "SOUTHEAST-MISSOURI-STATE"
   },
   "SIU-Edwardsville Cougars": {
     "display": "Siu Edwardsville",
+    "espn_id": 2565,
     "sportsref": "SIU-EDWARDSVILLE"
   },
   "SMU Mustangs": {
     "display": "Southern Methodist",
+    "espn_id": 2567,
     "sportsref": "SOUTHERN-METHODIST"
   },
   "Sacramento St Hornets": {
     "display": "Sacramento State",
+    "espn_id": 16,
     "sportsref": "SACRAMENTO-STATE"
   },
   "Sacred Heart Pioneers": {
     "display": "Sacred Heart",
+    "espn_id": 2529,
     "sportsref": "SACRED-HEART"
   },
   "Saint Louis Billikens": {
     "display": "Saint Louis",
+    "espn_id": 139,
     "sportsref": "SAINT-LOUIS"
   },
   "Saint Mary's Gaels": {
     "display": "Saint Mary'S Ca",
+    "espn_id": 2608,
     "sportsref": "SAINT-MARYS-CA"
   },
   "Sam Houston St Bearkats": {
     "display": "Sam Houston",
+    "espn_id": 2534,
     "sportsref": "SAM-HOUSTON"
   },
   "Samford Bulldogs": {
     "display": "Samford",
+    "espn_id": 2535,
     "sportsref": "SAMFORD"
   },
   "San Diego St Aztecs": {
     "display": "San Diego State",
+    "espn_id": 21,
     "sportsref": "SAN-DIEGO-STATE"
   },
   "San Diego Toreros": {
     "display": "San Diego",
+    "espn_id": 301,
     "sportsref": "SAN-DIEGO"
   },
   "San Francisco Dons": {
     "display": "San Francisco",
+    "espn_id": 2539,
     "sportsref": "SAN-FRANCISCO"
   },
   "San Jos\u00e9 St Spartans": {
     "display": "San Jose State",
+    "espn_id": 23,
     "sportsref": "SAN-JOSE-STATE"
   },
   "Santa Clara Broncos": {
     "display": "Santa Clara",
+    "espn_id": 2541,
     "sportsref": "SANTA-CLARA"
   },
   "Seattle Redhawks": {
     "display": "Seattle",
+    "espn_id": 2547,
     "sportsref": "SEATTLE"
   },
   "Seton Hall Pirates": {
     "display": "Seton Hall",
+    "espn_id": 2550,
     "sportsref": "SETON-HALL"
   },
   "Siena Saints": {
     "display": "Siena",
+    "espn_id": 2561,
     "sportsref": "SIENA"
   },
   "South Alabama Jaguars": {
     "display": "South Alabama",
+    "espn_id": 6,
     "sportsref": "SOUTH-ALABAMA"
   },
   "South Carolina Gamecocks": {
     "display": "South Carolina",
+    "espn_id": 2579,
     "sportsref": "SOUTH-CAROLINA"
   },
   "South Carolina St Bulldogs": {
     "display": "South Carolina State",
+    "espn_id": 2569,
     "sportsref": "SOUTH-CAROLINA-STATE"
   },
   "South Carolina Upstate Spartans": {
     "display": "South Carolina Upstate",
+    "espn_id": 2908,
     "sportsref": "SOUTH-CAROLINA-UPSTATE"
   },
   "South Dakota Coyotes": {
     "display": "South Dakota",
+    "espn_id": 233,
     "sportsref": "SOUTH-DAKOTA"
   },
   "South Dakota St Jackrabbits": {
     "display": "South Dakota State",
+    "espn_id": 2571,
     "sportsref": "SOUTH-DAKOTA-STATE"
   },
   "South Florida Bulls": {
     "display": "South Florida",
+    "espn_id": 58,
     "sportsref": "SOUTH-FLORIDA"
   },
   "Southern Illinois Salukis": {
     "display": "Southern Illinois",
+    "espn_id": 79,
     "sportsref": "SOUTHERN-ILLINOIS"
   },
   "Southern Indiana Screaming Eagles": {
@@ -1117,370 +1393,462 @@
   },
   "Southern Jaguars": {
     "display": "Southern",
+    "espn_id": 2582,
     "sportsref": "SOUTHERN"
   },
   "Southern Miss Golden Eagles": {
     "display": "Southern Mississippi",
+    "espn_id": 2572,
     "sportsref": "SOUTHERN-MISSISSIPPI"
   },
   "Southern Utah Thunderbirds": {
     "display": "Southern Utah",
+    "espn_id": 253,
     "sportsref": "SOUTHERN-UTAH"
   },
   "St. Bonaventure Bonnies": {
     "display": "St Bonaventure",
+    "espn_id": 179,
     "sportsref": "ST-BONAVENTURE"
   },
   "St. Francis (PA) Red Flash": {
     "display": "Saint Francis Pa",
+    "espn_id": 2598,
     "sportsref": "SAINT-FRANCIS-PA"
   },
   "St. John's Red Storm": {
     "display": "St John'S Ny",
+    "espn_id": 2599,
     "sportsref": "ST-JOHNS-NY"
   },
   "St. Joseph's Hawks": {
     "display": "St. Joseph's",
+    "espn_id": 2603,
     "sportsref": "SAINT-JOSEPHS"
   },
   "St. Peter's Peacocks": {
     "display": "St. Peter's",
+    "espn_id": 2612,
     "sportsref": "SAINT-PETERS"
   },
   "St. Thomas (MN) Tommies": {
     "display": "St Thomas Mn",
+    "espn_id": 2900,
     "sportsref": "ST-THOMAS"
   },
   "St. Thomas Tommies": {
     "display": "St. Thomas",
+    "espn_id": 2900,
     "sportsref": "ST-THOMAS"
   },
   "Stanford Cardinal": {
     "display": "Stanford",
+    "espn_id": 24,
     "sportsref": "STANFORD"
   },
   "Stephen F. Austin Lumberjacks": {
     "display": "Stephen F Austin",
+    "espn_id": 2617,
     "sportsref": "STEPHEN-F-AUSTIN"
   },
   "Stetson Hatters": {
     "display": "Stetson",
+    "espn_id": 56,
     "sportsref": "STETSON"
   },
   "Stonehill Skyhawks": {
     "display": "Stonehill",
+    "espn_id": 284,
     "sportsref": "STONEHILL"
   },
   "Stony Brook Seawolves": {
     "display": "Stony Brook",
+    "espn_id": 2619,
     "sportsref": "STONY-BROOK"
   },
   "Syracuse Orange": {
     "display": "Syracuse",
+    "espn_id": 183,
     "sportsref": "SYRACUSE"
   },
   "TCU Horned Frogs": {
     "display": "TCU",
+    "espn_id": 2628,
     "sportsref": "TCU"
   },
   "TEXAS-SOUTHERN": {
     "display": "Texas Southern",
+    "espn_id": 2640,
     "sportsref": "TEXAS-SOUTHERN"
   },
   "Tarleton State Texans": {
     "display": "Tarleton State",
+    "espn_id": 2627,
     "sportsref": "TARLETON-STATE"
   },
   "Temple Owls": {
     "display": "Temple",
+    "espn_id": 218,
     "sportsref": "TEMPLE"
   },
   "Tenn-Martin Skyhawks": {
     "display": "Tennessee Martin",
+    "espn_id": 2630,
     "sportsref": "TENNESSEE-MARTIN"
   },
   "Tennessee St Tigers": {
     "display": "Tennessee State",
+    "espn_id": 2634,
     "sportsref": "TENNESSEE-STATE"
   },
   "Tennessee Tech Golden Eagles": {
     "display": "Tennessee Tech",
+    "espn_id": 2635,
     "sportsref": "TENNESSEE-TECH"
   },
   "Tennessee Volunteers": {
     "display": "Tennessee",
+    "espn_id": 2633,
     "sportsref": "TENNESSEE"
   },
   "Texas A&M Aggies": {
     "display": "Texas Am",
+    "espn_id": 245,
     "sportsref": "TEXAS-AM"
   },
   "Texas A&M-Commerce Lions": {
     "display": "Texas Am Commerce",
+    "espn_id": 2837,
     "sportsref": "EAST-TEXAS-AM"
   },
   "Texas A&M-Corpus Christi Islanders": {
     "display": "TAMU-CC",
+    "espn_id": 357,
     "sportsref": "TEXAS-AM-CORPUS-CHRISTI"
   },
   "Texas Longhorns": {
     "display": "Texas",
+    "espn_id": 251,
     "sportsref": "TEXAS"
   },
   "Texas Southern Tigers": {
     "display": "Texas Southern",
+    "espn_id": 2640,
     "sportsref": "TEXAS-SOUTHERN"
   },
   "Texas State Bobcats": {
     "display": "Texas State",
+    "espn_id": 326,
     "sportsref": "TEXAS-STATE"
   },
   "Texas Tech Red Raiders": {
     "display": "Texas Tech",
+    "espn_id": 2641,
     "sportsref": "TEXAS-TECH"
   },
   "The Citadel Bulldogs": {
     "display": "The Citadel",
+    "espn_id": 2643,
     "sportsref": "THE-CITADEL"
   },
   "Toledo Rockets": {
     "display": "Toledo",
+    "espn_id": 2649,
     "sportsref": "TOLEDO"
   },
   "Towson Tigers": {
     "display": "Towson",
+    "espn_id": 119,
     "sportsref": "TOWSON"
   },
   "Troy Trojans": {
     "display": "Troy",
+    "espn_id": 2653,
     "sportsref": "TROY"
   },
   "Tulane Green Wave": {
     "display": "Tulane",
+    "espn_id": 2655,
     "sportsref": "TULANE"
   },
   "Tulsa Golden Hurricane": {
     "display": "Tulsa",
+    "espn_id": 202,
     "sportsref": "TULSA"
   },
   "UAB Blazers": {
     "display": "UAB",
+    "espn_id": 5,
     "sportsref": "UAB"
   },
   "UC Davis Aggies": {
     "display": "UC Davis",
+    "espn_id": 302,
     "sportsref": "UC-DAVIS"
   },
   "UC Irvine Anteaters": {
     "display": "Uc Irvine",
+    "espn_id": 300,
     "sportsref": "UC-IRVINE"
   },
   "UC Riverside Highlanders": {
     "display": "UC Riverside",
+    "espn_id": 27,
     "sportsref": "UC-RIVERSIDE"
   },
   "UC San Diego Tritons": {
     "display": "UC San Diego",
+    "espn_id": 28,
     "sportsref": "UC-SAN-DIEGO"
   },
   "UC Santa Barbara Gauchos": {
     "display": "UC Santa Barbara",
+    "espn_id": 2540,
     "sportsref": "UC-SANTA-BARBARA"
   },
   "UCF Knights": {
     "display": "UCF",
+    "espn_id": 2116,
     "sportsref": "UCF"
   },
   "UCLA Bruins": {
     "display": "UCLA",
+    "espn_id": 26,
     "sportsref": "UCLA"
   },
   "UConn Huskies": {
     "display": "Connecticut",
+    "espn_id": 41,
     "sportsref": "CONNECTICUT"
   },
   "UIC Flames": {
     "display": "Illinois Chicago",
+    "espn_id": 82,
     "sportsref": "ILLINOIS-CHICAGO"
   },
   "UL Monroe Warhawks": {
     "display": "Louisiana Monroe",
+    "espn_id": 2433,
     "sportsref": "LOUISIANA-MONROE"
   },
   "UMBC Retrievers": {
     "display": "Maryland Baltimore County",
+    "espn_id": 2378,
     "sportsref": "MARYLAND-BALTIMORE-COUNTY"
   },
   "UMass Lowell River Hawks": {
     "display": "Massachusetts Lowell",
+    "espn_id": 2349,
     "sportsref": "MASSACHUSETTS-LOWELL"
   },
   "UNC Asheville Bulldogs": {
     "display": "Unc Asheville",
+    "espn_id": 2427,
     "sportsref": "UNC-ASHEVILLE"
   },
   "UNC Greensboro Spartans": {
     "display": "Unc Greensboro",
+    "espn_id": 2430,
     "sportsref": "UNC-GREENSBORO"
   },
   "UNC Wilmington Seahawks": {
     "display": "UNC Wilmington",
+    "espn_id": 350,
     "sportsref": "UNC-WILMINGTON"
   },
   "UNLV Rebels": {
     "display": "UNLV",
+    "espn_id": 2439,
     "sportsref": "NEVADA-LAS-VEGAS"
   },
   "USC Trojans": {
     "display": "Southern California",
+    "espn_id": 30,
     "sportsref": "SOUTHERN-CALIFORNIA"
   },
   "UT Rio Grande Valley Vaqueros": {
     "display": "Texas Rio Grande Valley",
+    "espn_id": 292,
     "sportsref": "TEXAS-RIO-GRANDE-VALLEY"
   },
   "UT-Arlington Mavericks": {
     "display": "UT Arlington",
+    "espn_id": 250,
     "sportsref": "UT-ARLINGTON"
   },
   "UTEP Miners": {
     "display": "UTEP",
+    "espn_id": 2638,
     "sportsref": "UTEP"
   },
   "UTSA Roadrunners": {
     "display": "UTSA",
+    "espn_id": 2636,
     "sportsref": "UTSA"
   },
   "Utah State Aggies": {
     "display": "Utah State",
+    "espn_id": 328,
     "sportsref": "UTAH-STATE"
   },
   "Utah Tech Trailblazers": {
     "display": "Utah Tech",
+    "espn_id": 3101,
     "sportsref": "UTAH-TECH"
   },
   "Utah Utes": {
     "display": "Utah",
+    "espn_id": 254,
     "sportsref": "UTAH"
   },
   "Utah Valley Wolverines": {
     "display": "Utah Valley",
+    "espn_id": 3084,
     "sportsref": "UTAH-VALLEY"
   },
   "VCU Rams": {
     "display": "Virginia Commonwealth",
+    "espn_id": 2670,
     "sportsref": "VIRGINIA-COMMONWEALTH"
   },
   "VMI Keydets": {
     "display": "VMI",
+    "espn_id": 2678,
     "sportsref": "VMI"
   },
   "Valparaiso Beacons": {
     "display": "Valparaiso",
+    "espn_id": 2674,
     "sportsref": "VALPARAISO"
   },
   "Vanderbilt Commodores": {
     "display": "Vanderbilt",
+    "espn_id": 238,
     "sportsref": "VANDERBILT"
   },
   "Vermont Catamounts": {
     "display": "Vermont",
+    "espn_id": 261,
     "sportsref": "VERMONT"
   },
   "Villanova Wildcats": {
     "display": "Villanova",
+    "espn_id": 222,
     "sportsref": "VILLANOVA"
   },
   "Virginia Cavaliers": {
     "display": "Virginia",
+    "espn_id": 258,
     "sportsref": "VIRGINIA"
   },
   "Virginia Tech Hokies": {
     "display": "Virginia Tech",
+    "espn_id": 259,
     "sportsref": "VIRGINIA-TECH"
   },
   "Wagner Seahawks": {
     "display": "Wagner",
+    "espn_id": 2681,
     "sportsref": "WAGNER"
   },
   "Wake Forest Demon Deacons": {
     "display": "Wake Forest",
+    "espn_id": 154,
     "sportsref": "WAKE-FOREST"
   },
   "Washington Huskies": {
     "display": "Washington",
+    "espn_id": 264,
     "sportsref": "WASHINGTON"
   },
   "Washington St Cougars": {
     "display": "Washington State",
+    "espn_id": 265,
     "sportsref": "WASHINGTON-STATE"
   },
   "Weber State Wildcats": {
     "display": "Weber State",
+    "espn_id": 2692,
     "sportsref": "WEBER-STATE"
   },
   "West Georgia Wolves": {
     "display": "West Georgia",
+    "espn_id": 2698,
     "sportsref": "WEST-GEORGIA"
   },
   "West Virginia Mountaineers": {
     "display": "West Virginia",
+    "espn_id": 277,
     "sportsref": "WEST-VIRGINIA"
   },
   "Western Carolina Catamounts": {
     "display": "Western Carolina",
+    "espn_id": 2717,
     "sportsref": "WESTERN-CAROLINA"
   },
   "Western Illinois Leathernecks": {
     "display": "Western Illinois",
+    "espn_id": 2710,
     "sportsref": "WESTERN-ILLINOIS"
   },
   "Western Kentucky Hilltoppers": {
     "display": "Western Kentucky",
+    "espn_id": 98,
     "sportsref": "WESTERN-KENTUCKY"
   },
   "Western Michigan Broncos": {
     "display": "Western Michigan",
+    "espn_id": 2711,
     "sportsref": "WESTERN-MICHIGAN"
   },
   "Wichita St Shockers": {
     "display": "Wichita State",
+    "espn_id": 2724,
     "sportsref": "WICHITA-STATE"
   },
   "William & Mary Tribe": {
     "display": "William  Mary",
+    "espn_id": 2729,
     "sportsref": "WILLIAM--MARY"
   },
   "Winthrop Eagles": {
     "display": "Winthrop",
+    "espn_id": 2737,
     "sportsref": "WINTHROP"
   },
   "Wisconsin Badgers": {
     "display": "Wisconsin",
+    "espn_id": 275,
     "sportsref": "WISCONSIN"
   },
   "Wofford Terriers": {
     "display": "Wofford",
+    "espn_id": 2747,
     "sportsref": "WOFFORD"
   },
   "Wright St Raiders": {
     "display": "Wright State",
+    "espn_id": 2750,
     "sportsref": "WRIGHT-STATE"
   },
   "Wyoming Cowboys": {
     "display": "Wyoming",
+    "espn_id": 2751,
     "sportsref": "WYOMING"
   },
   "Xavier Musketeers": {
     "display": "Xavier",
+    "espn_id": 2752,
     "sportsref": "XAVIER"
   },
   "Yale Bulldogs": {
     "display": "Yale",
+    "espn_id": 43,
     "sportsref": "YALE"
   },
   "Youngstown St Penguins": {
     "display": "Youngstown State",
+    "espn_id": 2754,
     "sportsref": "YOUNGSTOWN-STATE"
   }
 }
