@@ -1,140 +1,145 @@
 import type { Pick } from "@/lib/db";
 import Image from "next/image";
 
-function TeamLogo({
-  espnId,
-  name,
-}: {
-  espnId: number | null;
-  name: string;
-}) {
+function TeamLogo({ espnId, name }: { espnId: number | null; name: string }) {
   if (espnId) {
     return (
       <Image
         src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${espnId}.png`}
         alt={name}
-        width={72}
-        height={72}
+        width={64}
+        height={64}
         className="object-contain"
         unoptimized
       />
     );
   }
-  // Fallback: initials
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("");
+  const initials = name.split(" ").map((w) => w[0]).slice(0, 2).join("");
   return (
-    <div className="w-[72px] h-[72px] rounded-full bg-slate-700 flex items-center justify-center text-xl font-bold text-slate-300">
+    <div
+      className="w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"
+      style={{ background: "var(--bg)", color: "var(--text-muted)" }}
+    >
       {initials}
     </div>
   );
 }
 
-function spread(n: number): string {
+function fmt(n: number): string {
   return n > 0 ? `+${n.toFixed(1)}` : n.toFixed(1);
 }
 
 export default function MatchupCard({ pick }: { pick: Pick }) {
-  const isPick = (side: "home" | "away") => pick.pick === side;
+  const homePick = pick.pick === "home";
+  const awayPick = pick.pick === "away";
 
   return (
-    <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
-      {/* Teams row */}
-      <div className="grid grid-cols-[1fr_auto_1fr]">
-        {/* Home */}
+    <div
+      className="rounded-lg overflow-hidden"
+      style={{
+        background: "var(--card)",
+        border: "1px solid var(--border)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+      }}
+    >
+      {/* Teams */}
+      <div className="grid grid-cols-[1fr_32px_1fr]">
+        <TeamSide
+          name={pick.home_display}
+          espnId={pick.home_espn_id}
+          isPick={homePick}
+          label="HOME"
+        />
         <div
-          className={`flex flex-col items-center gap-3 p-6 ${
-            isPick("home") ? "bg-emerald-950/60" : ""
-          }`}
+          className="flex items-center justify-center text-xs font-medium"
+          style={{ color: "var(--text-muted)" }}
         >
-          <TeamLogo espnId={pick.home_espn_id} name={pick.home_display} />
-          <span className="text-white font-semibold text-center text-sm leading-tight">
-            {pick.home_display}
-          </span>
-          {isPick("home") && (
-            <span className="text-xs font-bold tracking-widest text-emerald-400 uppercase">
-              ★ Pick
-            </span>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div className="flex items-center justify-center px-4 text-slate-500 font-medium text-sm">
           vs
         </div>
-
-        {/* Away */}
-        <div
-          className={`flex flex-col items-center gap-3 p-6 ${
-            isPick("away") ? "bg-emerald-950/60" : ""
-          }`}
-        >
-          <TeamLogo espnId={pick.away_espn_id} name={pick.away_display} />
-          <span className="text-white font-semibold text-center text-sm leading-tight">
-            {pick.away_display}
-          </span>
-          {isPick("away") && (
-            <span className="text-xs font-bold tracking-widest text-emerald-400 uppercase">
-              ★ Pick
-            </span>
-          )}
-        </div>
+        <TeamSide
+          name={pick.away_display}
+          espnId={pick.away_espn_id}
+          isPick={awayPick}
+          label="AWAY"
+        />
       </div>
 
-      {/* Spreads row */}
-      <div className="border-t border-slate-700 grid grid-cols-2 divide-x divide-slate-700">
-        <SpreadCell
-          label="DraftKings"
-          home={pick.dk_home_spread}
-          away={pick.dk_away_spread}
-          pickSide={pick.pick}
-        />
-        <SpreadCell
-          label="Model"
-          home={pick.model_home_spread}
-          away={pick.model_away_spread}
-          pickSide={null}
-        />
+      {/* Spreads */}
+      <div
+        className="grid grid-cols-2 text-center text-xs py-3"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
+        <div>
+          <div className="font-semibold mb-1" style={{ color: "var(--text-muted)" }}>
+            DraftKings
+          </div>
+          <div className="flex justify-center gap-6">
+            <Spread value={pick.dk_home_spread} highlight={homePick} />
+            <Spread value={pick.dk_away_spread} highlight={awayPick} />
+          </div>
+        </div>
+        <div style={{ borderLeft: "1px solid var(--border)" }}>
+          <div className="font-semibold mb-1" style={{ color: "var(--text-muted)" }}>
+            Model
+          </div>
+          <div className="flex justify-center gap-6">
+            <Spread value={pick.model_home_spread} highlight={false} />
+            <Spread value={pick.model_away_spread} highlight={false} />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function SpreadCell({
+function TeamSide({
+  name,
+  espnId,
+  isPick,
   label,
-  home,
-  away,
-  pickSide,
 }: {
+  name: string;
+  espnId: number | null;
+  isPick: boolean;
   label: string;
-  home: number;
-  away: number;
-  pickSide: "home" | "away" | null;
 }) {
   return (
-    <div className="flex flex-col items-center py-3 gap-1">
-      <span className="text-xs text-slate-500 uppercase tracking-wider font-medium">
+    <div
+      className="flex flex-col items-center gap-2 py-5 px-3"
+      style={isPick ? { background: "#fff4ee" } : {}}
+    >
+      <TeamLogo espnId={espnId} name={name} />
+      <span
+        className="text-sm font-semibold text-center leading-tight"
+        style={{ color: "var(--text)" }}
+      >
+        {name}
+      </span>
+      <span
+        className="text-xs font-medium"
+        style={{ color: "var(--text-muted)", opacity: 0.6 }}
+      >
         {label}
       </span>
-      <div className="flex gap-6">
+      {isPick && (
         <span
-          className={`text-sm font-bold ${
-            pickSide === "home" ? "text-emerald-400" : "text-slate-300"
-          }`}
+          className="text-xs font-bold tracking-wider px-2 py-0.5 rounded"
+          style={{ background: "var(--accent)", color: "white" }}
         >
-          {spread(home)}
+          PICK
         </span>
-        <span
-          className={`text-sm font-bold ${
-            pickSide === "away" ? "text-emerald-400" : "text-slate-300"
-          }`}
-        >
-          {spread(away)}
-        </span>
-      </div>
+      )}
     </div>
+  );
+}
+
+function Spread({ value, highlight }: { value: number; highlight: boolean }) {
+  return (
+    <span
+      className="font-bold text-sm"
+      style={{ color: highlight ? "var(--accent)" : "var(--text)" }}
+    >
+      {fmt(value)}
+    </span>
   );
 }
