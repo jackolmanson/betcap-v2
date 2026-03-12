@@ -8,9 +8,7 @@ from datetime import date, datetime
 
 ODDS_API_KEY = os.environ["ODDS_API_KEY"]
 ODDS_API_URL = "https://api.the-odds-api.com/v4/sports/basketball_ncaab/odds/"
-SEASON = 2026
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "../spread_model")
-TEAM_DATA_PATH = os.path.join(os.path.dirname(__file__), f"../output/{SEASON}_teams.csv")
 MAPPING_PATH = os.path.join(os.path.dirname(__file__), "name_mapping.json")
 
 
@@ -101,7 +99,8 @@ def run_picks():
     with open(MAPPING_PATH) as f:
         name_map = json.load(f)
 
-    team_data = pd.read_csv(TEAM_DATA_PATH)
+    from scrape import fetch_team_data
+    team_data = fetch_team_data()
     model = tf.keras.models.load_model(MODEL_PATH)
 
     raw_games = fetch_games()
