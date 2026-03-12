@@ -42,7 +42,7 @@ export default async function HomePage() {
       ) : (
         <>
           <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
-            {picks.length} game{picks.length !== 1 ? "s" : ""} today
+            Upcoming games
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {picks.map((pick) => (

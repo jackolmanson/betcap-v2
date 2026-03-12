@@ -49,6 +49,7 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
           espnId={pick.home_espn_id}
           isPick={homePick}
           label="HOME"
+          spread={pick.dk_home_spread}
         />
         <div
           className="flex items-center justify-center text-xs font-medium"
@@ -61,32 +62,8 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
           espnId={pick.away_espn_id}
           isPick={awayPick}
           label="AWAY"
+          spread={pick.dk_away_spread}
         />
-      </div>
-
-      {/* Spreads */}
-      <div
-        className="grid grid-cols-2 text-center text-xs py-3"
-        style={{ borderTop: "1px solid var(--border)" }}
-      >
-        <div>
-          <div className="font-semibold mb-1" style={{ color: "var(--text-muted)" }}>
-            DraftKings
-          </div>
-          <div className="flex justify-center gap-6">
-            <Spread value={pick.dk_home_spread} highlight={homePick} />
-            <Spread value={pick.dk_away_spread} highlight={awayPick} />
-          </div>
-        </div>
-        <div style={{ borderLeft: "1px solid var(--border)" }}>
-          <div className="font-semibold mb-1" style={{ color: "var(--text-muted)" }}>
-            Model
-          </div>
-          <div className="flex justify-center gap-6">
-            <Spread value={pick.model_home_spread} highlight={false} />
-            <Spread value={pick.model_away_spread} highlight={false} />
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -97,11 +74,13 @@ function TeamSide({
   espnId,
   isPick,
   label,
+  spread,
 }: {
   name: string;
   espnId: number | null;
   isPick: boolean;
   label: string;
+  spread: number;
 }) {
   return (
     <div
@@ -120,6 +99,12 @@ function TeamSide({
         style={{ color: "var(--text-muted)", opacity: 0.6 }}
       >
         {label}
+      </span>
+      <span
+        className="text-sm font-bold"
+        style={{ color: isPick ? "var(--accent)" : "var(--text)" }}
+      >
+        {fmt(spread)}
       </span>
       {isPick && (
         <span
