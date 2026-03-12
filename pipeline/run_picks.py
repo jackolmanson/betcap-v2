@@ -111,7 +111,8 @@ def run_picks():
     for game in games:
         try:
             X = build_input(game["home_sportsref"], game["away_sportsref"], team_data)
-            model_home_spread = round(float(model.predict(X, verbose=0)[0][0]), 1)
+            # Raw positive output = home favored (match old code sign convention)
+            model_home_spread = round(-float(model.predict(X, verbose=0)[0][0]), 1)
             model_away_spread = round(-model_home_spread, 1)
 
             dk_home = game["dk_home_spread"]
