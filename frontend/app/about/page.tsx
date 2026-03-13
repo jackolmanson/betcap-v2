@@ -19,14 +19,14 @@ export default function AboutPage() {
             prediction on what side of the market spread to take.
           </p>
         </div>
-        <IllustrationBox emoji="🏆" />
+        <img src="/winner.png" alt="We Build Winners" className="w-44 h-44 flex-shrink-0 object-contain" />
       </section>
 
       <hr className="mb-16" style={{ borderColor: "var(--border)" }} />
 
       {/* ── Section 2: Our Investment Thesis ── */}
       <section className="flex items-center gap-12 mb-16">
-        <IllustrationBox emoji="📊" />
+        <img src="/story.png" alt="Investment Thesis" className="w-44 h-44 flex-shrink-0 object-contain" />
         <div className="flex-1">
           <h2 className="text-2xl font-bold mb-4" style={{ color: "var(--text)" }}>
             Our Investment Thesis
@@ -36,8 +36,7 @@ export default function AboutPage() {
             to make each decision. Analyzing the selections over time, we can tell the model
             has a few hypotheses on how best to invest capital. The first is that road
             underdogs are under indexed in the public eye. The second is that conference games
-            tend to be closer games. And the third is that the &apos;22-&apos;23 Alabama
-            Crimson Tide are a force to be reckoned with.
+            tend to be closer games.
           </p>
         </div>
       </section>
@@ -50,11 +49,10 @@ export default function AboutPage() {
           Our Story
         </h2>
         <p className="text-sm leading-relaxed mb-10" style={{ color: "var(--text-muted)" }}>
-          One of our founders, Jack, initially created this model for personal use in Spring
-          2021 to improve his March Madness brackets and overall betting performance. Our
-          other co-founder, Ben, was brought in after multi-season success indicated that
-          sustained performance was possible and circulating our picks would provide value
-          to the world.
+          This model was initially created for personal use in Spring 2021 to improve
+          Jack&apos;s March Madness brackets and overall betting performance. Multi-season
+          success indicated that sustained performance was possible and that these picks
+          could provide value to the world.
         </p>
 
         <div className="flex flex-col gap-4">
@@ -64,18 +62,17 @@ export default function AboutPage() {
             name="Jack Olmanson"
             role="Founder"
             bio="Jack currently works in the financial services sector. He also has experience in management consulting and high-growth startups. He graduated from the University of Notre Dame in 2021 with a B.S. in Computer Science."
-            email="mailto:jack@betquitycapital.com"
             linkedin="https://www.linkedin.com/in/jack-olmanson/"
             favTeam="Any Minnesota team, Notre Dame"
             bestOdds="+6800 CFB Parlay"
             favMemory="The Minneapolis Miracle"
           />
           <TeamCard
-            photoSrc="/model.png"
+            photoSrc="/machine.jpeg"
             initials="ML"
-            name="The Model"
+            name="Chives (The Model)"
             role="Data Analyst"
-            bio="The Model currently works as a data analyst at Betquity Capital. It aspires to someday become sentient and serve as the GM for the Orlando Magic."
+            bio="Chives currently works as a data analyst at Betquity Capital. It aspires to someday become sentient and serve as the GM for the Orlando Magic."
             favTeam="All Men's College Basketball Teams"
             bestOdds="-110"
             favMemory="Pete Weber winning his fifth U.S. Open with a championship-clinching strike"
