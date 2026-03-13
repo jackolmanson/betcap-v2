@@ -1,10 +1,12 @@
 {
   "ARKANSAS-PINE-BLUFF": {
+    "conference": "SWAC",
     "display": "Arkansas Pine Bluff",
     "espn_id": 2029,
     "sportsref": "ARKANSAS-PINE-BLUFF"
   },
   "Abilene Christian Wildcats": {
+    "conference": "WAC",
     "display": "Abilene Christian",
     "espn_id": 2000,
     "sportsref": "ABILENE-CHRISTIAN"
@@ -22,6 +24,7 @@
     "sportsref": "AKRON"
   },
   "Alabama A&M Bulldogs": {
+    "conference": "SWAC",
     "display": "Alabama A&M",
     "espn_id": 2010,
     "sportsref": "ALABAMA-AM"
@@ -33,6 +36,7 @@
     "sportsref": "ALABAMA"
   },
   "Alabama St Hornets": {
+    "conference": "SWAC",
     "display": "Alabama State",
     "espn_id": 2011,
     "sportsref": "ALABAMA-STATE"
@@ -44,6 +48,7 @@
     "sportsref": "ALBANY-NY"
   },
   "Alcorn St Braves": {
+    "conference": "SWAC",
     "display": "Alcorn State",
     "espn_id": 2016,
     "sportsref": "ALCORN-STATE"
@@ -55,6 +60,7 @@
     "sportsref": "AMERICAN"
   },
   "Appalachian St Mountaineers": {
+    "conference": "Sun Belt Conference",
     "display": "Appalachian State",
     "espn_id": 2026,
     "sportsref": "APPALACHIAN-STATE"
@@ -78,11 +84,13 @@
     "sportsref": "ARKANSAS"
   },
   "Arkansas St Red Wolves": {
+    "conference": "Sun Belt Conference",
     "display": "Arkansas State",
     "espn_id": 2032,
     "sportsref": "ARKANSAS-STATE"
   },
   "Arkansas-Pine Bluff Golden Lions": {
+    "conference": "SWAC",
     "display": "Ark.-Pine Bluff",
     "espn_id": 2029,
     "sportsref": "ARKANSAS-PINE-BLUFF"
@@ -136,6 +144,7 @@
     "sportsref": "BELMONT"
   },
   "Bethune-Cookman Wildcats": {
+    "conference": "MEAC",
     "display": "Bethune Cookman",
     "espn_id": 2065,
     "sportsref": "BETHUNE-COOKMAN"
@@ -225,6 +234,7 @@
     "sportsref": "CAL-STATE-NORTHRIDGE"
   },
   "Cal Baptist Lancers": {
+    "conference": "WAC",
     "display": "California Baptist",
     "espn_id": 2856,
     "sportsref": "CALIFORNIA-BAPTIST"
@@ -320,6 +330,7 @@
     "sportsref": "CLEVELAND-STATE"
   },
   "Coastal Carolina Chanticleers": {
+    "conference": "Sun Belt Conference",
     "display": "Coastal Carolina",
     "espn_id": 324,
     "sportsref": "COASTAL-CAROLINA"
@@ -403,6 +414,7 @@
     "sportsref": "DELAWARE-STATE"
   },
   "Denver Pioneers": {
+    "conference": "Summit League",
     "display": "Denver",
     "espn_id": 2172,
     "sportsref": "DENVER"
@@ -450,6 +462,7 @@
     "sportsref": "EAST-TENNESSEE-STATE"
   },
   "East Texas A&M Lions": {
+    "conference": "Southland Conference",
     "display": "East Texas A&M",
     "espn_id": 2837,
     "sportsref": "EAST-TEXAS-AM"
@@ -503,6 +516,7 @@
     "sportsref": "FDU"
   },
   "Florida A&M Rattlers": {
+    "conference": "SWAC",
     "display": "Florida A&M",
     "espn_id": 50,
     "sportsref": "FLORIDA-AM"
@@ -592,11 +606,13 @@
     "sportsref": "GEORGIA"
   },
   "Georgia Southern Eagles": {
+    "conference": "Sun Belt Conference",
     "display": "Georgia Southern",
     "espn_id": 290,
     "sportsref": "GEORGIA-SOUTHERN"
   },
   "Georgia St Panthers": {
+    "conference": "Sun Belt Conference",
     "display": "Georgia State",
     "espn_id": 2247,
     "sportsref": "GEORGIA-STATE"
@@ -608,11 +624,13 @@
     "sportsref": "GEORGIA-TECH"
   },
   "Gonzaga Bulldogs": {
+    "conference": "West Coast Conference",
     "display": "Gonzaga",
     "espn_id": 2250,
     "sportsref": "GONZAGA"
   },
   "Grambling St Tigers": {
+    "conference": "SWAC",
     "display": "Grambling",
     "espn_id": 2755,
     "sportsref": "GRAMBLING"
@@ -666,6 +684,7 @@
     "sportsref": "HOLY-CROSS"
   },
   "Houston Christian Huskies": {
+    "conference": "Southland Conference",
     "display": "Houston Christian",
     "espn_id": 2277,
     "sportsref": "HOUSTON-CHRISTIAN"
@@ -719,6 +738,7 @@
     "sportsref": "ILLINOIS-STATE"
   },
   "Incarnate Word Cardinals": {
+    "conference": "Southland Conference",
     "display": "Incarnate Word",
     "espn_id": 2916,
     "sportsref": "INCARNATE-WORD"
@@ -754,6 +774,7 @@
     "sportsref": "IOWA-STATE"
   },
   "Jackson St Tigers": {
+    "conference": "SWAC",
     "display": "Jackson State",
     "espn_id": 2296,
     "sportsref": "JACKSON-STATE"
@@ -771,11 +792,13 @@
     "sportsref": "JACKSONVILLE-STATE"
   },
   "James Madison Dukes": {
+    "conference": "Sun Belt Conference",
     "display": "James Madison",
     "espn_id": 256,
     "sportsref": "JAMES-MADISON"
   },
   "Kansas City Roos": {
+    "conference": "Summit League",
     "display": "Kansas City",
     "espn_id": 140,
     "sportsref": "KANSAS-CITY"
@@ -835,6 +858,7 @@
     "sportsref": "LAFAYETTE"
   },
   "Lamar Cardinals": {
+    "conference": "Southland Conference",
     "display": "Lamar",
     "espn_id": 2320,
     "sportsref": "LAMAR"
@@ -858,6 +882,7 @@
     "sportsref": "LIBERTY"
   },
   "Lindenwood Lions": {
+    "conference": "Ohio Valley Conference",
     "display": "Lindenwood",
     "sportsref": "LINDENWOOD"
   },
@@ -886,6 +911,7 @@
     "sportsref": "LONGWOOD"
   },
   "Louisiana Ragin' Cajuns": {
+    "conference": "Sun Belt Conference",
     "display": "Louisiana",
     "espn_id": 309,
     "sportsref": "LOUISIANA"
@@ -915,6 +941,7 @@
     "sportsref": "LOYOLA-MD"
   },
   "Loyola Marymount Lions": {
+    "conference": "West Coast Conference",
     "display": "Loyola Marymount",
     "espn_id": 2351,
     "sportsref": "LOYOLA-MARYMOUNT"
@@ -944,6 +971,7 @@
     "sportsref": "MARQUETTE"
   },
   "Marshall Thundering Herd": {
+    "conference": "Sun Belt Conference",
     "display": "Marshall",
     "espn_id": 276,
     "sportsref": "MARSHALL"
@@ -967,6 +995,7 @@
     "sportsref": "MASSACHUSETTS"
   },
   "McNeese Cowboys": {
+    "conference": "Southland Conference",
     "display": "Mcneese State",
     "espn_id": 2377,
     "sportsref": "MCNEESE-STATE"
@@ -1038,6 +1067,7 @@
     "sportsref": "MINNESOTA"
   },
   "Miss Valley St Delta Devils": {
+    "conference": "SWAC",
     "display": "Mississippi Valley State",
     "espn_id": 2400,
     "sportsref": "MISSISSIPPI-VALLEY-STATE"
@@ -1163,6 +1193,7 @@
     "sportsref": "NEW-MEXICO-STATE"
   },
   "New Orleans Privateers": {
+    "conference": "Southland Conference",
     "display": "New Orleans",
     "espn_id": 2443,
     "sportsref": "NEW-ORLEANS"
@@ -1174,6 +1205,7 @@
     "sportsref": "NIAGARA"
   },
   "Nicholls St Colonels": {
+    "conference": "Southland Conference",
     "display": "Nicholls State",
     "espn_id": 2447,
     "sportsref": "NICHOLLS-STATE"
@@ -1209,11 +1241,13 @@
     "sportsref": "NORTH-CAROLINA"
   },
   "North Dakota Fighting Hawks": {
+    "conference": "Summit League",
     "display": "North Dakota",
     "espn_id": 155,
     "sportsref": "NORTH-DAKOTA"
   },
   "North Dakota St Bison": {
+    "conference": "Summit League",
     "display": "North Dakota State",
     "espn_id": 2449,
     "sportsref": "NORTH-DAKOTA-STATE"
@@ -1261,6 +1295,7 @@
     "sportsref": "NORTHERN-KENTUCKY"
   },
   "Northwestern St Demons": {
+    "conference": "Southland Conference",
     "display": "Northwestern State",
     "espn_id": 2466,
     "sportsref": "NORTHWESTERN-STATE"
@@ -1308,6 +1343,7 @@
     "sportsref": "OKLAHOMA-STATE"
   },
   "Old Dominion Monarchs": {
+    "conference": "Sun Belt Conference",
     "display": "Old Dominion",
     "espn_id": 295,
     "sportsref": "OLD-DOMINION"
@@ -1319,11 +1355,13 @@
     "sportsref": "MISSISSIPPI"
   },
   "Omaha Mavericks": {
+    "conference": "Summit League",
     "display": "Omaha",
     "espn_id": 2437,
     "sportsref": "OMAHA"
   },
   "Oral Roberts Golden Eagles": {
+    "conference": "Summit League",
     "display": "Oral Roberts",
     "espn_id": 198,
     "sportsref": "ORAL-ROBERTS"
@@ -1335,11 +1373,13 @@
     "sportsref": "OREGON"
   },
   "Oregon St Beavers": {
+    "conference": "Pac-12 Conference",
     "display": "Oregon State",
     "espn_id": 204,
     "sportsref": "OREGON-STATE"
   },
   "Pacific Tigers": {
+    "conference": "West Coast Conference",
     "display": "Pacific",
     "espn_id": 279,
     "sportsref": "PACIFIC"
@@ -1357,6 +1397,7 @@
     "sportsref": "PENNSYLVANIA"
   },
   "Pepperdine Waves": {
+    "conference": "West Coast Conference",
     "display": "Pepperdine",
     "espn_id": 2492,
     "sportsref": "PEPPERDINE"
@@ -1368,6 +1409,7 @@
     "sportsref": "PITTSBURGH"
   },
   "Portland Pilots": {
+    "conference": "West Coast Conference",
     "display": "Portland",
     "espn_id": 2501,
     "sportsref": "PORTLAND"
@@ -1379,6 +1421,7 @@
     "sportsref": "PORTLAND-STATE"
   },
   "Prairie View Panthers": {
+    "conference": "SWAC",
     "display": "Prairie View",
     "espn_id": 2504,
     "sportsref": "PRAIRIE-VIEW"
@@ -1414,6 +1457,7 @@
     "sportsref": "PURDUE-FORT-WAYNE"
   },
   "Queens University Royals": {
+    "conference": "ASUN Conference",
     "display": "Queens Nc",
     "sportsref": "QUEENS-NC"
   },
@@ -1466,6 +1510,7 @@
     "sportsref": "RUTGERS"
   },
   "SE Louisiana Lions": {
+    "conference": "Southland Conference",
     "display": "Southeastern Louisiana",
     "espn_id": 2545,
     "sportsref": "SOUTHEASTERN-LOUISIANA"
@@ -1507,6 +1552,7 @@
     "sportsref": "SAINT-LOUIS"
   },
   "Saint Mary's Gaels": {
+    "conference": "West Coast Conference",
     "display": "Saint Mary'S Ca",
     "espn_id": 2608,
     "sportsref": "SAINT-MARYS-CA"
@@ -1530,11 +1576,13 @@
     "sportsref": "SAN-DIEGO-STATE"
   },
   "San Diego Toreros": {
+    "conference": "West Coast Conference",
     "display": "San Diego",
     "espn_id": 301,
     "sportsref": "SAN-DIEGO"
   },
   "San Francisco Dons": {
+    "conference": "West Coast Conference",
     "display": "San Francisco",
     "espn_id": 2539,
     "sportsref": "SAN-FRANCISCO"
@@ -1546,11 +1594,13 @@
     "sportsref": "SAN-JOSE-STATE"
   },
   "Santa Clara Broncos": {
+    "conference": "West Coast Conference",
     "display": "Santa Clara",
     "espn_id": 2541,
     "sportsref": "SANTA-CLARA"
   },
   "Seattle Redhawks": {
+    "conference": "WAC",
     "display": "Seattle",
     "espn_id": 2547,
     "sportsref": "SEATTLE"
@@ -1568,6 +1618,7 @@
     "sportsref": "SIENA"
   },
   "South Alabama Jaguars": {
+    "conference": "Sun Belt Conference",
     "display": "South Alabama",
     "espn_id": 6,
     "sportsref": "SOUTH-ALABAMA"
@@ -1591,11 +1642,13 @@
     "sportsref": "SOUTH-CAROLINA-UPSTATE"
   },
   "South Dakota Coyotes": {
+    "conference": "Summit League",
     "display": "South Dakota",
     "espn_id": 233,
     "sportsref": "SOUTH-DAKOTA"
   },
   "South Dakota St Jackrabbits": {
+    "conference": "Summit League",
     "display": "South Dakota State",
     "espn_id": 2571,
     "sportsref": "SOUTH-DAKOTA-STATE"
@@ -1613,20 +1666,24 @@
     "sportsref": "SOUTHERN-ILLINOIS"
   },
   "Southern Indiana Screaming Eagles": {
+    "conference": "Ohio Valley Conference",
     "display": "Southern Indiana",
     "sportsref": "SOUTHERN-INDIANA"
   },
   "Southern Jaguars": {
+    "conference": "SWAC",
     "display": "Southern",
     "espn_id": 2582,
     "sportsref": "SOUTHERN"
   },
   "Southern Miss Golden Eagles": {
+    "conference": "Sun Belt Conference",
     "display": "Southern Mississippi",
     "espn_id": 2572,
     "sportsref": "SOUTHERN-MISSISSIPPI"
   },
   "Southern Utah Thunderbirds": {
+    "conference": "WAC",
     "display": "Southern Utah",
     "espn_id": 253,
     "sportsref": "SOUTHERN-UTAH"
@@ -1662,11 +1719,13 @@
     "sportsref": "SAINT-PETERS"
   },
   "St. Thomas (MN) Tommies": {
+    "conference": "Summit League",
     "display": "St Thomas Mn",
     "espn_id": 2900,
     "sportsref": "ST-THOMAS"
   },
   "St. Thomas Tommies": {
+    "conference": "Summit League",
     "display": "St. Thomas",
     "espn_id": 2900,
     "sportsref": "ST-THOMAS"
@@ -1678,6 +1737,7 @@
     "sportsref": "STANFORD"
   },
   "Stephen F. Austin Lumberjacks": {
+    "conference": "WAC",
     "display": "Stephen F Austin",
     "espn_id": 2617,
     "sportsref": "STEPHEN-F-AUSTIN"
@@ -1713,11 +1773,13 @@
     "sportsref": "TCU"
   },
   "TEXAS-SOUTHERN": {
+    "conference": "SWAC",
     "display": "Texas Southern",
     "espn_id": 2640,
     "sportsref": "TEXAS-SOUTHERN"
   },
   "Tarleton State Texans": {
+    "conference": "WAC",
     "display": "Tarleton State",
     "espn_id": 2627,
     "sportsref": "TARLETON-STATE"
@@ -1759,11 +1821,13 @@
     "sportsref": "TEXAS-AM"
   },
   "Texas A&M-Commerce Lions": {
+    "conference": "Southland Conference",
     "display": "Texas Am Commerce",
     "espn_id": 2837,
     "sportsref": "EAST-TEXAS-AM"
   },
   "Texas A&M-Corpus Christi Islanders": {
+    "conference": "Southland Conference",
     "display": "TAMU-CC",
     "espn_id": 357,
     "sportsref": "TEXAS-AM-CORPUS-CHRISTI"
@@ -1775,11 +1839,13 @@
     "sportsref": "TEXAS"
   },
   "Texas Southern Tigers": {
+    "conference": "SWAC",
     "display": "Texas Southern",
     "espn_id": 2640,
     "sportsref": "TEXAS-SOUTHERN"
   },
   "Texas State Bobcats": {
+    "conference": "Sun Belt Conference",
     "display": "Texas State",
     "espn_id": 326,
     "sportsref": "TEXAS-STATE"
@@ -1809,6 +1875,7 @@
     "sportsref": "TOWSON"
   },
   "Troy Trojans": {
+    "conference": "Sun Belt Conference",
     "display": "Troy",
     "espn_id": 2653,
     "sportsref": "TROY"
@@ -1886,6 +1953,7 @@
     "sportsref": "ILLINOIS-CHICAGO"
   },
   "UL Monroe Warhawks": {
+    "conference": "Sun Belt Conference",
     "display": "Louisiana Monroe",
     "espn_id": 2433,
     "sportsref": "LOUISIANA-MONROE"
@@ -1933,11 +2001,13 @@
     "sportsref": "SOUTHERN-CALIFORNIA"
   },
   "UT Rio Grande Valley Vaqueros": {
+    "conference": "WAC",
     "display": "Texas Rio Grande Valley",
     "espn_id": 292,
     "sportsref": "TEXAS-RIO-GRANDE-VALLEY"
   },
   "UT-Arlington Mavericks": {
+    "conference": "WAC",
     "display": "UT Arlington",
     "espn_id": 250,
     "sportsref": "UT-ARLINGTON"
@@ -1961,6 +2031,7 @@
     "sportsref": "UTAH-STATE"
   },
   "Utah Tech Trailblazers": {
+    "conference": "WAC",
     "display": "Utah Tech",
     "espn_id": 3101,
     "sportsref": "UTAH-TECH"
@@ -1972,6 +2043,7 @@
     "sportsref": "UTAH"
   },
   "Utah Valley Wolverines": {
+    "conference": "WAC",
     "display": "Utah Valley",
     "espn_id": 3084,
     "sportsref": "UTAH-VALLEY"
@@ -2043,6 +2115,7 @@
     "sportsref": "WASHINGTON"
   },
   "Washington St Cougars": {
+    "conference": "Pac-12 Conference",
     "display": "Washington State",
     "espn_id": 265,
     "sportsref": "WASHINGTON-STATE"
