@@ -11,14 +11,19 @@ export default function Navbar() {
 
       {/* Nav links */}
       <div className="flex items-center gap-6">
-        {["About", "Predictions", "Performance", "Support"].map((link) => (
+        {[
+          { label: "About", href: "/about" },
+          { label: "Predictions", href: "/" },
+          { label: "Performance", href: "#" },
+          { label: "Support", href: "#" },
+        ].map(({ label, href }) => (
           <a
-            key={link}
-            href="#"
+            key={label}
+            href={href}
             className="text-white text-sm opacity-80 hover:opacity-100 transition-opacity no-underline"
             style={{ textDecoration: "none" }}
           >
-            {link}
+            {label}
           </a>
         ))}
       </div>
