@@ -109,12 +109,37 @@ def get_picks(date_str):
             home_espn_id, away_espn_id,
             model_home_spread, model_away_spread,
             dk_home_spread, dk_away_spread,
-            pick
+            pick, game_time
         FROM picks
         WHERE date = %s
         ORDER BY id
         """,
         (date_str,),
+    )
+    cols = [d[0] for d in cur.description]
+    rows = [dict(zip(cols, row)) for row in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return rows
+
+
+def get_pending_picks():
+    """Return all picks without a result that have a game date in the past."""
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        """
+        SELECT
+            id, date,
+            home_display, away_display,
+            home_espn_id, away_espn_id,
+            dk_home_spread, dk_away_spread,
+            pick, game_time
+        FROM picks
+        WHERE result IS NULL
+          AND COALESCE(game_time::date, date) < CURRENT_DATE
+        ORDER BY date, id
+        """
     )
     cols = [d[0] for d in cur.description]
     rows = [dict(zip(cols, row)) for row in cur.fetchall()]
