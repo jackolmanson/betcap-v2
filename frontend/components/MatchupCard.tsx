@@ -29,6 +29,19 @@ function fmt(n: number): string {
   return n > 0 ? `+${n.toFixed(1)}` : n.toFixed(1);
 }
 
+function fmtGameTime(gameTime: Date | null): string {
+  if (!gameTime) return "";
+  return new Date(gameTime).toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }) + " ET";
+}
+
 export default function MatchupCard({ pick }: { pick: Pick }) {
   const homePick = pick.pick === "home";
   const awayPick = pick.pick === "away";
@@ -65,6 +78,16 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
           spread={pick.dk_away_spread}
         />
       </div>
+
+      {/* Game time */}
+      {pick.game_time && (
+        <div
+          className="text-center text-xs py-2"
+          style={{ borderTop: "1px solid var(--border)", color: "var(--text-muted)" }}
+        >
+          {fmtGameTime(pick.game_time)}
+        </div>
+      )}
     </div>
   );
 }

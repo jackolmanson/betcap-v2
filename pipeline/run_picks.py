@@ -72,6 +72,7 @@ def parse_games(raw_games, name_map):
 
         games.append({
             "game_date": game_date,
+            "game_time": ct,  # UTC ISO string, stored as TIMESTAMPTZ
             "home_dk": home_dk,
             "away_dk": away_dk,
             "home_sportsref": name_map[home_dk]["sportsref"],
@@ -146,6 +147,7 @@ def run_picks():
 
             pick_obj = {
                 "game_date": game["game_date"],
+                "game_time": game["game_time"],
                 "home_display": game["home_display"],
                 "away_display": game["away_display"],
                 "home_sportsref": game["home_sportsref"],

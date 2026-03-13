@@ -15,6 +15,7 @@ export interface Pick {
   dk_home_spread: number;
   dk_away_spread: number;
   pick: "home" | "away";
+  game_time: Date | null;
 }
 
 export async function getPicksForDate(date: string): Promise<Pick[]> {
@@ -26,10 +27,11 @@ export async function getPicksForDate(date: string): Promise<Pick[]> {
       home_espn_id, away_espn_id,
       model_home_spread, model_away_spread,
       dk_home_spread, dk_away_spread,
-      pick
+      pick,
+      game_time
     FROM picks
     WHERE date = ${date}
-    ORDER BY id
+    ORDER BY game_time ASC NULLS LAST, id
   `;
   return rows;
 }

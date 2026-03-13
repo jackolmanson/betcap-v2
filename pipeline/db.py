@@ -19,6 +19,7 @@ def run_migrations():
         "ALTER TABLE picks ADD COLUMN IF NOT EXISTS result TEXT CHECK (result IN ('win', 'loss', 'push', 'pending'))",
         "ALTER TABLE picks ADD COLUMN IF NOT EXISTS home_conference TEXT",
         "ALTER TABLE picks ADD COLUMN IF NOT EXISTS away_conference TEXT",
+        "ALTER TABLE picks ADD COLUMN IF NOT EXISTS game_time TIMESTAMPTZ",
     ]
     for sql in migrations:
         cur.execute(sql)
@@ -56,6 +57,7 @@ def save_picks(date_str, picks):
             p["pick"],
             p.get("home_conference"),
             p.get("away_conference"),
+            p.get("game_time"),
         )
         for p in picks
     ]
@@ -71,7 +73,8 @@ def save_picks(date_str, picks):
             model_home_spread, model_away_spread,
             dk_home_spread, dk_away_spread,
             pick,
-            home_conference, away_conference
+            home_conference, away_conference,
+            game_time
         ) VALUES %s
         """,
         rows,
