@@ -9,6 +9,24 @@ def get_conn():
     return psycopg2.connect(DATABASE_URL)
 
 
+def run_migrations():
+    """Idempotently apply schema updates."""
+    conn = get_conn()
+    cur = conn.cursor()
+    migrations = [
+        "ALTER TABLE picks ADD COLUMN IF NOT EXISTS home_final_score INTEGER",
+        "ALTER TABLE picks ADD COLUMN IF NOT EXISTS away_final_score INTEGER",
+        "ALTER TABLE picks ADD COLUMN IF NOT EXISTS result TEXT CHECK (result IN ('win', 'loss', 'push', 'pending'))",
+        "ALTER TABLE picks ADD COLUMN IF NOT EXISTS home_conference TEXT",
+        "ALTER TABLE picks ADD COLUMN IF NOT EXISTS away_conference TEXT",
+    ]
+    for sql in migrations:
+        cur.execute(sql)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
 def save_picks(date_str, picks):
     conn = get_conn()
     cur = conn.cursor()
@@ -36,6 +54,8 @@ def save_picks(date_str, picks):
             p["dk_home_spread"],
             p["dk_away_spread"],
             p["pick"],
+            p.get("home_conference"),
+            p.get("away_conference"),
         )
         for p in picks
     ]
@@ -50,12 +70,25 @@ def save_picks(date_str, picks):
             home_espn_id, away_espn_id,
             model_home_spread, model_away_spread,
             dk_home_spread, dk_away_spread,
-            pick
+            pick,
+            home_conference, away_conference
         ) VALUES %s
         """,
         rows,
     )
 
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+def update_pick_result(pick_id, home_score, away_score, result):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE picks SET home_final_score=%s, away_final_score=%s, result=%s WHERE id=%s",
+        (home_score, away_score, result, pick_id),
+    )
     conn.commit()
     cur.close()
     conn.close()
@@ -67,6 +100,7 @@ def get_picks(date_str):
     cur.execute(
         """
         SELECT
+            id,
             home_display, away_display,
             home_sportsref, away_sportsref,
             home_espn_id, away_espn_id,
@@ -78,6 +112,31 @@ def get_picks(date_str):
         ORDER BY id
         """,
         (date_str,),
+    )
+    cols = [d[0] for d in cur.description]
+    rows = [dict(zip(cols, row)) for row in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return rows
+
+
+def get_all_picks_with_results():
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        """
+        SELECT
+            id, date,
+            home_display, away_display,
+            home_espn_id, away_espn_id,
+            dk_home_spread, dk_away_spread,
+            pick,
+            home_final_score, away_final_score,
+            result,
+            home_conference, away_conference
+        FROM picks
+        ORDER BY date DESC, id
+        """
     )
     cols = [d[0] for d in cur.description]
     rows = [dict(zip(cols, row)) for row in cur.fetchall()]

@@ -104,6 +104,9 @@ def build_input(team1, team2, team_data):
 def run_picks():
     print(f"\n=== Running picks for {date.today()} ===\n")
 
+    import db
+    db.run_migrations()
+
     with open(MAPPING_PATH) as f:
         name_map = json.load(f)
 
@@ -137,6 +140,8 @@ def run_picks():
                 "away_sportsref": game["away_sportsref"],
                 "home_espn_id": game["home_espn_id"],
                 "away_espn_id": game["away_espn_id"],
+                "home_conference": name_map[game["home_dk"]].get("conference"),
+                "away_conference": name_map[game["away_dk"]].get("conference"),
                 "model_home_spread": model_home_spread,
                 "model_away_spread": model_away_spread,
                 "dk_home_spread": dk_home,
@@ -153,7 +158,6 @@ def run_picks():
             print(f"Error on {game['home_dk']} vs {game['away_dk']}: {e}")
             continue
 
-    import db
     today = date.today().isoformat()
     db.save_picks(today, picks)
     print(f"\nSaved {len(picks)} picks for {today}")

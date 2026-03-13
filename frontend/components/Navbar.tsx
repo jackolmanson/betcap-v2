@@ -14,7 +14,7 @@ export default function Navbar() {
         {[
           { label: "About", href: "/about" },
           { label: "Predictions", href: "/predictions" },
-          { label: "Performance", href: "#" },
+          { label: "Performance", href: "/performance" },
           { label: "Support", href: "#" },
         ].map(({ label, href }) => (
           <a

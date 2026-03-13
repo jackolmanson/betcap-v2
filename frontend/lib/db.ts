@@ -34,6 +34,38 @@ export async function getPicksForDate(date: string): Promise<Pick[]> {
   return rows;
 }
 
+export interface PerformancePick {
+  id: number;
+  date: string;
+  home_display: string;
+  away_display: string;
+  dk_home_spread: number;
+  dk_away_spread: number;
+  pick: "home" | "away";
+  home_final_score: number | null;
+  away_final_score: number | null;
+  result: "win" | "loss" | "push" | "pending" | null;
+  home_conference: string | null;
+  away_conference: string | null;
+}
+
+export async function getAllPicksWithResults(): Promise<PerformancePick[]> {
+  const rows = await sql<PerformancePick[]>`
+    SELECT
+      id,
+      date::text,
+      home_display, away_display,
+      dk_home_spread, dk_away_spread,
+      pick,
+      home_final_score, away_final_score,
+      result,
+      home_conference, away_conference
+    FROM picks
+    ORDER BY date DESC, id
+  `;
+  return rows;
+}
+
 export async function getLatestPickDate(): Promise<string | null> {
   const rows = await sql`
     SELECT date FROM picks ORDER BY date DESC LIMIT 1
