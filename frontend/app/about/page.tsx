@@ -63,7 +63,7 @@ export default function AboutPage() {
             initials="JO"
             name="Jack Olmanson"
             role="Founder"
-            bio="Jack currently works in management consulting and graduated from the University of Notre Dame with a B.S. in Computer Science in 2021."
+            bio="Jack currently works in the financial services sector. He also has experience in management consulting and high-growth startups. He graduated from the University of Notre Dame in 2021 with a B.S. in Computer Science."
             email="mailto:jack@betquitycapital.com"
             linkedin="https://linkedin.com/in/jackolmanson"
             favTeam="Any Minnesota team, Notre Dame"
