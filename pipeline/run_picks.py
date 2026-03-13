@@ -172,15 +172,14 @@ def run_picks():
             print(f"Error on {game['home_dk']} vs {game['away_dk']}: {e}")
             continue
 
-    # Only save picks for today's games — future games may have stale spreads
-    today = date.today().isoformat()
-    today_picks = [p for p in picks if p["game_date"] == today]
-    other_count = len(picks) - len(today_picks)
-    if other_count:
-        print(f"\nSkipping {other_count} picks for future dates (spreads may change)")
+    # Group picks by actual game date (converted from UTC commence_time to EDT)
+    by_date: dict[str, list] = {}
+    for p in picks:
+        by_date.setdefault(p["game_date"], []).append(p)
 
-    db.save_picks(today, today_picks)
-    print(f"\nSaved {len(today_picks)} picks for {today}")
+    for game_date, date_picks in sorted(by_date.items()):
+        db.save_picks(game_date, date_picks)
+        print(f"\nSaved {len(date_picks)} picks for {game_date}")
 
     # Record results for yesterday's games
     from record_results import record_results
