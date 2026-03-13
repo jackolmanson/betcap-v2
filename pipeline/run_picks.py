@@ -179,6 +179,10 @@ def run_picks():
         db.save_picks(game_date, date_picks)
         print(f"\nSaved {len(date_picks)} picks for {game_date}")
 
+    # Record results for yesterday's games
+    from record_results import record_results
+    record_results()
+
 
 if __name__ == "__main__":
     run_picks()
