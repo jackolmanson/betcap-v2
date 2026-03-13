@@ -86,8 +86,8 @@ def _espn_date_for_pick(pick: dict, fallback_date: str) -> str:
     gt = pick.get("game_time")
     if gt:
         from datetime import timezone, timedelta
-        EDT = timezone(timedelta(hours=-4))
-        return gt.astimezone(EDT).date().isoformat()
+        PT = timezone(timedelta(hours=-8))  # Pacific Time — most conservative for date boundaries
+        return gt.astimezone(PT).date().isoformat()
     # pick["date"] may be a datetime.date object from psycopg2
     d = pick.get("date") or fallback_date
     return d.isoformat() if hasattr(d, "isoformat") else str(d)

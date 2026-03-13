@@ -6,7 +6,7 @@ import pandas as pd
 import tensorflow as tf
 from datetime import date, datetime, timezone, timedelta
 
-EDT = timezone(timedelta(hours=-4))
+PT = timezone(timedelta(hours=-8))   # Pacific Time — used for date comparisons
 
 ODDS_API_KEY = os.environ["ODDS_API_KEY"]
 ODDS_API_URL = "https://api.the-odds-api.com/v4/sports/basketball_ncaab/odds/"
@@ -62,11 +62,11 @@ def parse_games(raw_games, name_map):
             print(f"Could not parse spreads for {home_dk} vs {away_dk} — skipping ({e})")
             continue
 
-        # Derive game date from commence_time (UTC → EDT)
+        # Derive game date from commence_time (UTC → PT)
         ct = game.get("commence_time", "")
         if ct:
             dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
-            game_date = dt.astimezone(EDT).date().isoformat()
+            game_date = dt.astimezone(PT).date().isoformat()
         else:
             game_date = date.today().isoformat()
 
@@ -114,7 +114,7 @@ def build_input(team1, team2, team_data):
 
 
 def run_picks():
-    print(f"\n=== Running picks for {date.today()} ===\n")
+    print(f"\n=== Running picks for {datetime.now(PT).date()} ===\n")
 
     import db
     db.run_migrations()
@@ -174,7 +174,7 @@ def run_picks():
 
     # Only save picks for today's games — future games may have stale spreads
     # and could result in picking both sides if the line moves between runs
-    today = date.today().isoformat()
+    today = datetime.now(PT).date().isoformat()
     today_picks = [p for p in picks if p["game_date"] == today]
     skipped = len(picks) - len(today_picks)
     if skipped:
