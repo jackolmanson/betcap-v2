@@ -55,6 +55,16 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
         boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
       }}
     >
+      {/* Game time */}
+      {pick.game_time && (
+        <div
+          className="text-center text-xs py-2"
+          style={{ borderBottom: "1px solid var(--border)", color: "var(--text-muted)" }}
+        >
+          {fmtGameTime(pick.game_time)}
+        </div>
+      )}
+
       {/* Teams */}
       <div className="grid grid-cols-[1fr_32px_1fr]">
         <TeamSide
@@ -78,16 +88,6 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
           spread={pick.dk_away_spread}
         />
       </div>
-
-      {/* Game time */}
-      {pick.game_time && (
-        <div
-          className="text-center text-xs py-2"
-          style={{ borderTop: "1px solid var(--border)", color: "var(--text-muted)" }}
-        >
-          {fmtGameTime(pick.game_time)}
-        </div>
-      )}
     </div>
   );
 }
