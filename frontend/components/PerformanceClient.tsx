@@ -99,10 +99,10 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
   const pushes = settled.filter((p) => p.result === "push").length;
   const winPct = settled.length > 0 ? ((wins / (wins + losses)) * 100).toFixed(1) : "—";
   // ROI at -110: win = +100/110 units, loss = -1 unit
-  const roi =
-    settled.length > 0
-      ? (((wins * (100 / 110) - losses) / (wins + losses)) * 100).toFixed(1)
-      : "—";
+  const roiUnits = settled.length > 0 ? wins * (100 / 110) - losses : null;
+  const roiPct = roiUnits !== null && (wins + losses) > 0
+    ? (roiUnits / (wins + losses)) * 100
+    : null;
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-8">
@@ -115,11 +115,12 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
       </div>
 
       {/* Stats bar */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
         {[
           { label: "Record", value: `${wins}-${losses}${pushes > 0 ? `-${pushes}` : ""}` },
           { label: "Win %", value: winPct === "—" ? "—" : `${winPct}%` },
-          { label: "ROI", value: roi === "—" ? "—" : `${roi}%` },
+          { label: "ROI (units)", value: roiUnits !== null ? `${roiUnits >= 0 ? "+" : ""}${roiUnits.toFixed(1)}u` : "—" },
+          { label: "ROI %", value: roiPct !== null ? `${roiPct >= 0 ? "+" : ""}${roiPct.toFixed(1)}%` : "—" },
           { label: "Picks shown", value: filtered.length },
           { label: "Pending", value: filtered.filter((p) => !p.result || p.result === "pending").length },
         ].map(({ label, value }) => (
