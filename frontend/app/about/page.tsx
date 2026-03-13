@@ -65,7 +65,7 @@ export default function AboutPage() {
             role="Founder"
             bio="Jack currently works in the financial services sector. He also has experience in management consulting and high-growth startups. He graduated from the University of Notre Dame in 2021 with a B.S. in Computer Science."
             email="mailto:jack@betquitycapital.com"
-            linkedin="https://linkedin.com/in/jackolmanson"
+            linkedin="https://www.linkedin.com/in/jack-olmanson/"
             favTeam="Any Minnesota team, Notre Dame"
             bestOdds="+6800 CFB Parlay"
             favMemory="The Minneapolis Miracle"
