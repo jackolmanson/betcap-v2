@@ -45,11 +45,11 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Right — illustration placeholder */}
-        <div className="hidden md:flex flex-shrink-0 w-96 h-72 items-center justify-center rounded-2xl text-8xl"
-          style={{ background: "var(--card)", border: "1px solid var(--border)" }}
+        {/* Right — court image */}
+        <div className="hidden md:flex flex-shrink-0 w-96 h-72 rounded-2xl overflow-hidden"
+          style={{ border: "1px solid var(--border)" }}
         >
-          🏀
+          <img src="/images/court.png" alt="Basketball court" className="w-full h-full object-cover" />
         </div>
 
       </div>

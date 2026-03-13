@@ -68,8 +68,8 @@ export async function getAllPicksWithResults(): Promise<PerformancePick[]> {
 
 export async function getLatestPickDate(): Promise<string | null> {
   const rows = await sql`
-    SELECT date FROM picks ORDER BY date DESC LIMIT 1
+    SELECT date::text FROM picks ORDER BY date DESC LIMIT 1
   `;
   if (rows.length === 0) return null;
-  return (rows[0].date as Date).toISOString().split("T")[0];
+  return rows[0].date as string;
 }

@@ -23,6 +23,16 @@ function fmt(n: number) {
   return n > 0 ? `+${n.toFixed(1)}` : n.toFixed(1);
 }
 
+function fmtDate(isoDate: string): string {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "America/New_York",
+  });
+}
+
 function ResultBadge({ result }: { result: PerformancePick["result"] }) {
   const styles: Record<string, string> = {
     win: "background:#d1fae5;color:#065f46",
@@ -191,7 +201,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
                   }}
                 >
                   <td className="px-4 py-3 whitespace-nowrap" style={{ color: "var(--text-muted)" }}>
-                    {p.date}
+                    {fmtDate(p.date)}
                   </td>
                   <td className="px-4 py-3" style={{ color: "var(--text)" }}>
                     {p.home_display} vs {p.away_display}

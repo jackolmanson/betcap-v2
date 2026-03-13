@@ -4,7 +4,9 @@ import requests
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
+
+EDT = timezone(timedelta(hours=-4))
 
 ODDS_API_KEY = os.environ["ODDS_API_KEY"]
 ODDS_API_URL = "https://api.the-odds-api.com/v4/sports/basketball_ncaab/odds/"
@@ -60,7 +62,16 @@ def parse_games(raw_games, name_map):
             print(f"Could not parse spreads for {home_dk} vs {away_dk} — skipping ({e})")
             continue
 
+        # Derive game date from commence_time (UTC → EDT)
+        ct = game.get("commence_time", "")
+        if ct:
+            dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
+            game_date = dt.astimezone(EDT).date().isoformat()
+        else:
+            game_date = date.today().isoformat()
+
         games.append({
+            "game_date": game_date,
             "home_dk": home_dk,
             "away_dk": away_dk,
             "home_sportsref": name_map[home_dk]["sportsref"],
@@ -134,6 +145,7 @@ def run_picks():
             pick = "home" if home_edge > away_edge else "away"
 
             pick_obj = {
+                "game_date": game["game_date"],
                 "home_display": game["home_display"],
                 "away_display": game["away_display"],
                 "home_sportsref": game["home_sportsref"],
@@ -158,9 +170,14 @@ def run_picks():
             print(f"Error on {game['home_dk']} vs {game['away_dk']}: {e}")
             continue
 
-    today = date.today().isoformat()
-    db.save_picks(today, picks)
-    print(f"\nSaved {len(picks)} picks for {today}")
+    # Group picks by actual game date (converted from UTC commence_time to EDT)
+    by_date: dict[str, list] = {}
+    for p in picks:
+        by_date.setdefault(p["game_date"], []).append(p)
+
+    for game_date, date_picks in sorted(by_date.items()):
+        db.save_picks(game_date, date_picks)
+        print(f"\nSaved {len(date_picks)} picks for {game_date}")
 
 
 if __name__ == "__main__":

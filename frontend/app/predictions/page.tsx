@@ -10,6 +10,7 @@ function formatDate(isoDate: string): string {
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "America/New_York",
   });
 }
 
