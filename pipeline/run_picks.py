@@ -66,6 +66,10 @@ def parse_games(raw_games, name_map):
         ct = game.get("commence_time", "")
         if ct:
             dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
+            # Skip games that have already started — Odds API returns live spreads
+            if dt <= datetime.now(timezone.utc):
+                print(f"Skipping {home_dk} vs {away_dk} — game already started")
+                continue
             game_date = dt.astimezone(PT).date().isoformat()
         else:
             game_date = date.today().isoformat()
