@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { PerformancePick } from "@/lib/db";
+import WinPctChart from "./WinPctChart";
 
 type ResultFilter = "all" | "win" | "loss" | "push" | "pending";
 type SideFilter = "all" | "home" | "away";
@@ -134,6 +135,9 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
           </div>
         ))}
       </div>
+
+      {/* Win % chart */}
+      <WinPctChart picks={filtered} />
 
       {/* Filters */}
       <div
