@@ -2,12 +2,12 @@ export default function Navbar() {
   return (
     <nav style={{ background: "var(--navbar)" }} className="w-full px-6 py-3 flex items-center justify-between">
       {/* Logo */}
-      <div className="flex items-center gap-3">
+      <a href="/" className="flex items-center gap-3" style={{ textDecoration: "none" }}>
         <BasketballIcon />
         <span className="text-white font-semibold text-lg tracking-wide">
           Betquity Capital
         </span>
-      </div>
+      </a>
 
       {/* Nav links */}
       <div className="flex items-center gap-6">
