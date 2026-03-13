@@ -22,7 +22,7 @@ def fetch_scores(game_date: str) -> dict:
     for all completed games on game_date (YYYY-MM-DD).
     """
     date_str = game_date.replace("-", "")  # ESPN wants YYYYMMDD
-    resp = requests.get(ESPN_SCOREBOARD, params={"dates": date_str, "limit": 200})
+    resp = requests.get(ESPN_SCOREBOARD, params={"dates": date_str, "limit": 200, "groups": 50})
     resp.raise_for_status()
 
     scores = {}
@@ -127,6 +127,20 @@ def record_results(game_date: str = None):
         print(f"\n=== Recording results for {espn_date} ({len(date_picks)} picks) ===\n")
 
         scores = fetch_scores(espn_date)
+
+        # For picks with no game_time, the stored date may be off by one day.
+        # Also fetch the next day's scores and merge them in.
+        if any(not p.get("game_time") for p in date_picks):
+            from datetime import datetime as dt, timedelta
+            next_date = (dt.strptime(espn_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
+            try:
+                next_scores = fetch_scores(next_date)
+                for k, v in next_scores.items():
+                    if k not in scores:
+                        scores[k] = v
+            except Exception:
+                pass
+
         print(f"ESPN: {len(scores)} completed games\n")
 
         unmatched = []
