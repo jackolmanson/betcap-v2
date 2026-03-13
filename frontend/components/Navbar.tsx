@@ -13,7 +13,7 @@ export default function Navbar() {
       <div className="flex items-center gap-6">
         {[
           { label: "About", href: "/about" },
-          { label: "Predictions", href: "/" },
+          { label: "Predictions", href: "/predictions" },
           { label: "Performance", href: "#" },
           { label: "Support", href: "#" },
         ].map(({ label, href }) => (

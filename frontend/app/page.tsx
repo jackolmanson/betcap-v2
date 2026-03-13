@@ -1,56 +1,58 @@
-import { getPicksForDate, getLatestPickDate } from "@/lib/db";
-import MatchupCard from "@/components/MatchupCard";
-
-export const dynamic = "force-dynamic";
-
-function formatDate(isoDate: string): string {
-  const [year, month, day] = isoDate.split("-").map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-export default async function HomePage() {
-  const date = await getLatestPickDate();
-  const picks = date ? await getPicksForDate(date) : [];
-
+export default function HomePage() {
   return (
-    <main className="max-w-5xl mx-auto px-6 py-8">
-      {/* Page header — matches existing site's predictions page */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--text)" }}>
-          Men&apos;s College Basketball Predictions
-        </h1>
-        {date && (
-          <p className="text-sm italic" style={{ color: "var(--text-muted)" }}>
-            {formatDate(date)}
-          </p>
-        )}
-        <hr className="mt-4" style={{ borderColor: "var(--border)" }} />
-      </div>
+    <main
+      className="min-h-screen flex items-center"
+      style={{ background: "var(--bg)" }}
+    >
+      <div className="max-w-5xl mx-auto px-6 w-full flex items-center gap-12">
 
-      {!date || picks.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-lg font-semibold mb-2" style={{ color: "var(--text)" }}>Roadblock!</p>
-          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-            There was either an internal server error or there are no NCAAB games today. Come back later!
+        {/* Left — copy */}
+        <div className="flex-1">
+          <h1
+            className="text-5xl font-bold leading-tight mb-8"
+            style={{ color: "var(--text)" }}
+          >
+            Welcome to the Sports Betting Revolution
+          </h1>
+          <p
+            className="text-base leading-relaxed mb-10 max-w-lg"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Betquity Capital (est. 2023) strives to be the globe&apos;s leading college
+            basketball sharp and generate superior long-term returns for sports bettors
+            across the world. We do not consider our picks to be gambling, but rather an
+            investment de-risked through tried and tested artificial intelligence modeling.
           </p>
-        </div>
-      ) : (
-        <>
-          <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
-            Upcoming games
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {picks.map((pick) => (
-              <MatchupCard key={pick.id} pick={pick} />
-            ))}
+          <div className="flex items-center gap-4">
+            <a
+              href="/about"
+              className="px-6 py-3 rounded font-semibold text-sm text-white transition-opacity hover:opacity-90"
+              style={{ background: "var(--accent)" }}
+            >
+              Learn More
+            </a>
+            <a
+              href="/predictions"
+              className="px-6 py-3 rounded font-semibold text-sm transition-opacity hover:opacity-80"
+              style={{
+                background: "transparent",
+                border: "1px solid var(--text)",
+                color: "var(--text)",
+              }}
+            >
+              See the Picks
+            </a>
           </div>
-        </>
-      )}
+        </div>
+
+        {/* Right — illustration placeholder */}
+        <div className="hidden md:flex flex-shrink-0 w-96 h-72 items-center justify-center rounded-2xl text-8xl"
+          style={{ background: "var(--card)", border: "1px solid var(--border)" }}
+        >
+          🏀
+        </div>
+
+      </div>
     </main>
   );
 }
