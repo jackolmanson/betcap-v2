@@ -3,12 +3,9 @@ import MatchupCard from "@/components/MatchupCard";
 
 export const dynamic = "force-dynamic";
 
-function formatDate(date: Date | string): string {
-  // Accepts either a game_time Date or a fallback YYYY-MM-DD string
-  const d = typeof date === "string"
-    ? (() => { const [y, m, day] = date.split("-").map(Number); return new Date(y, m - 1, day); })()
-    : new Date(date);
-  return d.toLocaleDateString("en-US", {
+function formatDate(isoDate: string): string {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
@@ -21,22 +18,15 @@ export default async function PredictionsPage() {
   const date = await getLatestPickDate();
   const picks = date ? await getPicksForDate(date) : [];
 
-  // Derive the display date from the actual game times when available
-  const displayDate = picks[0]?.game_time
-    ? formatDate(picks[0].game_time)
-    : date
-    ? formatDate(date)
-    : null;
-
   return (
     <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 lg:py-12">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-1" style={{ color: "var(--text)" }}>
           Men&apos;s College Basketball Predictions
         </h1>
-        {displayDate && (
+        {date && (
           <p className="text-sm sm:text-base mt-1" style={{ color: "var(--text-muted)" }}>
-            {displayDate}
+            {formatDate(date)}
           </p>
         )}
         <hr className="mt-4" style={{ borderColor: "var(--border)" }} />
