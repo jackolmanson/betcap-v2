@@ -138,11 +138,15 @@ def record_results(game_date: str = None):
                 continue
 
             key = (home_id, away_id)
-            if key not in scores:
+            flipped = (away_id, home_id)
+            if key in scores:
+                home_score, away_score = scores[key]
+            elif flipped in scores:
+                # ESPN home/away designation is reversed vs Odds API — swap scores
+                away_score, home_score = scores[flipped]
+            else:
                 unmatched.append(f"{pick['home_display']} vs {pick['away_display']}")
                 continue
-
-            home_score, away_score = scores[key]
             result = calculate_result(pick, home_score, away_score)
             db.update_pick_result(pick["id"], home_score, away_score, result)
             total_updated += 1
