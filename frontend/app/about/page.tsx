@@ -71,18 +71,6 @@ export default function AboutPage() {
             favMemory="The Minneapolis Miracle"
           />
           <TeamCard
-            photoSrc="/ben.jpg"
-            initials="BM"
-            name="Ben Merrick"
-            role="Founder"
-            bio="Ben currently works as a software engineer and graduated from the University of Notre Dame with a B.S. in Computer Science in 2021."
-            email="mailto:ben@betquitycapital.com"
-            linkedin="https://linkedin.com/in/benmerrick"
-            favTeam="Pittsburgh Steelers"
-            bestOdds="-20000 NFL Straight"
-            favMemory="Troy Polamalu Pick Six AFC Championship"
-          />
-          <TeamCard
             photoSrc="/model.png"
             initials="ML"
             name="The Model"
