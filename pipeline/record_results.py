@@ -85,11 +85,12 @@ def _espn_date_for_pick(pick: dict, fallback_date: str) -> str:
     """Return the ESPN query date for a pick — uses game_time if available."""
     gt = pick.get("game_time")
     if gt:
-        # game_time is a datetime object from psycopg2
         from datetime import timezone, timedelta
         EDT = timezone(timedelta(hours=-4))
         return gt.astimezone(EDT).date().isoformat()
-    return fallback_date
+    # pick["date"] may be a datetime.date object from psycopg2
+    d = pick.get("date") or fallback_date
+    return d.isoformat() if hasattr(d, "isoformat") else str(d)
 
 
 def record_results(game_date: str = None):
