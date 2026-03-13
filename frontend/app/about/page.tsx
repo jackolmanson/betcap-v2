@@ -2,15 +2,15 @@ import TeamPhoto from "@/components/TeamPhoto";
 
 export default function AboutPage() {
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12">
+    <main className="max-w-5xl mx-auto px-6 sm:px-10 py-12 lg:py-16">
 
       {/* ── Section 1: We Build Winners ── */}
-      <section className="flex flex-col md:flex-row items-center gap-8 mb-16">
-        <div className="flex-1 text-center md:text-left">
-          <h1 className="text-3xl font-bold mb-4" style={{ color: "var(--text)" }}>
+      <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-14 mb-16">
+        <div className="flex-1 text-center lg:text-left">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4" style={{ color: "var(--text)" }}>
             We Build Winners.
           </h1>
-          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+          <p className="text-sm sm:text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             We understand the challenge of investing money into spread bets – a theoretical
             50/50 coin flip must be predicted correctly over 52.38% of the time to overcome
             the vig and generate profits. We believe our proprietary machine learning spread
@@ -19,19 +19,27 @@ export default function AboutPage() {
             prediction on what side of the market spread to take.
           </p>
         </div>
-        <img src="/winner.png" alt="We Build Winners" className="w-36 h-36 md:w-44 md:h-44 flex-shrink-0 object-contain" />
+        <img
+          src="/winner.png"
+          alt="We Build Winners"
+          className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 flex-shrink-0 object-contain"
+        />
       </section>
 
       <hr className="mb-16" style={{ borderColor: "var(--border)" }} />
 
       {/* ── Section 2: Our Investment Thesis ── */}
-      <section className="flex flex-col-reverse md:flex-row items-center gap-8 mb-16">
-        <img src="/story.png" alt="Investment Thesis" className="w-36 h-36 md:w-44 md:h-44 flex-shrink-0 object-contain" />
-        <div className="flex-1 text-center md:text-left">
-          <h2 className="text-2xl font-bold mb-4" style={{ color: "var(--text)" }}>
+      <section className="flex flex-col-reverse lg:flex-row items-center gap-8 lg:gap-14 mb-16">
+        <img
+          src="/story.png"
+          alt="Investment Thesis"
+          className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 flex-shrink-0 object-contain"
+        />
+        <div className="flex-1 text-center lg:text-left">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4" style={{ color: "var(--text)" }}>
             Our Investment Thesis
           </h2>
-          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+          <p className="text-sm sm:text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
             We believe in hands-off investing – we trust the model we have trained and tested
             to make each decision. Analyzing the selections over time, we can tell the model
             has a few hypotheses on how best to invest capital. The first is that road
@@ -45,17 +53,17 @@ export default function AboutPage() {
 
       {/* ── Section 3: Our Story ── */}
       <section>
-        <h2 className="text-2xl font-bold mb-4" style={{ color: "var(--text)" }}>
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4" style={{ color: "var(--text)" }}>
           Our Story
         </h2>
-        <p className="text-sm leading-relaxed mb-10" style={{ color: "var(--text-muted)" }}>
+        <p className="text-sm sm:text-base leading-relaxed mb-10" style={{ color: "var(--text-muted)" }}>
           This model was initially created for personal use in Spring 2021 to improve
           Jack&apos;s March Madness brackets and overall betting performance. Multi-season
           success indicated that sustained performance was possible and that these picks
           could provide value to the world.
         </p>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <TeamCard
             photoSrc="/jack.jpg"
             initials="JO"
@@ -85,48 +93,32 @@ export default function AboutPage() {
 }
 
 function TeamCard({
-  photoSrc,
-  initials,
-  name,
-  role,
-  bio,
-  email,
-  linkedin,
-  favTeam,
-  bestOdds,
-  favMemory,
+  photoSrc, initials, name, role, bio, email, linkedin,
+  favTeam, bestOdds, favMemory,
 }: {
-  photoSrc: string;
-  initials: string;
-  name: string;
-  role: string;
-  bio: string;
-  email?: string;
-  linkedin?: string;
-  favTeam: string;
-  bestOdds: string;
-  favMemory: string;
+  photoSrc: string; initials: string; name: string; role: string; bio: string;
+  email?: string; linkedin?: string; favTeam: string; bestOdds: string; favMemory: string;
 }) {
   return (
     <div
-      className="flex flex-col md:flex-row rounded-lg overflow-hidden"
+      className="flex flex-col sm:flex-row rounded-xl overflow-hidden"
       style={{ border: "1px solid var(--border)", background: "var(--card)" }}
     >
       {/* Photo */}
       <div
-        className="flex items-center justify-center overflow-hidden md:w-36 md:flex-shrink-0"
-        style={{ background: "var(--bg)", minHeight: "160px" }}
+        className="flex items-center justify-center overflow-hidden sm:w-40 sm:flex-shrink-0"
+        style={{ background: "var(--bg)", minHeight: "180px" }}
       >
         <TeamPhoto src={photoSrc} initials={initials} name={name} />
       </div>
 
       {/* Bio */}
-      <div className="flex-1 px-6 py-5">
-        <p className="font-bold text-base mb-0.5" style={{ color: "var(--text)" }}>{name}</p>
-        <p className="text-xs mb-3" style={{ color: "var(--text-muted)" }}>{role}</p>
-        <p className="text-xs leading-relaxed mb-3" style={{ color: "var(--text-muted)" }}>{bio}</p>
+      <div className="flex-1 px-6 py-6">
+        <p className="font-bold text-lg mb-0.5" style={{ color: "var(--text)" }}>{name}</p>
+        <p className="text-sm mb-3 font-medium" style={{ color: "var(--accent)" }}>{role}</p>
+        <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>{bio}</p>
         {(email || linkedin) && (
-          <div className="flex gap-3 text-xs">
+          <div className="flex gap-4 text-sm">
             {email && (
               <a href={email} style={{ color: "var(--accent)" }}>Email</a>
             )}
@@ -141,12 +133,12 @@ function TeamCard({
 
       {/* Stats */}
       <div
-        className="px-6 py-5 flex flex-col gap-3 md:w-56 md:flex-shrink-0"
+        className="px-6 py-6 flex flex-col gap-4 sm:w-56 sm:flex-shrink-0"
         style={{ borderTop: "1px solid var(--border)" }}
       >
-        <Stat label="Favorite Sports Team:" value={favTeam} />
-        <Stat label="Best Odds Hit:" value={bestOdds} />
-        <Stat label="Favorite Sports Memory:" value={favMemory} />
+        <Stat label="Favorite Sports Team" value={favTeam} />
+        <Stat label="Best Odds Hit" value={bestOdds} />
+        <Stat label="Favorite Sports Memory" value={favMemory} />
       </div>
     </div>
   );
@@ -155,8 +147,8 @@ function TeamCard({
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>{label}</p>
-      <p className="text-xs" style={{ color: "var(--text)" }}>{value}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide mb-0.5" style={{ color: "var(--text-muted)" }}>{label}</p>
+      <p className="text-sm" style={{ color: "var(--text)" }}>{value}</p>
     </div>
   );
 }

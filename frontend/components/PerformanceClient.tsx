@@ -105,17 +105,17 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
     : null;
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-8">
+    <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 lg:py-12">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--text)" }}>
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-1" style={{ color: "var(--text)" }}>
           Performance
         </h1>
         <hr className="mt-4" style={{ borderColor: "var(--border)" }} />
       </div>
 
       {/* Stats bar */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+      <div className="grid grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         {[
           { label: "Record", value: `${wins}-${losses}${pushes > 0 ? `-${pushes}` : ""}` },
           { label: "Win %", value: winPct === "—" ? "—" : `${winPct}%` },
@@ -126,18 +126,18 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
         ].map(({ label, value }) => (
           <div
             key={label}
-            className="rounded-lg p-4 text-center"
+            className="rounded-lg p-3 sm:p-4 text-center"
             style={{ background: "var(--card)", border: "1px solid var(--border)" }}
           >
-            <div className="text-xs mb-1" style={{ color: "var(--text-muted)" }}>{label}</div>
-            <div className="text-xl font-bold" style={{ color: "var(--accent)" }}>{value}</div>
+            <div className="text-xs font-medium mb-1 leading-tight" style={{ color: "var(--text-muted)" }}>{label}</div>
+            <div className="text-lg sm:text-xl font-bold" style={{ color: "var(--accent)" }}>{value}</div>
           </div>
         ))}
       </div>
 
       {/* Filters */}
       <div
-        className="flex flex-wrap gap-3 mb-6 p-4 rounded-lg"
+        className="flex flex-wrap gap-3 mb-6 p-4 sm:p-5 rounded-lg"
         style={{ background: "var(--card)", border: "1px solid var(--border)" }}
       >
         <div className="flex flex-col gap-1">
@@ -188,7 +188,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
             <thead>
               <tr style={{ background: "var(--navbar)", color: "white" }}>
                 {["Date", "Matchup", "Pick", "Spread", "Score", "Result"].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 font-semibold text-xs">{h}</th>
+                  <th key={h} className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -201,13 +201,13 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
                     borderBottom: "1px solid var(--border)",
                   }}
                 >
-                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: "var(--text-muted)" }}>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm" style={{ color: "var(--text-muted)" }}>
                     {fmtDate(p.date)}
                   </td>
-                  <td className="px-4 py-3" style={{ color: "var(--text)" }}>
+                  <td className="px-4 py-3 text-sm" style={{ color: "var(--text)" }}>
                     {p.home_display} vs {p.away_display}
                   </td>
-                  <td className="px-4 py-3 font-semibold" style={{ color: "var(--accent)" }}>
+                  <td className="px-4 py-3 text-sm font-semibold" style={{ color: "var(--accent)" }}>
                     {pickedTeam(p)}
                     {pickedConference(p) && (
                       <span className="ml-1 text-xs font-normal" style={{ color: "var(--text-muted)" }}>
@@ -215,10 +215,10 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono" style={{ color: "var(--text)" }}>
+                  <td className="px-4 py-3 text-sm font-mono font-semibold" style={{ color: "var(--text)" }}>
                     {fmt(pickedSpread(p))}
                   </td>
-                  <td className="px-4 py-3 font-mono" style={{ color: "var(--text-muted)" }}>
+                  <td className="px-4 py-3 text-sm font-mono" style={{ color: "var(--text-muted)" }}>
                     {p.home_final_score != null
                       ? `${p.home_display} ${p.home_final_score}-${p.away_final_score} ${p.away_display}`
                       : "—"}

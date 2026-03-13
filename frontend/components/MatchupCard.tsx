@@ -7,8 +7,8 @@ function TeamLogo({ espnId, name }: { espnId: number | null; name: string }) {
       <Image
         src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${espnId}.png`}
         alt={name}
-        width={64}
-        height={64}
+        width={72}
+        height={72}
         className="object-contain"
         unoptimized
       />
@@ -17,7 +17,7 @@ function TeamLogo({ espnId, name }: { espnId: number | null; name: string }) {
   const initials = name.split(" ").map((w) => w[0]).slice(0, 2).join("");
   return (
     <div
-      className="w-16 h-16 rounded-full flex items-center justify-center text-lg font-bold"
+      className="w-16 h-16 sm:w-18 sm:h-18 rounded-full flex items-center justify-center text-lg font-bold"
       style={{ background: "var(--bg)", color: "var(--text-muted)" }}
     >
       {initials}
@@ -48,25 +48,25 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
 
   return (
     <div
-      className="rounded-lg overflow-hidden"
+      className="rounded-xl overflow-hidden flex flex-col"
       style={{
         background: "var(--card)",
         border: "1px solid var(--border)",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
       }}
     >
       {/* Game time */}
       {pick.game_time && (
         <div
-          className="text-center text-xs py-2"
-          style={{ borderBottom: "1px solid var(--border)", color: "var(--text-muted)" }}
+          className="text-center text-xs font-medium py-2 px-4 tracking-wide"
+          style={{ borderBottom: "1px solid var(--border)", color: "var(--text-muted)", background: "var(--bg)" }}
         >
           {fmtGameTime(pick.game_time)}
         </div>
       )}
 
       {/* Teams */}
-      <div className="grid grid-cols-[1fr_32px_1fr]">
+      <div className="grid grid-cols-[1fr_40px_1fr] flex-1">
         <TeamSide
           name={pick.home_display}
           espnId={pick.home_espn_id}
@@ -75,7 +75,7 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
           spread={pick.dk_home_spread}
         />
         <div
-          className="flex items-center justify-center text-xs font-medium"
+          className="flex items-center justify-center text-sm font-semibold"
           style={{ color: "var(--text-muted)" }}
         >
           vs
@@ -93,61 +93,42 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
 }
 
 function TeamSide({
-  name,
-  espnId,
-  isPick,
-  label,
-  spread,
+  name, espnId, isPick, label, spread,
 }: {
-  name: string;
-  espnId: number | null;
-  isPick: boolean;
-  label: string;
-  spread: number;
+  name: string; espnId: number | null; isPick: boolean; label: string; spread: number;
 }) {
   return (
     <div
-      className="flex flex-col items-center gap-2 py-5 px-3"
+      className="flex flex-col items-center gap-2 py-6 px-3"
       style={isPick ? { background: "#fff4ee" } : {}}
     >
       <TeamLogo espnId={espnId} name={name} />
       <span
-        className="text-sm font-semibold text-center leading-tight"
+        className="text-sm font-semibold text-center leading-snug"
         style={{ color: "var(--text)" }}
       >
         {name}
       </span>
       <span
-        className="text-xs font-medium"
-        style={{ color: "var(--text-muted)", opacity: 0.6 }}
+        className="text-xs font-medium tracking-widest uppercase"
+        style={{ color: "var(--text-muted)" }}
       >
         {label}
       </span>
       <span
-        className="text-sm font-bold"
+        className="text-base font-bold"
         style={{ color: isPick ? "var(--accent)" : "var(--text)" }}
       >
         {fmt(spread)}
       </span>
       {isPick && (
         <span
-          className="text-xs font-bold tracking-wider px-2 py-0.5 rounded"
+          className="text-xs font-bold tracking-wider px-3 py-1 rounded-full"
           style={{ background: "var(--accent)", color: "white" }}
         >
           PICK
         </span>
       )}
     </div>
-  );
-}
-
-function Spread({ value, highlight }: { value: number; highlight: boolean }) {
-  return (
-    <span
-      className="font-bold text-sm"
-      style={{ color: highlight ? "var(--accent)" : "var(--text)" }}
-    >
-      {fmt(value)}
-    </span>
   );
 }
