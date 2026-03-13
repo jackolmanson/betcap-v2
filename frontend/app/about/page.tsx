@@ -5,8 +5,8 @@ export default function AboutPage() {
     <main className="max-w-5xl mx-auto px-6 py-12">
 
       {/* ── Section 1: We Build Winners ── */}
-      <section className="flex items-center gap-12 mb-16">
-        <div className="flex-1">
+      <section className="flex flex-col md:flex-row items-center gap-8 mb-16">
+        <div className="flex-1 text-center md:text-left">
           <h1 className="text-3xl font-bold mb-4" style={{ color: "var(--text)" }}>
             We Build Winners.
           </h1>
@@ -19,15 +19,15 @@ export default function AboutPage() {
             prediction on what side of the market spread to take.
           </p>
         </div>
-        <img src="/winner.png" alt="We Build Winners" className="w-44 h-44 flex-shrink-0 object-contain" />
+        <img src="/winner.png" alt="We Build Winners" className="w-36 h-36 md:w-44 md:h-44 flex-shrink-0 object-contain" />
       </section>
 
       <hr className="mb-16" style={{ borderColor: "var(--border)" }} />
 
       {/* ── Section 2: Our Investment Thesis ── */}
-      <section className="flex items-center gap-12 mb-16">
-        <img src="/story.png" alt="Investment Thesis" className="w-44 h-44 flex-shrink-0 object-contain" />
-        <div className="flex-1">
+      <section className="flex flex-col-reverse md:flex-row items-center gap-8 mb-16">
+        <img src="/story.png" alt="Investment Thesis" className="w-36 h-36 md:w-44 md:h-44 flex-shrink-0 object-contain" />
+        <div className="flex-1 text-center md:text-left">
           <h2 className="text-2xl font-bold mb-4" style={{ color: "var(--text)" }}>
             Our Investment Thesis
           </h2>
@@ -84,17 +84,6 @@ export default function AboutPage() {
   );
 }
 
-function IllustrationBox({ emoji }: { emoji: string }) {
-  return (
-    <div
-      className="w-44 h-44 flex-shrink-0 rounded-xl flex items-center justify-center text-7xl"
-      style={{ background: "var(--card)", border: "1px solid var(--border)" }}
-    >
-      {emoji}
-    </div>
-  );
-}
-
 function TeamCard({
   photoSrc,
   initials,
@@ -120,12 +109,12 @@ function TeamCard({
 }) {
   return (
     <div
-      className="flex rounded-lg overflow-hidden"
+      className="flex flex-col md:flex-row rounded-lg overflow-hidden"
       style={{ border: "1px solid var(--border)", background: "var(--card)" }}
     >
       {/* Photo */}
       <div
-        className="w-36 flex-shrink-0 flex items-center justify-center overflow-hidden"
+        className="flex items-center justify-center overflow-hidden md:w-36 md:flex-shrink-0"
         style={{ background: "var(--bg)", minHeight: "160px" }}
       >
         <TeamPhoto src={photoSrc} initials={initials} name={name} />
@@ -139,9 +128,7 @@ function TeamCard({
         {(email || linkedin) && (
           <div className="flex gap-3 text-xs">
             {email && (
-              <a href={email} style={{ color: "var(--accent)" }}>
-                Email
-              </a>
+              <a href={email} style={{ color: "var(--accent)" }}>Email</a>
             )}
             {linkedin && (
               <a href={linkedin} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>
@@ -154,8 +141,8 @@ function TeamCard({
 
       {/* Stats */}
       <div
-        className="w-56 flex-shrink-0 px-6 py-5 flex flex-col gap-3"
-        style={{ borderLeft: "1px solid var(--border)" }}
+        className="px-6 py-5 flex flex-col gap-3 md:w-56 md:flex-shrink-0"
+        style={{ borderTop: "1px solid var(--border)" }}
       >
         <Stat label="Favorite Sports Team:" value={favTeam} />
         <Stat label="Best Odds Hit:" value={bestOdds} />
@@ -173,4 +160,3 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-

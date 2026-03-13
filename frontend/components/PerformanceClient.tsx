@@ -183,8 +183,8 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
       {filtered.length === 0 ? (
         <p className="text-center py-12" style={{ color: "var(--text-muted)" }}>No picks match the current filters.</p>
       ) : (
-        <div className="rounded-lg overflow-hidden" style={{ border: "1px solid var(--border)" }}>
-          <table className="w-full text-sm">
+        <div className="rounded-lg overflow-x-auto" style={{ border: "1px solid var(--border)" }}>
+          <table className="w-full text-sm min-w-[640px]">
             <thead>
               <tr style={{ background: "var(--navbar)", color: "white" }}>
                 {["Date", "Matchup", "Pick", "Spread", "Score", "Result"].map((h) => (
