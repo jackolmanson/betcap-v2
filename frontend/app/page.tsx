@@ -49,7 +49,7 @@ export default function HomePage() {
         <div className="hidden md:flex flex-shrink-0 w-96 h-72 rounded-2xl overflow-hidden"
           style={{ border: "1px solid var(--border)" }}
         >
-          <img src="/images/court.png" alt="Basketball court" className="w-full h-full object-cover" />
+          <img src="/court.png" alt="Basketball court" className="w-full h-full object-cover" />
         </div>
 
       </div>
