@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ReferenceLine, ResponsiveContainer, Legend,
+  LineChart, Line, XAxis, YAxis, Tooltip,
+  ReferenceLine, ResponsiveContainer, CartesianGrid,
 } from "recharts";
 import type { PerformancePick } from "@/lib/db";
 
@@ -14,9 +14,7 @@ interface ChartPoint {
 }
 
 function buildChartData(picks: PerformancePick[]): ChartPoint[] {
-  // Group settled picks by date, then compute cumulative win %
   const byDate = new Map<string, { wins: number; losses: number }>();
-
   for (const p of picks) {
     if (!p.result || p.result === "pending" || p.result === "push") continue;
     const entry = byDate.get(p.date) ?? { wins: 0, losses: 0 };
@@ -26,9 +24,7 @@ function buildChartData(picks: PerformancePick[]): ChartPoint[] {
   }
 
   const sorted = Array.from(byDate.entries()).sort(([a], [b]) => a.localeCompare(b));
-
-  let cumWins = 0;
-  let cumLosses = 0;
+  let cumWins = 0, cumLosses = 0;
 
   return sorted.map(([date, { wins, losses }]) => {
     cumWins += wins;
@@ -43,36 +39,35 @@ function buildChartData(picks: PerformancePick[]): ChartPoint[] {
   });
 }
 
-function fmtDate(iso: string): string {
+function fmtAxisDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
-    month: "short", day: "numeric", timeZone: "America/New_York",
-  });
+  return `${m}/${d}/${y}`;
 }
 
-interface TooltipPayload {
-  winPct: number;
-  wins: number;
-  losses: number;
-  date: string;
-}
-
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: TooltipPayload }> }) {
+function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: ChartPoint }> }) {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
     <div
-      className="rounded-lg px-3 py-2 text-sm shadow-lg"
+      className="rounded px-3 py-2 text-sm shadow"
       style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--text)" }}
     >
-      <p className="font-semibold mb-1">{fmtDate(d.date)}</p>
-      <p>Win %: <span style={{ color: "var(--accent)" }}>{d.winPct}%</span></p>
-      <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
-        {d.wins}W – {d.losses}L (cumulative)
-      </p>
+      <p className="font-semibold mb-0.5">{fmtAxisDate(d.date)}</p>
+      <p>Win %: <span className="font-bold" style={{ color: "#4472C4" }}>{d.winPct}%</span></p>
+      <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>{d.wins}W – {d.losses}L</p>
     </div>
   );
 }
+
+const RefLabel = ({ label, color, viewBox }: { label: string; color: string; viewBox?: { x?: number; y?: number; width?: number } }) => {
+  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) - 4;
+  const y = (viewBox?.y ?? 0) - 6;
+  return (
+    <text x={x} y={y} fill={color} fontSize={10} textAnchor="end" fontFamily="Montserrat, sans-serif">
+      {label}
+    </text>
+  );
+};
 
 export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
   const data = buildChartData(picks);
@@ -88,8 +83,15 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
     );
   }
 
-  const yMin = Math.min(30, Math.floor(Math.min(...data.map((d) => d.winPct)) / 5) * 5);
-  const yMax = Math.max(75, Math.ceil(Math.max(...data.map((d) => d.winPct)) / 5) * 5);
+  const allPcts = data.map((d) => d.winPct);
+  const dataMin = Math.min(...allPcts);
+  const dataMax = Math.max(...allPcts);
+  const yMin = Math.floor(Math.min(dataMin, 47) / 5) * 5;
+  const yMax = Math.ceil(Math.max(dataMax, 53) / 5) * 5;
+
+  // Build Y-axis ticks in 5% increments
+  const ticks: number[] = [];
+  for (let t = yMin; t <= yMax; t += 5) ticks.push(t);
 
   return (
     <div
@@ -99,51 +101,48 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
       <h2 className="text-sm font-semibold mb-4 uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
         Cumulative Win % Over Time
       </h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data} margin={{ top: 8, right: 24, left: 0, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+      <ResponsiveContainer width="100%" height={320}>
+        <LineChart data={data} margin={{ top: 16, right: 160, left: 0, bottom: 8 }}>
+          <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.6} />
           <XAxis
             dataKey="date"
-            tickFormatter={fmtDate}
-            tick={{ fontSize: 11, fill: "var(--text-muted)" }}
-            tickLine={false}
+            tickFormatter={fmtAxisDate}
+            tick={{ fontSize: 11, fill: "var(--text-muted)", fontFamily: "Montserrat, sans-serif" }}
+            tickLine={{ stroke: "var(--border)" }}
             axisLine={{ stroke: "var(--border)" }}
             interval="preserveStartEnd"
           />
           <YAxis
             domain={[yMin, yMax]}
+            ticks={ticks}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11, fill: "var(--text-muted)" }}
+            tick={{ fontSize: 11, fill: "var(--text-muted)", fontFamily: "Montserrat, sans-serif" }}
             tickLine={false}
             axisLine={false}
             width={44}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
 
-          {/* Profitability reference lines */}
           <ReferenceLine
             y={52.38}
-            stroke="#16a34a"
-            strokeDasharray="6 3"
-            strokeWidth={1.5}
-            label={{ value: "52.38% — Profitability line when tailing", position: "insideTopLeft", fontSize: 10, fill: "#16a34a", dy: -6 }}
+            stroke="#e8630a"
+            strokeWidth={2}
+            label={<RefLabel label="52.38% — Profitability line when tailing" color="#e8630a" />}
           />
           <ReferenceLine
             y={47.62}
-            stroke="#dc2626"
-            strokeDasharray="6 3"
-            strokeWidth={1.5}
-            label={{ value: "47.62% — Profitability line when fading", position: "insideBottomLeft", fontSize: 10, fill: "#dc2626", dy: 6 }}
+            stroke="#2b2b2b"
+            strokeWidth={2}
+            label={<RefLabel label="47.62% — Profitability line when fading" color="#2b2b2b" />}
           />
 
           <Line
-            type="monotone"
+            type="linear"
             dataKey="winPct"
-            stroke="var(--accent)"
-            strokeWidth={2.5}
-            dot={{ r: 4, fill: "var(--accent)", strokeWidth: 0 }}
-            activeDot={{ r: 6, fill: "var(--accent)" }}
-            name="Win %"
+            stroke="#4472C4"
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 5, fill: "#4472C4", strokeWidth: 0 }}
           />
         </LineChart>
       </ResponsiveContainer>
