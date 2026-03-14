@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip,
   ReferenceLine, ReferenceArea, ResponsiveContainer, CartesianGrid,
@@ -59,27 +60,46 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
   );
 }
 
-const ZoneLabel = ({ label, color, viewBox }: { label: string; color: string; viewBox?: { x?: number; y?: number; width?: number; height?: number } }) => {
-  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) + 8;
-  const y = (viewBox?.y ?? 0) + (viewBox?.height ?? 0) / 2 + 4;
-  return (
-    <text x={x} y={y} fill={color} fontSize={10} fontWeight="bold" textAnchor="start" fontFamily="Montserrat, sans-serif">
-      {label}
-    </text>
-  );
-};
+const ZoneLabel = ({
+  line1, line2, color, viewBox, fontSize,
+}: {
+  line1: string;
+  line2?: string;
+  color: string;
+  viewBox?: { x?: number; y?: number; width?: number; height?: number };
+  fontSize?: number;
+}) => {
+  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) + 6;
+  const midY = (viewBox?.y ?? 0) + (viewBox?.height ?? 0) / 2;
+  const fs = fontSize ?? 10;
+  const lineHeight = fs + 2;
 
-const RefLabel = ({ label, color, viewBox }: { label: string; color: string; viewBox?: { x?: number; y?: number; width?: number } }) => {
-  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) + 8;
-  const y = (viewBox?.y ?? 0) + 4;
+  if (line2) {
+    return (
+      <text x={x} fill={color} fontSize={fs} fontWeight="bold" textAnchor="start" fontFamily="Montserrat, sans-serif">
+        <tspan x={x} dy={midY - lineHeight / 2}>{line1}</tspan>
+        <tspan x={x} dy={lineHeight + 1}>{line2}</tspan>
+      </text>
+    );
+  }
+
   return (
-    <text x={x} y={y} fill={color} fontSize={10} textAnchor="start" fontFamily="Montserrat, sans-serif">
-      {label}
+    <text x={x} y={midY + fs / 3} fill={color} fontSize={fs} fontWeight="bold" textAnchor="start" fontFamily="Montserrat, sans-serif">
+      {line1}
     </text>
   );
 };
 
 export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const data = buildChartData(picks);
 
   if (data.length === 0) {
@@ -103,6 +123,10 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
   const ticks: number[] = [];
   for (let t = yMin; t <= yMax; t += 5) ticks.push(t);
 
+  const rightMargin = isMobile ? 78 : 160;
+  const chartHeight = isMobile ? 260 : 320;
+  const labelFontSize = isMobile ? 9 : 10;
+
   return (
     <div
       className="rounded-lg p-4 sm:p-6 mb-6"
@@ -111,13 +135,13 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
       <h2 className="text-sm font-semibold mb-4 uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
         Cumulative Win % Over Time
       </h2>
-      <ResponsiveContainer width="100%" height={320}>
-        <LineChart data={data} margin={{ top: 16, right: 160, left: 0, bottom: 8 }}>
+      <ResponsiveContainer width="100%" height={chartHeight}>
+        <LineChart data={data} margin={{ top: 16, right: rightMargin, left: 0, bottom: 8 }}>
           <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.6} />
           <XAxis
             dataKey="date"
             tickFormatter={fmtAxisDate}
-            tick={{ fontSize: 11, fill: "var(--text-muted)", fontFamily: "Montserrat, sans-serif" }}
+            tick={{ fontSize: isMobile ? 9 : 11, fill: "var(--text-muted)", fontFamily: "Montserrat, sans-serif" }}
             tickLine={{ stroke: "var(--border)" }}
             axisLine={{ stroke: "var(--border)" }}
             interval="preserveStartEnd"
@@ -126,16 +150,19 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
             domain={[yMin, yMax]}
             ticks={ticks}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 11, fill: "var(--text-muted)", fontFamily: "Montserrat, sans-serif" }}
+            tick={{ fontSize: isMobile ? 9 : 11, fill: "var(--text-muted)", fontFamily: "Montserrat, sans-serif" }}
             tickLine={false}
             axisLine={false}
-            width={44}
+            width={isMobile ? 36 : 44}
           />
           <Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
 
-          <ReferenceArea y1={52.38} y2={yMax} fill="#16a34a" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="PROFITABLE MODEL" color="#16a34a" />} />
-          <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="NOT PROFITABLE" color="red" />} />
-          <ReferenceArea y1={yMin} y2={47.62} fill="#000000" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="PROFITABLE MUSH MODEL" color="#2b2b2b" />} />
+          <ReferenceArea y1={52.38} y2={yMax} fill="#16a34a" fillOpacity={0.08} ifOverflow="hidden"
+            label={<ZoneLabel line1="PROFITABLE" line2="MODEL" color="#16a34a" fontSize={labelFontSize} />} />
+          <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden"
+            label={<ZoneLabel line1="NOT" line2="PROFITABLE" color="red" fontSize={labelFontSize} />} />
+          <ReferenceArea y1={yMin} y2={47.62} fill="#000000" fillOpacity={0.08} ifOverflow="hidden"
+            label={<ZoneLabel line1="PROFITABLE" line2="MUSH MODEL" color="#2b2b2b" fontSize={labelFontSize} />} />
 
           <ReferenceLine y={52.38} stroke="#16a34a" strokeWidth={2} />
           <ReferenceLine y={47.62} stroke="#2b2b2b" strokeWidth={2} />
