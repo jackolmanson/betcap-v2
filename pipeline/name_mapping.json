@@ -42,6 +42,7 @@
     "sportsref": "ALABAMA-STATE"
   },
   "Albany Great Danes": {
+    "an_location": "University at Albany",
     "conference": "America East Conference",
     "display": "Albany Ny",
     "espn_id": 399,
@@ -146,6 +147,7 @@
     "sportsref": "BELMONT"
   },
   "Bethune-Cookman Wildcats": {
+    "an_location": "Bethune-Cookman",
     "conference": "MEAC",
     "display": "Bethune Cookman",
     "espn_id": 2065,
@@ -578,6 +580,7 @@
     "sportsref": "GEORGE-WASHINGTON"
   },
   "Gardner-Webb Bulldogs": {
+    "an_location": "Gardner-Webb",
     "conference": "Big South Conference",
     "display": "Gardner Webb",
     "espn_id": 2241,
@@ -837,12 +840,14 @@
     "sportsref": "KENTUCKY"
   },
   "LIU Sharks": {
+    "an_location": "LIU",
     "conference": "Northeast Conference",
     "display": "Long Island University",
     "espn_id": 112358,
     "sportsref": "LONG-ISLAND-UNIVERSITY"
   },
   "LSU Tigers": {
+    "an_location": "LSU",
     "conference": "Southeastern Conference",
     "display": "Louisiana State",
     "espn_id": 99,
@@ -887,6 +892,7 @@
   "Lindenwood Lions": {
     "conference": "Ohio Valley Conference",
     "display": "Lindenwood",
+    "espn_id": 2815,
     "sportsref": "LINDENWOOD"
   },
   "Lipscomb Bisons": {
@@ -1462,8 +1468,10 @@
     "sportsref": "PURDUE-FORT-WAYNE"
   },
   "Queens University Royals": {
+    "an_location": "Queens University",
     "conference": "ASUN Conference",
     "display": "Queens Nc",
+    "espn_id": 2511,
     "sportsref": "QUEENS-NC"
   },
   "Quinnipiac Bobcats": {
@@ -1533,6 +1541,7 @@
     "sportsref": "SIU-EDWARDSVILLE"
   },
   "SMU Mustangs": {
+    "an_location": "SMU",
     "conference": "Atlantic Coast Conference",
     "display": "Southern Methodist",
     "espn_id": 2567,
@@ -1648,6 +1657,7 @@
     "sportsref": "SOUTH-CAROLINA-STATE"
   },
   "South Carolina Upstate Spartans": {
+    "an_location": "USC Upstate",
     "conference": "Big South Conference",
     "display": "South Carolina Upstate",
     "espn_id": 2908,
@@ -1708,6 +1718,7 @@
     "sportsref": "ST-BONAVENTURE"
   },
   "St. Francis (PA) Red Flash": {
+    "an_location": "St. Francis (PA)",
     "conference": "Northeast Conference",
     "display": "Saint Francis Pa",
     "espn_id": 2598,
@@ -1728,6 +1739,7 @@
     "sportsref": "SAINT-JOSEPHS"
   },
   "St. Peter's Peacocks": {
+    "an_location": "Saint Peter's",
     "conference": "Metro Atlantic Athletic Conference",
     "display": "St. Peter's",
     "espn_id": 2612,
@@ -1752,6 +1764,7 @@
     "sportsref": "STANFORD"
   },
   "Stephen F. Austin Lumberjacks": {
+    "an_location": "Stephen F. Austin",
     "conference": "WAC",
     "display": "Stephen F Austin",
     "espn_id": 2617,
@@ -1964,6 +1977,7 @@
     "sportsref": "CONNECTICUT"
   },
   "UIC Flames": {
+    "an_location": "UIC",
     "conference": "Missouri Valley Conference",
     "display": "Illinois Chicago",
     "espn_id": 82,
@@ -1976,6 +1990,7 @@
     "sportsref": "LOUISIANA-MONROE"
   },
   "UMBC Retrievers": {
+    "an_location": "UMBC",
     "conference": "America East Conference",
     "display": "Maryland Baltimore County",
     "espn_id": 2378,
@@ -2012,12 +2027,14 @@
     "sportsref": "NEVADA-LAS-VEGAS"
   },
   "USC Trojans": {
+    "an_location": "USC",
     "conference": "Big Ten Conference",
     "display": "Southern California",
     "espn_id": 30,
     "sportsref": "SOUTHERN-CALIFORNIA"
   },
   "UT Rio Grande Valley Vaqueros": {
+    "an_location": "UT Rio Grande Valley",
     "conference": "WAC",
     "display": "Texas Rio Grande Valley",
     "espn_id": 292,
@@ -2187,6 +2204,7 @@
     "sportsref": "WICHITA-STATE"
   },
   "William & Mary Tribe": {
+    "an_location": "William & Mary",
     "conference": "Coastal Athletic Association",
     "display": "William  Mary",
     "espn_id": 2729,
