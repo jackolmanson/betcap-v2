@@ -16,6 +16,7 @@ import requests
 import pandas as pd
 import tensorflow as tf
 from datetime import date, datetime, timedelta, timezone
+from typing import Optional
 from bs4 import BeautifulSoup
 
 import db
@@ -35,7 +36,7 @@ def sr_slug(sportsref: str) -> str:
     return sportsref.lower()
 
 
-def fetch_sr_vegas_line(game_date: str, home_sr: str, away_sr: str) -> float | None:
+def fetch_sr_vegas_line(game_date: str, home_sr: str, away_sr: str) -> Optional[float]:
     """
     Scrape the Vegas line from Sports Reference boxscore page.
     SR boxscore URL: /cbb/boxscores/{YYYY-MM-DD}-{home-slug}.html
