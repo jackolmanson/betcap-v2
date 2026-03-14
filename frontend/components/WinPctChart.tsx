@@ -125,15 +125,15 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
 
           <ReferenceLine
             y={52.38}
-            stroke="#e8630a"
+            stroke="#16a34a"
             strokeWidth={2}
-            label={<RefLabel label="52.38% — Profitability line when tailing" color="#e8630a" />}
+            label={<RefLabel label="52.38% — Tailing Profitability Line (anything higher)" color="#16a34a" />}
           />
           <ReferenceLine
             y={47.62}
             stroke="#2b2b2b"
             strokeWidth={2}
-            label={<RefLabel label="47.62% — Profitability line when fading" color="#2b2b2b" />}
+            label={<RefLabel label="47.62% — Fading Profitability Line (anything lower)" color="#2b2b2b" />}
           />
 
           <Line
