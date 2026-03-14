@@ -123,7 +123,9 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
           />
           <Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
 
+          <ReferenceArea y1={52.38} y2={yMax} fill="#16a34a" fillOpacity={0.08} ifOverflow="hidden" />
           <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden" />
+          <ReferenceArea y1={yMin} y2={47.62} fill="#000000" fillOpacity={0.08} ifOverflow="hidden" />
 
           <ReferenceLine
             y={52.38}
