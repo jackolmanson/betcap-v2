@@ -137,18 +137,8 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
           <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="NOT PROFITABLE" color="red" />} />
           <ReferenceArea y1={yMin} y2={47.62} fill="#000000" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="PROFITABLE MUSH MODEL" color="#2b2b2b" />} />
 
-          <ReferenceLine
-            y={52.38}
-            stroke="#16a34a"
-            strokeWidth={2}
-            label={<RefLabel label="52.38% — Tailing Profitability Line (anything higher)" color="#16a34a" />}
-          />
-          <ReferenceLine
-            y={47.62}
-            stroke="#2b2b2b"
-            strokeWidth={2}
-            label={<RefLabel label="47.62% — Fading Profitability Line (anything lower)" color="#2b2b2b" />}
-          />
+          <ReferenceLine y={52.38} stroke="#16a34a" strokeWidth={2} />
+          <ReferenceLine y={47.62} stroke="#2b2b2b" strokeWidth={2} />
 
           <Line
             type="linear"
