@@ -65,6 +65,8 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
   const [confFilter, setConfFilter] = useState<Set<string>>(new Set());
   const [scoring, setScoring] = useState(false);
   const [scoreMsg, setScoreMsg] = useState<string | null>(null);
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 75;
 
   async function scoreToday() {
     setScoring(true);
@@ -108,6 +110,9 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
       return true;
     });
   }, [picks, dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Reset to first page whenever filters change
+  useEffect(() => { setPage(0); }, [dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter]);
 
   // Summary stats (excluding pending)
   const settled = filtered.filter((p) => p.result && p.result !== "pending");
@@ -220,56 +225,93 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
       {/* Table */}
       {filtered.length === 0 ? (
         <p className="text-center py-12" style={{ color: "var(--text-muted)" }}>No picks match the current filters.</p>
-      ) : (
-        <div className="rounded-lg overflow-x-auto" style={{ border: "1px solid var(--border)" }}>
-          <table className="w-full text-sm min-w-[640px]">
-            <thead>
-              <tr style={{ background: "var(--navbar)", color: "white" }}>
-                {["Date", "Matchup", "Pick", "Spread", "Score", "Result"].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((p, i) => (
-                <tr
-                  key={p.id}
+      ) : (() => {
+        const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+        const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+        return (
+          <>
+            <div className="rounded-lg overflow-x-auto" style={{ border: "1px solid var(--border)" }}>
+              <table className="w-full text-sm min-w-[640px]">
+                <thead>
+                  <tr style={{ background: "var(--navbar)", color: "white" }}>
+                    {["Date", "Matchup", "Pick", "Spread", "Score", "Result"].map((h) => (
+                      <th key={h} className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginated.map((p, i) => (
+                    <tr
+                      key={p.id}
+                      style={{
+                        background: i % 2 === 0 ? "var(--card)" : "var(--bg)",
+                        borderBottom: "1px solid var(--border)",
+                      }}
+                    >
+                      <td className="px-4 py-3 whitespace-nowrap text-sm" style={{ color: "var(--text-muted)" }}>
+                        {fmtDate(p.date)}
+                      </td>
+                      <td className="px-4 py-3 text-sm" style={{ color: "var(--text)" }}>
+                        {p.home_display} vs {p.away_display}
+                      </td>
+                      <td className="px-4 py-3 text-sm font-semibold" style={{ color: "var(--accent)" }}>
+                        {pickedTeam(p)}
+                        {pickedConference(p) && (
+                          <span className="ml-1 text-xs font-normal" style={{ color: "var(--text-muted)" }}>
+                            ({pickedConference(p)})
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm font-mono font-semibold" style={{ color: "var(--text)" }}>
+                        {fmt(pickedSpread(p))}
+                      </td>
+                      <td className="px-4 py-3 text-sm font-mono" style={{ color: "var(--text-muted)" }}>
+                        {p.home_final_score != null
+                          ? `${p.home_display} ${p.home_final_score}-${p.away_final_score} ${p.away_display}`
+                          : "—"}
+                      </td>
+                      <td className="px-4 py-3">
+                        <ResultBadge result={p.result} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-4">
+                <button
+                  onClick={() => setPage((p) => Math.max(0, p - 1))}
+                  disabled={page === 0}
+                  className="text-xs px-3 py-1.5 rounded"
                   style={{
-                    background: i % 2 === 0 ? "var(--card)" : "var(--bg)",
-                    borderBottom: "1px solid var(--border)",
+                    border: "1px solid var(--border)",
+                    color: page === 0 ? "var(--text-muted)" : "var(--text)",
+                    opacity: page === 0 ? 0.4 : 1,
                   }}
                 >
-                  <td className="px-4 py-3 whitespace-nowrap text-sm" style={{ color: "var(--text-muted)" }}>
-                    {fmtDate(p.date)}
-                  </td>
-                  <td className="px-4 py-3 text-sm" style={{ color: "var(--text)" }}>
-                    {p.home_display} vs {p.away_display}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-semibold" style={{ color: "var(--accent)" }}>
-                    {pickedTeam(p)}
-                    {pickedConference(p) && (
-                      <span className="ml-1 text-xs font-normal" style={{ color: "var(--text-muted)" }}>
-                        ({pickedConference(p)})
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-mono font-semibold" style={{ color: "var(--text)" }}>
-                    {fmt(pickedSpread(p))}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-mono" style={{ color: "var(--text-muted)" }}>
-                    {p.home_final_score != null
-                      ? `${p.home_display} ${p.home_final_score}-${p.away_final_score} ${p.away_display}`
-                      : "—"}
-                  </td>
-                  <td className="px-4 py-3">
-                    <ResultBadge result={p.result} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                  ← Previous
+                </button>
+                <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                  Page {page + 1} of {totalPages} &nbsp;·&nbsp; {filtered.length} picks
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+                  disabled={page === totalPages - 1}
+                  className="text-xs px-3 py-1.5 rounded"
+                  style={{
+                    border: "1px solid var(--border)",
+                    color: page === totalPages - 1 ? "var(--text-muted)" : "var(--text)",
+                    opacity: page === totalPages - 1 ? 0.4 : 1,
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </>
+        );
+      })()}
     </main>
   );
 }
