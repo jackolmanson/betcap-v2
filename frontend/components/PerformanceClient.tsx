@@ -63,6 +63,22 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [resultFilter, setResultFilter] = useState<ResultFilter>("all");
   const [confFilter, setConfFilter] = useState<Set<string>>(new Set());
+  const [scoring, setScoring] = useState(false);
+  const [scoreMsg, setScoreMsg] = useState<string | null>(null);
+
+  async function scoreToday() {
+    setScoring(true);
+    setScoreMsg(null);
+    try {
+      const res = await fetch("/api/score-today", { method: "POST" });
+      const data = await res.json();
+      setScoreMsg(data.message ?? data.error ?? "Done.");
+    } catch {
+      setScoreMsg("Request failed.");
+    } finally {
+      setScoring(false);
+    }
+  }
 
   // Unique sorted conferences from the data
   const conferences = useMemo(() => {
@@ -109,9 +125,24 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
     <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 lg:py-12">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-1" style={{ color: "var(--text)" }}>
-          Performance
-        </h1>
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: "var(--text)" }}>
+            Performance
+          </h1>
+          <div className="flex items-center gap-3">
+            {scoreMsg && (
+              <span className="text-xs" style={{ color: "var(--text-muted)" }}>{scoreMsg}</span>
+            )}
+            <button
+              onClick={scoreToday}
+              disabled={scoring}
+              className="text-xs px-3 py-1.5 rounded font-semibold"
+              style={{ background: "var(--accent)", color: "white", opacity: scoring ? 0.6 : 1 }}
+            >
+              {scoring ? "Scoring…" : "Score Today's Games"}
+            </button>
+          </div>
+        </div>
         <hr className="mt-4" style={{ borderColor: "var(--border)" }} />
       </div>
 
