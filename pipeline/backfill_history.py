@@ -55,9 +55,9 @@ def fetch_an_spreads(game_date: str) -> dict:
 
         # Prefer DK NJ, fall back to consensus
         for book_id in [DK_BOOK_ID, CONSENSUS_BOOK_ID]:
-            book_odds = [o for o in odds_list if o.get("book_id") == book_id and o.get("spread_away") is not None]
+            book_odds = [o for o in odds_list if o.get("book_id") == book_id and o.get("type") == "game" and o.get("spread_away") is not None]
             if book_odds:
-                closing = book_odds[-1]  # last entry = closing line
+                closing = book_odds[-1]  # last game-type entry = closing pre-game line
                 away_spread = float(closing["spread_away"])
                 home_spread = float(closing["spread_home"])
                 key = (away_info["location"].lower(), home_info["location"].lower())
@@ -116,13 +116,18 @@ def date_range(start: str, end: str):
 
 
 def save_backfill_picks(date_str: str, picks: list):
-    """Insert backfill picks — skips date if it already has data."""
+    """Insert backfill picks — skips individual games already in DB, inserts missing ones."""
     from psycopg2.extras import execute_values
     conn = db.get_conn()
     cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM picks WHERE date = %s", (date_str,))
-    if cur.fetchone()[0] > 0:
-        print(f"  [{date_str}] Already has picks — skipping.")
+    cur.execute(
+        "SELECT home_espn_id, away_espn_id FROM picks WHERE date = %s",
+        (date_str,)
+    )
+    existing = {(row[0], row[1]) for row in cur.fetchall()}
+    picks = [p for p in picks if (p["home_espn_id"], p["away_espn_id"]) not in existing]
+    if not picks:
+        print(f"  [{date_str}] All games already present — skipping.")
         cur.close()
         conn.close()
         return
@@ -209,11 +214,18 @@ def run_backfill(start_date: str, end_date: str):
             # Match to AN spread using team location names
             home_loc = home_info["display"].lower()
             away_loc = away_info["display"].lower()
+            home_an = home_info.get("an_location", "").lower()
+            away_an = away_info.get("an_location", "").lower()
+
+            def loc_matches(an_key, display, an_override):
+                if an_override and an_key == an_override:
+                    return True
+                return an_key in display or display in an_key
 
             spread_entry = None
             for (an_away, an_home), entry in an_spreads.items():
-                if (an_away in away_loc or away_loc in an_away) and \
-                   (an_home in home_loc or home_loc in an_home):
+                if loc_matches(an_away, away_loc, away_an) and \
+                   loc_matches(an_home, home_loc, home_an):
                     spread_entry = entry
                     break
 
@@ -279,7 +291,7 @@ if __name__ == "__main__":
         start, end = sys.argv[1], sys.argv[2]
     else:
         start = "2026-01-01"
-        end = (datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat()
+        end = datetime.now(timezone.utc).date().isoformat()
 
     print(f"Backfilling picks from {start} to {end}")
     print(f"Note: Uses current season stats (look-ahead bias accepted)\n")

@@ -5,92 +5,126 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from datetime import date, datetime, timezone, timedelta
+from typing import Optional
 
 PT = timezone(timedelta(hours=-8))   # Pacific Time — used for date comparisons
 
-ODDS_API_KEY = os.environ["ODDS_API_KEY"]
-ODDS_API_URL = "https://api.the-odds-api.com/v4/sports/basketball_ncaab/odds/"
+AN_HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+AN_SCOREBOARD = "https://api.actionnetwork.com/web/v1/scoreboard/ncaab"
+DK_BOOK_ID = 68       # DraftKings NJ — same lines as DK nationally
+CONSENSUS_BOOK_ID = 15
+
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "../spread_model")
 MAPPING_PATH = os.path.join(os.path.dirname(__file__), "name_mapping.json")
 
+os.environ.setdefault("ODDS_API_KEY", "unused")
 
-def fetch_games():
-    params = {
-        "apiKey": ODDS_API_KEY,
-        "regions": "us",
-        "markets": "spreads",
-        "oddsFormat": "american",
-        "bookmakers": "draftkings",
-    }
-    resp = requests.get(ODDS_API_URL, params=params)
+
+def fetch_an_games(game_date: str) -> list:
+    """Fetch today's NCAAB games from Action Network with DK spreads."""
+    date_str = game_date.replace("-", "")
+    resp = requests.get(AN_SCOREBOARD, params={"date": date_str, "division": "D1"}, headers=AN_HEADERS, timeout=15)
     resp.raise_for_status()
-    games = resp.json()
-    print(f"Fetched {len(games)} games from Odds API")
-    print(f"API requests remaining: {resp.headers.get('x-requests-remaining', 'N/A')}")
+    games = resp.json().get("games", [])
+    print(f"Fetched {len(games)} games from Action Network for {game_date}")
     return games
 
 
-def parse_games(raw_games, name_map):
+def build_display_lookup(name_map: dict) -> dict:
+    """Build {normalized_location: team_info} from name_mapping."""
+    lookup = {}
+    for dk_name, info in name_map.items():
+        display = info.get("display", "").lower()
+        if display:
+            lookup[display] = {**info, "dk_name": dk_name}
+        sr = info.get("sportsref", "").lower().replace("-", " ")
+        if sr and sr not in lookup:
+            lookup[sr] = {**info, "dk_name": dk_name}
+        an_loc = info.get("an_location", "").lower()
+        if an_loc and an_loc not in lookup:
+            lookup[an_loc] = {**info, "dk_name": dk_name}
+    return lookup
+
+
+def match_team(an_location: str, display_lookup: dict) -> Optional[dict]:
+    """Match an Action Network team location to our name_mapping."""
+    loc = an_location.lower()
+    if loc in display_lookup:
+        return display_lookup[loc]
+    for key, info in display_lookup.items():
+        if loc in key or key in loc:
+            return info
+    return None
+
+
+def parse_an_games(raw_games: list, name_map: dict) -> list:
+    display_lookup = build_display_lookup(name_map)
     games = []
-    unmapped = []
+    unmatched = []
 
-    for game in raw_games:
-        home_dk = game["home_team"]
-        away_dk = game["away_team"]
-
-        if home_dk not in name_map:
-            unmapped.append(home_dk)
-        if away_dk not in name_map:
-            unmapped.append(away_dk)
-        if home_dk not in name_map or away_dk not in name_map:
+    for g in raw_games:
+        # Skip completed games
+        if g.get("status") == "complete":
             continue
 
-        try:
-            bookmaker = game["bookmakers"][0]
-            outcomes = bookmaker["markets"][0]["outcomes"]
-            by_name = {o["name"]: o["point"] for o in outcomes}
-            if home_dk in by_name and away_dk in by_name:
-                home_spread = by_name[home_dk]
-                away_spread = by_name[away_dk]
-            elif len(outcomes) == 2:
-                # Bookmaker outcome names don't match exactly — assign by position
-                home_spread = outcomes[0]["point"]
-                away_spread = outcomes[1]["point"]
-            else:
-                raise ValueError("Cannot resolve spread outcomes")
-        except (IndexError, KeyError, ValueError) as e:
-            print(f"Could not parse spreads for {home_dk} vs {away_dk} — skipping ({e})")
+        teams = {t["id"]: t for t in g.get("teams", [])}
+        away_info = teams.get(g["away_team_id"])
+        home_info = teams.get(g["home_team_id"])
+        if not away_info or not home_info:
             continue
 
-        # Derive game date from commence_time (UTC → PT)
-        ct = game.get("commence_time", "")
-        if ct:
-            dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
-            # Skip games that have already started — Odds API returns live spreads
-            if dt <= datetime.now(timezone.utc):
-                print(f"Skipping {home_dk} vs {away_dk} — game already started")
-                continue
+        # Get DK pre-game spread, fall back to consensus
+        odds_list = g.get("odds", [])
+        dk_home_spread = None
+        dk_away_spread = None
+        for book_id in [DK_BOOK_ID, CONSENSUS_BOOK_ID]:
+            book_odds = [o for o in odds_list if o.get("book_id") == book_id and o.get("type") == "game" and o.get("spread_away") is not None]
+            if book_odds:
+                closing = book_odds[-1]
+                dk_away_spread = float(closing["spread_away"])
+                dk_home_spread = float(closing["spread_home"])
+                break
+
+        if dk_home_spread is None:
+            continue
+
+        # Match to name_mapping
+        home_match = match_team(home_info["location"], display_lookup)
+        away_match = match_team(away_info["location"], display_lookup)
+
+        if not home_match:
+            unmatched.append(home_info["location"])
+        if not away_match:
+            unmatched.append(away_info["location"])
+        if not home_match or not away_match:
+            continue
+
+        start_time = g.get("start_time", "")
+        if start_time:
+            dt = datetime.fromisoformat(start_time.replace("Z", "+00:00"))
             game_date = dt.astimezone(PT).date().isoformat()
         else:
             game_date = date.today().isoformat()
 
         games.append({
             "game_date": game_date,
-            "game_time": ct,  # UTC ISO string, stored as TIMESTAMPTZ
-            "home_dk": home_dk,
-            "away_dk": away_dk,
-            "home_sportsref": name_map[home_dk]["sportsref"],
-            "away_sportsref": name_map[away_dk]["sportsref"],
-            "home_display": name_map[home_dk]["display"],
-            "away_display": name_map[away_dk]["display"],
-            "home_espn_id": name_map[home_dk].get("espn_id"),
-            "away_espn_id": name_map[away_dk].get("espn_id"),
-            "dk_home_spread": float(home_spread),
-            "dk_away_spread": float(away_spread),
+            "game_time": start_time,
+            "home_dk": home_match["dk_name"],
+            "away_dk": away_match["dk_name"],
+            "home_sportsref": home_match["sportsref"],
+            "away_sportsref": away_match["sportsref"],
+            "home_display": home_match["display"],
+            "away_display": away_match["display"],
+            "home_espn_id": home_match.get("espn_id"),
+            "away_espn_id": away_match.get("espn_id"),
+            "home_conference": home_match.get("conference"),
+            "away_conference": away_match.get("conference"),
+            "dk_home_spread": dk_home_spread,
+            "dk_away_spread": dk_away_spread,
         })
 
-    if unmapped:
-        print(f"\nUNMAPPED TEAMS (add to name_mapping.json):\n" + "\n".join(f"  {t}" for t in sorted(set(unmapped))))
+    if unmatched:
+        print(f"\nUNMATCHED TEAMS (add to name_mapping.json):\n" + "\n".join(f"  {t}" for t in sorted(set(unmatched))))
 
     return games
 
@@ -118,7 +152,8 @@ def build_input(team1, team2, team_data):
 
 
 def run_picks():
-    print(f"\n=== Running picks for {datetime.now(PT).date()} ===\n")
+    today = datetime.now(PT).date().isoformat()
+    print(f"\n=== Running picks for {today} ===\n")
 
     import db
     db.run_migrations()
@@ -130,21 +165,19 @@ def run_picks():
     team_data = fetch_team_data()
     model = tf.keras.models.load_model(MODEL_PATH)
 
-    raw_games = fetch_games()
-    games = parse_games(raw_games, name_map)
+    raw_games = fetch_an_games(today)
+    games = parse_an_games(raw_games, name_map)
 
     picks = []
     for game in games:
         try:
             X = build_input(game["home_sportsref"], game["away_sportsref"], team_data)
-            # Raw positive output = home favored (match old code sign convention)
             model_home_spread = round(-float(model.predict(X, verbose=0)[0][0]), 1)
             model_away_spread = round(-model_home_spread, 1)
 
             dk_home = game["dk_home_spread"]
             dk_away = game["dk_away_spread"]
 
-            # Pick the side where DK's line is more favorable than our model
             home_edge = dk_home - model_home_spread
             away_edge = dk_away - model_away_spread
             pick = "home" if home_edge > away_edge else "away"
@@ -158,8 +191,8 @@ def run_picks():
                 "away_sportsref": game["away_sportsref"],
                 "home_espn_id": game["home_espn_id"],
                 "away_espn_id": game["away_espn_id"],
-                "home_conference": name_map[game["home_dk"]].get("conference"),
-                "away_conference": name_map[game["away_dk"]].get("conference"),
+                "home_conference": game["home_conference"],
+                "away_conference": game["away_conference"],
                 "model_home_spread": model_home_spread,
                 "model_away_spread": model_away_spread,
                 "dk_home_spread": dk_home,
@@ -173,12 +206,10 @@ def run_picks():
             print(f"{game['home_display']} vs {game['away_display']} — model: {model_home_spread:+.1f} | DK: {dk_home:+.1f} | PICK: {pick_team} {pick_spread:+.1f}")
 
         except Exception as e:
-            print(f"Error on {game['home_dk']} vs {game['away_dk']}: {e}")
+            print(f"Error on {game.get('home_display')} vs {game.get('away_display')}: {e}")
             continue
 
-    # Only save picks for today's games — future games may have stale spreads
-    # and could result in picking both sides if the line moves between runs
-    today = datetime.now(PT).date().isoformat()
+    # Only save picks for today — skip future dates (line could still move)
     today_picks = [p for p in picks if p["game_date"] == today]
     skipped = len(picks) - len(today_picks)
     if skipped:

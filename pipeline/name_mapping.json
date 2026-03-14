@@ -90,6 +90,7 @@
     "sportsref": "ARKANSAS-STATE"
   },
   "Arkansas-Pine Bluff Golden Lions": {
+    "an_location": "Arkansas-Pine Bluff",
     "conference": "SWAC",
     "display": "Ark.-Pine Bluff",
     "espn_id": 2029,
@@ -114,6 +115,7 @@
     "sportsref": "AUSTIN-PEAY"
   },
   "BYU Cougars": {
+    "an_location": "BYU",
     "conference": "Big 12 Conference",
     "display": "Brigham Young",
     "espn_id": 252,
@@ -660,6 +662,7 @@
     "sportsref": "HARVARD"
   },
   "Hawai'i Rainbow Warriors": {
+    "an_location": "Hawai'i",
     "conference": "Big West Conference",
     "display": "Hawaii",
     "espn_id": 62,
@@ -983,12 +986,14 @@
     "sportsref": "MARYLAND"
   },
   "Maryland-Eastern Shore Hawks": {
+    "an_location": "Maryland-Eastern Shore",
     "conference": "Mid-Eastern Athletic Conference",
     "display": "Maryland Eastern Shore",
     "espn_id": 2379,
     "sportsref": "MARYLAND-EASTERN-SHORE"
   },
   "Massachusetts Minutemen": {
+    "an_location": "UMass",
     "conference": "Mid-American Conference",
     "display": "Massachusetts",
     "espn_id": 113,
@@ -1545,6 +1550,13 @@
     "espn_id": 2529,
     "sportsref": "SACRED-HEART"
   },
+  "Saint Joseph's Hawks": {
+    "an_location": "Saint Joseph's",
+    "conference": "Atlantic 10 Conference",
+    "display": "St. Joseph's",
+    "espn_id": 2603,
+    "sportsref": "SAINT-JOSEPHS"
+  },
   "Saint Louis Billikens": {
     "conference": "Atlantic 10 Conference",
     "display": "Saint Louis",
@@ -1689,6 +1701,7 @@
     "sportsref": "SOUTHERN-UTAH"
   },
   "St. Bonaventure Bonnies": {
+    "an_location": "St. Bonaventure",
     "conference": "Atlantic 10 Conference",
     "display": "St Bonaventure",
     "espn_id": 179,
@@ -1701,18 +1714,14 @@
     "sportsref": "SAINT-FRANCIS-PA"
   },
   "St. John's Red Storm": {
+    "an_location": "St. John's",
     "conference": "Big East Conference",
-    "display": "St John'S Ny",
+    "display": "St. John's",
     "espn_id": 2599,
     "sportsref": "ST-JOHNS-NY"
   },
-  "Saint Joseph's Hawks": {
-    "conference": "Atlantic 10 Conference",
-    "display": "St. Joseph's",
-    "espn_id": 2603,
-    "sportsref": "SAINT-JOSEPHS"
-  },
   "St. Joseph's Hawks": {
+    "an_location": "Saint Joseph's",
     "conference": "Atlantic 10 Conference",
     "display": "St. Joseph's",
     "espn_id": 2603,
@@ -1821,6 +1830,7 @@
     "sportsref": "TENNESSEE"
   },
   "Texas A&M Aggies": {
+    "an_location": "Texas A&M",
     "conference": "Southeastern Conference",
     "display": "Texas Am",
     "espn_id": 245,
@@ -1947,6 +1957,7 @@
     "sportsref": "UCLA"
   },
   "UConn Huskies": {
+    "an_location": "UConn",
     "conference": "Big East Conference",
     "display": "Connecticut",
     "espn_id": 41,
@@ -2055,6 +2066,7 @@
     "sportsref": "UTAH-VALLEY"
   },
   "VCU Rams": {
+    "an_location": "VCU",
     "conference": "Atlantic 10 Conference",
     "display": "Virginia Commonwealth",
     "espn_id": 2670,
