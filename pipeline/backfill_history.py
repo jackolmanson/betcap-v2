@@ -1,7 +1,7 @@
 """
 Retroactively generate picks + results for a date range using:
-  - ESPN scoreboard for game participants + final scores
-  - Sports Reference individual boxscore pages for Vegas spreads
+  - Action Network API for DraftKings historical spreads (free, no key needed)
+  - ESPN scoreboard for final scores
   - Current team stats (look-ahead bias accepted)
 
 Usage:
@@ -9,15 +9,12 @@ Usage:
     python3 backfill_history.py 2026-01-01 2026-02-28   # custom range
 """
 import sys
-import time
 import json
 import os
 import requests
-import pandas as pd
 import tensorflow as tf
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Optional
-from bs4 import BeautifulSoup
 
 import db
 from scrape import fetch_team_data
@@ -26,85 +23,77 @@ os.environ.setdefault("ODDS_API_KEY", "unused")
 from run_picks import build_input
 from record_results import fetch_scores, calculate_result
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; betcap-pipeline/1.0)"}
+AN_HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+AN_SCOREBOARD = "https://api.actionnetwork.com/web/v1/scoreboard/ncaab"
+DK_BOOK_ID = 68      # DraftKings NJ — same lines as DK nationally
+CONSENSUS_BOOK_ID = 15
+
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "../spread_model")
 MAPPING_PATH = os.path.join(os.path.dirname(__file__), "name_mapping.json")
-SR_DELAY = 4.0  # seconds between Sports Reference requests
 
 
-def sr_slug(sportsref: str) -> str:
-    return sportsref.lower()
-
-
-def fetch_sr_vegas_line(game_date: str, home_sr: str, away_sr: str) -> Optional[float]:
+def fetch_an_spreads(game_date: str) -> dict:
     """
-    Scrape the Vegas line from Sports Reference boxscore page.
-    SR boxscore URL: /cbb/boxscores/{YYYY-MM-DD}-{home-slug}.html
-    Returns dk_home_spread (positive = home favored) or None if not found.
+    Fetch DraftKings closing spreads from Action Network for a given date.
+    Returns {(away_display, home_display): (dk_away_spread, dk_home_spread)}
+    using normalized lowercase team location names as keys.
     """
-    for home_slug in [sr_slug(home_sr), sr_slug(away_sr)]:
-        url = f"https://www.sports-reference.com/cbb/boxscores/{game_date}-{home_slug}.html"
-        try:
-            time.sleep(SR_DELAY)
-            resp = requests.get(url, headers=HEADERS, timeout=15)
-            if resp.status_code == 429:
-                print(f"  Rate limited by SR — waiting 60s...")
-                time.sleep(60)
-                resp = requests.get(url, headers=HEADERS, timeout=15)
-            if resp.status_code != 200:
-                continue
-        except Exception:
+    date_str = game_date.replace("-", "")
+    resp = requests.get(AN_SCOREBOARD, params={"date": date_str, "division": "D1"}, headers=AN_HEADERS, timeout=15)
+    resp.raise_for_status()
+    games = resp.json().get("games", [])
+
+    spreads = {}
+    for g in games:
+        teams = {t["id"]: t for t in g.get("teams", [])}
+        away_info = teams.get(g["away_team_id"])
+        home_info = teams.get(g["home_team_id"])
+        if not away_info or not home_info:
             continue
 
-        soup = BeautifulSoup(resp.text, "lxml")
+        odds_list = g.get("odds", [])
 
-        # Look for "Vegas Line" in game info tables
-        for tag in soup.find_all(string=lambda t: t and "Vegas Line" in t):
-            parent = tag.find_parent("tr") or tag.find_parent("td")
-            if not parent:
-                continue
-            # Sibling cell or next element has the value e.g. "Duke -7.5"
-            cells = parent.find_all(["td", "th"])
-            line_text = None
-            for i, cell in enumerate(cells):
-                if "Vegas Line" in cell.get_text():
-                    if i + 1 < len(cells):
-                        line_text = cells[i + 1].get_text(strip=True)
-                    break
-            if not line_text:
-                # Maybe the text IS in the next sibling row
-                next_row = parent.find_next_sibling("tr")
-                if next_row:
-                    line_text = next_row.get_text(strip=True)
+        # Prefer DK NJ, fall back to consensus
+        for book_id in [DK_BOOK_ID, CONSENSUS_BOOK_ID]:
+            book_odds = [o for o in odds_list if o.get("book_id") == book_id and o.get("spread_away") is not None]
+            if book_odds:
+                closing = book_odds[-1]  # last entry = closing line
+                away_spread = float(closing["spread_away"])
+                home_spread = float(closing["spread_home"])
+                key = (away_info["location"].lower(), home_info["location"].lower())
+                spreads[key] = (away_spread, home_spread, away_info, home_info)
+                break
 
-            if line_text and line_text not in ("Pick", "N/A", ""):
-                try:
-                    # Format: "Duke -7.5" or "Pick" or "N/A"
-                    parts = line_text.rsplit(" ", 1)
-                    spread_val = float(parts[-1])
-                    # Determine if SR's listed team is the home team
-                    team_name_in_line = parts[0].strip().upper() if len(parts) == 2 else ""
-                    # If we're using the home slug's page, the spread is from SR's perspective
-                    # SR shows the favored team, so we need to figure out sign relative to home
-                    if home_slug == sr_slug(home_sr):
-                        # We hit the correct home team's page
-                        # SR spread: if negative, that team is favored
-                        # We need home_spread — check if the named team matches home or away
-                        if home_sr.upper().replace("-", " ") in team_name_in_line or \
-                           team_name_in_line in home_sr.upper().replace("-", " "):
-                            return spread_val  # named team is home → home_spread = spread_val
-                        else:
-                            return -spread_val  # named team is away → home_spread = negated
-                    else:
-                        # We hit the away team's page (used as fallback home slug)
-                        # The "home" in this URL is actually our away team
-                        if away_sr.upper().replace("-", " ") in team_name_in_line or \
-                           team_name_in_line in away_sr.upper().replace("-", " "):
-                            return -spread_val  # named = away → home_spread = negated
-                        else:
-                            return spread_val
-                except (ValueError, IndexError):
-                    continue
+    return spreads
+
+
+def build_display_lookup(name_map: dict) -> dict:
+    """Build {normalized_location: team_info} from name_mapping."""
+    lookup = {}
+    for dk_name, info in name_map.items():
+        # Index by display name (normalized)
+        display = info.get("display", "").lower()
+        if display:
+            lookup[display] = {**info, "dk_name": dk_name}
+        # Also index by sportsref slug words
+        sr = info.get("sportsref", "").lower().replace("-", " ")
+        if sr and sr not in lookup:
+            lookup[sr] = {**info, "dk_name": dk_name}
+    return lookup
+
+
+def match_team(an_location: str, display_lookup: dict) -> Optional[dict]:
+    """Try to match an Action Network team location to our name_mapping."""
+    loc = an_location.lower()
+
+    # Direct match
+    if loc in display_lookup:
+        return display_lookup[loc]
+
+    # Partial match — AN location is typically just the school name
+    for key, info in display_lookup.items():
+        if loc in key or key in loc:
+            return info
 
     return None
 
@@ -147,7 +136,7 @@ def save_backfill_picks(date_str: str, picks: list):
         p["dk_home_spread"], p["dk_away_spread"],
         p["pick"],
         p["home_conference"], p["away_conference"],
-        None,  # game_time
+        None,
         p["home_final_score"], p["away_final_score"],
         p["result"],
     ) for p in picks]
@@ -180,38 +169,59 @@ def run_backfill(start_date: str, end_date: str):
     print("Loading model and team stats...")
     model = tf.keras.models.load_model(MODEL_PATH)
     team_data = fetch_team_data()
+
+    display_lookup = build_display_lookup(name_map)
     espn_lookup = build_espn_id_lookup(name_map)
 
     total_saved = 0
     total_no_spread = 0
-    total_no_teams = 0
+    total_no_match = 0
 
     for game_date in date_range(start_date, end_date):
+        # Fetch ESPN scores + AN spreads in parallel
         scores = fetch_scores(game_date)
         if not scores:
             continue
 
+        try:
+            an_spreads = fetch_an_spreads(game_date)
+        except Exception as e:
+            print(f"[{game_date}] AN fetch failed: {e} — skipping")
+            continue
+
+        if not an_spreads:
+            print(f"[{game_date}] No spreads from Action Network — skipping")
+            continue
+
         picks_for_date = []
-        print(f"\n[{game_date}] {len(scores)} completed games")
+        print(f"\n[{game_date}] ESPN: {len(scores)} games | AN: {len(an_spreads)} spreads")
 
         for (home_id, away_id), (home_score, away_score) in scores.items():
             home_info = espn_lookup.get(home_id)
             away_info = espn_lookup.get(away_id)
             if not home_info or not away_info:
-                total_no_teams += 1
+                total_no_match += 1
                 continue
 
             home_sr = home_info["sportsref"]
             away_sr = away_info["sportsref"]
 
-            # Fetch Vegas line from SR boxscore
-            dk_home_spread = fetch_sr_vegas_line(game_date, home_sr, away_sr)
-            if dk_home_spread is None:
-                print(f"  No spread: {home_info['display']} vs {away_info['display']}")
+            # Match to AN spread using team location names
+            home_loc = home_info["display"].lower()
+            away_loc = away_info["display"].lower()
+
+            spread_entry = None
+            for (an_away, an_home), entry in an_spreads.items():
+                if (an_away in away_loc or away_loc in an_away) and \
+                   (an_home in home_loc or home_loc in an_home):
+                    spread_entry = entry
+                    break
+
+            if not spread_entry:
                 total_no_spread += 1
                 continue
 
-            dk_away_spread = -dk_home_spread
+            dk_away_spread, dk_home_spread, _, _ = spread_entry
 
             # Run model
             try:
@@ -219,7 +229,6 @@ def run_backfill(start_date: str, end_date: str):
                 model_home_spread = round(-float(model.predict(X, verbose=0)[0][0]), 1)
                 model_away_spread = round(-model_home_spread, 1)
             except Exception as e:
-                print(f"  Model error: {home_info['display']} vs {away_info['display']}: {e}")
                 continue
 
             home_edge = dk_home_spread - model_home_spread
@@ -261,8 +270,8 @@ def run_backfill(start_date: str, end_date: str):
 
     print(f"\n{'='*50}")
     print(f"Done. Saved {total_saved} picks.")
-    print(f"Skipped {total_no_spread} games (no spread found).")
-    print(f"Skipped {total_no_teams} games (teams not in mapping).")
+    print(f"Skipped {total_no_spread} games (no spread match).")
+    print(f"Skipped {total_no_match} games (teams not in mapping).")
 
 
 if __name__ == "__main__":
