@@ -137,7 +137,7 @@ def get_pending_picks():
             pick, game_time
         FROM picks
         WHERE result IS NULL
-          AND COALESCE(game_time::date, date) < CURRENT_DATE
+          AND COALESCE((game_time AT TIME ZONE 'America/Los_Angeles')::date, date) < CURRENT_DATE
         ORDER BY date, id
         """
     )
