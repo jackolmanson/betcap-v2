@@ -96,8 +96,8 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
   const allPcts = data.map((d) => d.winPct);
   const dataMin = Math.min(...allPcts);
   const dataMax = Math.max(...allPcts);
-  const yMin = Math.floor(Math.min(dataMin, 47) / 5) * 5;
-  const yMax = Math.ceil(Math.max(dataMax, 53) / 5) * 5;
+  const yMin = Math.floor(Math.min(dataMin, 40) / 5) * 5;
+  const yMax = Math.ceil(Math.max(dataMax, 60) / 5) * 5;
 
   // Build Y-axis ticks in 5% increments
   const ticks: number[] = [];
