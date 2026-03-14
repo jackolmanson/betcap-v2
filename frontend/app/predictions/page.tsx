@@ -4,8 +4,7 @@ import MatchupCard from "@/components/MatchupCard";
 export const dynamic = "force-dynamic";
 
 function formatDate(isoDate: string): string {
-  const [year, month, day] = isoDate.split("-").map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+  return new Date(isoDate + "T12:00:00Z").toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
