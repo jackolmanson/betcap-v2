@@ -59,6 +59,16 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
   );
 }
 
+const ZoneLabel = ({ label, color, viewBox }: { label: string; color: string; viewBox?: { x?: number; y?: number; width?: number; height?: number } }) => {
+  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) + 8;
+  const y = (viewBox?.y ?? 0) + (viewBox?.height ?? 0) / 2 + 4;
+  return (
+    <text x={x} y={y} fill={color} fontSize={10} fontWeight="bold" textAnchor="start" fontFamily="Montserrat, sans-serif">
+      {label}
+    </text>
+  );
+};
+
 const RefLabel = ({ label, color, viewBox }: { label: string; color: string; viewBox?: { x?: number; y?: number; width?: number } }) => {
   const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) + 8;
   const y = (viewBox?.y ?? 0) + 4;
@@ -123,9 +133,9 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
           />
           <Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
 
-          <ReferenceArea y1={52.38} y2={yMax} fill="#16a34a" fillOpacity={0.08} ifOverflow="hidden" />
-          <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden" />
-          <ReferenceArea y1={yMin} y2={47.62} fill="#000000" fillOpacity={0.08} ifOverflow="hidden" />
+          <ReferenceArea y1={52.38} y2={yMax} fill="#16a34a" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="PROFITABLE MODEL" color="#16a34a" />} />
+          <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="NOT PROFITABLE" color="red" />} />
+          <ReferenceArea y1={yMin} y2={47.62} fill="#000000" fillOpacity={0.08} ifOverflow="hidden" label={<ZoneLabel label="PROFITABLE MUSH MODEL" color="#2b2b2b" />} />
 
           <ReferenceLine
             y={52.38}
