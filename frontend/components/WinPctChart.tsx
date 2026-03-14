@@ -2,7 +2,7 @@
 
 import {
   LineChart, Line, XAxis, YAxis, Tooltip,
-  ReferenceLine, ResponsiveContainer, CartesianGrid,
+  ReferenceLine, ReferenceArea, ResponsiveContainer, CartesianGrid,
 } from "recharts";
 import type { PerformancePick } from "@/lib/db";
 
@@ -60,10 +60,10 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
 }
 
 const RefLabel = ({ label, color, viewBox }: { label: string; color: string; viewBox?: { x?: number; y?: number; width?: number } }) => {
-  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) - 4;
-  const y = (viewBox?.y ?? 0) - 6;
+  const x = (viewBox?.x ?? 0) + (viewBox?.width ?? 0) + 8;
+  const y = (viewBox?.y ?? 0) + 4;
   return (
-    <text x={x} y={y} fill={color} fontSize={10} textAnchor="end" fontFamily="Montserrat, sans-serif">
+    <text x={x} y={y} fill={color} fontSize={10} textAnchor="start" fontFamily="Montserrat, sans-serif">
       {label}
     </text>
   );
@@ -122,6 +122,8 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
             width={44}
           />
           <Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
+
+          <ReferenceArea y1={47.62} y2={52.38} fill="red" fillOpacity={0.08} ifOverflow="hidden" />
 
           <ReferenceLine
             y={52.38}
