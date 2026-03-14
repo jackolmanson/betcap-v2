@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import type { PerformancePick } from "@/lib/db";
 import WinPctChart from "./WinPctChart";
 
@@ -62,7 +62,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
   const [sideFilter, setSideFilter] = useState<SideFilter>("all");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [resultFilter, setResultFilter] = useState<ResultFilter>("all");
-  const [confFilter, setConfFilter] = useState("all");
+  const [confFilter, setConfFilter] = useState<Set<string>>(new Set());
 
   // Unique sorted conferences from the data
   const conferences = useMemo(() => {
@@ -71,7 +71,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
       const c = pickedConference(p);
       if (c) set.add(c);
     }
-    return ["all", ...Array.from(set).sort()];
+    return Array.from(set).sort();
   }, [picks]);
 
   const filtered = useMemo(() => {
@@ -88,10 +88,10 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
         if (typeFilter === "favorite" && spread >= 0) return false;
         if (typeFilter === "underdog" && spread <= 0) return false;
       }
-      if (confFilter !== "all" && pickedConference(p) !== confFilter) return false;
+      if (confFilter.size > 0 && !confFilter.has(pickedConference(p) ?? "")) return false;
       return true;
     });
-  }, [picks, dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter]);
+  }, [picks, dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Summary stats (excluding pending)
   const settled = filtered.filter((p) => p.result && p.result !== "pending");
@@ -170,11 +170,14 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
           options={[["all", "All"], ["favorite", "Favorites"], ["underdog", "Underdogs"]]} />
         <FilterSelect label="Result" value={resultFilter} onChange={(v) => setResultFilter(v as ResultFilter)}
           options={[["all", "All"], ["win", "Wins"], ["loss", "Losses"], ["push", "Pushes"], ["pending", "Pending"]]} />
-        <FilterSelect label="Conference" value={confFilter} onChange={setConfFilter}
-          options={conferences.map((c) => [c, c === "all" ? "All Conferences" : c])} />
-        {(dateFrom || dateTo || sideFilter !== "all" || typeFilter !== "all" || resultFilter !== "all" || confFilter !== "all") && (
+        <ConferenceMultiSelect
+          conferences={conferences}
+          selected={confFilter}
+          onChange={setConfFilter}
+        />
+        {(dateFrom || dateTo || sideFilter !== "all" || typeFilter !== "all" || resultFilter !== "all" || confFilter.size > 0) && (
           <button
-            onClick={() => { setDateFrom(""); setDateTo(""); setSideFilter("all"); setTypeFilter("all"); setResultFilter("all"); setConfFilter("all"); }}
+            onClick={() => { setDateFrom(""); setDateTo(""); setSideFilter("all"); setTypeFilter("all"); setResultFilter("all"); setConfFilter(new Set()); }}
             className="self-end text-xs px-3 py-1 rounded"
             style={{ color: "var(--accent)", border: "1px solid var(--accent)" }}
           >
@@ -237,6 +240,74 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
         </div>
       )}
     </main>
+  );
+}
+
+function ConferenceMultiSelect({
+  conferences, selected, onChange,
+}: {
+  conferences: string[];
+  selected: Set<string>;
+  onChange: (s: Set<string>) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  function toggle(conf: string) {
+    const next = new Set(selected);
+    if (next.has(conf)) next.delete(conf);
+    else next.add(conf);
+    onChange(next);
+  }
+
+  const label = selected.size === 0
+    ? "All Conferences"
+    : selected.size === 1
+    ? Array.from(selected)[0]
+    : `${selected.size} conferences`;
+
+  return (
+    <div className="flex flex-col gap-1 relative" ref={ref}>
+      <label className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Conference</label>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="text-sm rounded px-2 py-1 text-left flex items-center gap-2"
+        style={{ border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", minWidth: 160 }}
+      >
+        <span className="flex-1 truncate">{label}</span>
+        <span style={{ color: "var(--text-muted)" }}>▾</span>
+      </button>
+      {open && (
+        <div
+          className="absolute top-full mt-1 z-50 rounded shadow-lg overflow-y-auto"
+          style={{ background: "var(--card)", border: "1px solid var(--border)", minWidth: 200, maxHeight: 260 }}
+        >
+          {conferences.map((conf) => (
+            <label
+              key={conf}
+              className="flex items-center gap-2 px-3 py-2 text-sm cursor-pointer hover:opacity-80"
+              style={{ color: "var(--text)" }}
+            >
+              <input
+                type="checkbox"
+                checked={selected.has(conf)}
+                onChange={() => toggle(conf)}
+                className="accent-[var(--accent)]"
+              />
+              {conf}
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
