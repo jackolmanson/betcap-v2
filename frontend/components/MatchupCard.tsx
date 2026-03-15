@@ -90,25 +90,29 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
       </div>
 
       {/* Final score + result */}
-      {pick.result && pick.result !== "pending" && pick.home_final_score != null && (
-        <div
-          className="flex items-center justify-between px-4 py-2 text-xs"
-          style={{ borderTop: "1px solid var(--border)", background: "var(--bg)" }}
-        >
-          <span style={{ color: "var(--text-muted)" }}>
-            <span className="font-bold" style={{ color: "var(--text)" }}>FINAL: </span>
-            {pick.home_display} {pick.home_final_score} – {pick.away_final_score} {pick.away_display}
-          </span>
-          <span
-            className="font-bold ml-3 shrink-0"
-            style={{
-              color: pick.result === "win" ? "#15803d" : pick.result === "loss" ? "#b91c1c" : "#b45309",
-            }}
-          >
-            {pick.result === "win" ? "✓ WIN" : pick.result === "loss" ? "✗ LOSS" : "~ PUSH"}
-          </span>
-        </div>
-      )}
+      <div
+        className="flex items-center justify-between px-4 py-2 text-xs"
+        style={{ borderTop: "1px solid var(--border)", background: "var(--bg)", minHeight: "2.25rem" }}
+      >
+        {pick.result && pick.result !== "pending" && pick.home_final_score != null ? (
+          <>
+            <span style={{ color: "var(--text-muted)" }}>
+              <span className="font-bold" style={{ color: "var(--text)" }}>FINAL: </span>
+              {pick.home_display} {pick.home_final_score} – {pick.away_final_score} {pick.away_display}
+            </span>
+            <span
+              className="font-bold ml-3 shrink-0"
+              style={{
+                color: pick.result === "win" ? "#15803d" : pick.result === "loss" ? "#b91c1c" : "#b45309",
+              }}
+            >
+              {pick.result === "win" ? "✓ WIN" : pick.result === "loss" ? "✗ LOSS" : "~ PUSH"}
+            </span>
+          </>
+        ) : (
+          <span className="font-bold text-xs" style={{ color: "var(--text)" }}>OUTCOME TBD</span>
+        )}
+      </div>
     </div>
   );
 }
