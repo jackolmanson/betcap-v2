@@ -61,7 +61,8 @@ def fetch_an_spreads(game_date: str) -> dict:
                 away_spread = float(closing["spread_away"])
                 home_spread = float(closing["spread_home"])
                 key = (away_info["location"].lower(), home_info["location"].lower())
-                spreads[key] = (away_spread, home_spread, away_info, home_info)
+                start_time = g.get("start_time")  # UTC ISO string e.g. "2026-01-01T19:00:00.000Z"
+                spreads[key] = (away_spread, home_spread, away_info, home_info, start_time)
                 break
 
     return spreads
@@ -125,9 +126,19 @@ def save_backfill_picks(date_str: str, picks: list):
         (date_str,)
     )
     existing = {(row[0], row[1]) for row in cur.fetchall()}
+
+    # Update game_time on existing records where it's still null
+    for p in picks:
+        if (p["home_espn_id"], p["away_espn_id"]) in existing and p.get("game_time"):
+            cur.execute(
+                "UPDATE picks SET game_time = %s WHERE home_espn_id = %s AND away_espn_id = %s AND date = %s AND game_time IS NULL",
+                (p["game_time"], p["home_espn_id"], p["away_espn_id"], date_str)
+            )
+
     picks = [p for p in picks if (p["home_espn_id"], p["away_espn_id"]) not in existing]
     if not picks:
         print(f"  [{date_str}] All games already present — skipping.")
+        conn.commit()
         cur.close()
         conn.close()
         return
@@ -141,7 +152,7 @@ def save_backfill_picks(date_str: str, picks: list):
         p["dk_home_spread"], p["dk_away_spread"],
         p["pick"],
         p["home_conference"], p["away_conference"],
-        None,
+        p.get("game_time"),
         p["home_final_score"], p["away_final_score"],
         p["result"],
     ) for p in picks]
@@ -233,7 +244,7 @@ def run_backfill(start_date: str, end_date: str):
                 total_no_spread += 1
                 continue
 
-            dk_away_spread, dk_home_spread, _, _ = spread_entry
+            dk_away_spread, dk_home_spread, _, _, game_time = spread_entry
 
             # Run model
             try:
@@ -271,6 +282,7 @@ def run_backfill(start_date: str, end_date: str):
                 "dk_home_spread": dk_home_spread,
                 "dk_away_spread": dk_away_spread,
                 "pick": pick,
+                "game_time": game_time,
                 "home_final_score": home_score,
                 "away_final_score": away_score,
                 "result": result,
