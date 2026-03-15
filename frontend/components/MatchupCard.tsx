@@ -88,6 +88,25 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
           spread={pick.dk_away_spread}
         />
       </div>
+
+      {/* Final score + result */}
+      {pick.result && pick.result !== "pending" && pick.home_final_score != null && (
+        <div
+          className="flex items-center justify-between px-4 py-2 text-xs font-semibold"
+          style={{
+            borderTop: "1px solid var(--border)",
+            background: pick.result === "win" ? "#f0fdf4" : pick.result === "loss" ? "#fef2f2" : "#f0f9ff",
+            color: pick.result === "win" ? "#15803d" : pick.result === "loss" ? "#b91c1c" : "#0369a1",
+          }}
+        >
+          <span>
+            {pick.home_display} {pick.home_final_score} – {pick.away_final_score} {pick.away_display}
+          </span>
+          <span>
+            {pick.result === "win" ? "✓ WIN" : pick.result === "loss" ? "✗ LOSS" : "~ PUSH"}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
