@@ -7,6 +7,7 @@ import WinPctChart from "./WinPctChart";
 type ResultFilter = "all" | "win" | "loss" | "push" | "pending";
 type SideFilter = "all" | "home" | "away";
 type TypeFilter = "all" | "favorite" | "underdog";
+type GameTypeFilter = "all" | "conference" | "nonconference";
 
 function pickedSpread(p: PerformancePick) {
   return p.pick === "home" ? p.dk_home_spread : p.dk_away_spread;
@@ -18,6 +19,10 @@ function pickedTeam(p: PerformancePick) {
 
 function pickedConference(p: PerformancePick) {
   return p.pick === "home" ? p.home_conference : p.away_conference;
+}
+
+function isConferenceGame(p: PerformancePick) {
+  return p.home_conference != null && p.home_conference === p.away_conference;
 }
 
 function fmt(n: number) {
@@ -63,6 +68,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [resultFilter, setResultFilter] = useState<ResultFilter>("all");
   const [confFilter, setConfFilter] = useState<Set<string>>(new Set());
+  const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>("all");
   const [scoring, setScoring] = useState(false);
   const [scoreMsg, setScoreMsg] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -107,12 +113,14 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
         if (typeFilter === "underdog" && spread <= 0) return false;
       }
       if (confFilter.size > 0 && !confFilter.has(pickedConference(p) ?? "")) return false;
+      if (gameTypeFilter === "conference" && !isConferenceGame(p)) return false;
+      if (gameTypeFilter === "nonconference" && isConferenceGame(p)) return false;
       return true;
     });
-  }, [picks, dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [picks, dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter, gameTypeFilter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reset to first page whenever filters change
-  useEffect(() => { setPage(0); }, [dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter]);
+  useEffect(() => { setPage(0); }, [dateFrom, dateTo, sideFilter, typeFilter, resultFilter, confFilter, gameTypeFilter]);
 
   // Summary stats (excluding pending)
   const settled = filtered.filter((p) => p.result && p.result !== "pending");
@@ -206,14 +214,16 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
           options={[["all", "All"], ["favorite", "Favorites"], ["underdog", "Underdogs"]]} />
         <FilterSelect label="Result" value={resultFilter} onChange={(v) => setResultFilter(v as ResultFilter)}
           options={[["all", "All"], ["win", "Wins"], ["loss", "Losses"], ["push", "Pushes"], ["pending", "Pending"]]} />
+        <FilterSelect label="Game Type" value={gameTypeFilter} onChange={(v) => setGameTypeFilter(v as GameTypeFilter)}
+          options={[["all", "All"], ["conference", "Conference"], ["nonconference", "Non-Conference"]]} />
         <ConferenceMultiSelect
           conferences={conferences}
           selected={confFilter}
           onChange={setConfFilter}
         />
-        {(dateFrom || dateTo || sideFilter !== "all" || typeFilter !== "all" || resultFilter !== "all" || confFilter.size > 0) && (
+        {(dateFrom || dateTo || sideFilter !== "all" || typeFilter !== "all" || resultFilter !== "all" || gameTypeFilter !== "all" || confFilter.size > 0) && (
           <button
-            onClick={() => { setDateFrom(""); setDateTo(""); setSideFilter("all"); setTypeFilter("all"); setResultFilter("all"); setConfFilter(new Set()); }}
+            onClick={() => { setDateFrom(""); setDateTo(""); setSideFilter("all"); setTypeFilter("all"); setResultFilter("all"); setGameTypeFilter("all"); setConfFilter(new Set()); }}
             className="self-end text-xs px-3 py-1 rounded"
             style={{ color: "var(--accent)", border: "1px solid var(--accent)" }}
           >
