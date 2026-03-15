@@ -1402,6 +1402,7 @@
     "sportsref": "PENN-STATE"
   },
   "Pennsylvania Quakers": {
+    "an_location": "Penn",
     "conference": "Ivy League",
     "display": "Pennsylvania",
     "espn_id": 219,
