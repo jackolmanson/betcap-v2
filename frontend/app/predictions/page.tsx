@@ -1,5 +1,6 @@
 import { getPicksForDate, getLatestPickDate } from "@/lib/db";
 import MatchupCard from "@/components/MatchupCard";
+import ScoreTodayButton from "@/components/ScoreTodayButton";
 
 export const dynamic = "force-dynamic";
 
@@ -20,9 +21,12 @@ export default async function PredictionsPage() {
   return (
     <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 lg:py-12">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-1" style={{ color: "var(--text)" }}>
-          Men&apos;s College Basketball Predictions
-        </h1>
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: "var(--text)" }}>
+            Men&apos;s College Basketball Predictions
+          </h1>
+          <ScoreTodayButton />
+        </div>
         {date && (
           <p className="text-sm sm:text-base mt-1" style={{ color: "var(--text-muted)" }}>
             {formatDate(date)}
