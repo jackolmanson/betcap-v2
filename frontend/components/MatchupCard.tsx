@@ -58,7 +58,7 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
       {/* Game time */}
       {pick.game_time && (
         <div
-          className="text-center text-xs font-medium py-2 px-4 tracking-wide"
+          className="text-center text-xs font-bold py-2 px-4 tracking-wide"
           style={{ borderBottom: "1px solid var(--border)", color: "var(--text-muted)", background: "var(--bg)" }}
         >
           {fmtGameTime(pick.game_time)}
