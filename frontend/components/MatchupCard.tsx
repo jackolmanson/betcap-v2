@@ -59,7 +59,7 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
       {pick.game_time && (
         <div
           className="text-center text-xs font-bold py-2 px-4 tracking-wide"
-          style={{ borderBottom: "1px solid var(--border)", color: "var(--text-muted)", background: "var(--bg)" }}
+          style={{ borderBottom: "1px solid var(--border)", color: "var(--text)", background: "var(--bg)" }}
         >
           {fmtGameTime(pick.game_time)}
         </div>
@@ -91,12 +91,12 @@ export default function MatchupCard({ pick }: { pick: Pick }) {
 
       {/* Final score + result */}
       <div
-        className="flex items-center justify-between px-4 py-2 text-xs"
-        style={{ borderTop: "1px solid var(--border)", background: "var(--bg)", minHeight: "2.25rem" }}
+        className="flex items-center justify-between px-4 text-xs"
+        style={{ borderTop: "1px solid var(--border)", background: "var(--bg)", height: "2.5rem" }}
       >
         {pick.result && pick.result !== "pending" && pick.home_final_score != null ? (
           <>
-            <span style={{ color: "var(--text-muted)" }}>
+            <span className="truncate mr-2" style={{ color: "var(--text-muted)" }}>
               <span className="font-bold" style={{ color: "var(--text)" }}>FINAL: </span>
               {pick.home_display} {pick.home_final_score} – {pick.away_final_score} {pick.away_display}
             </span>
