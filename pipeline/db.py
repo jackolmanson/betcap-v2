@@ -32,7 +32,15 @@ def save_picks(date_str, picks):
     conn = get_conn()
     cur = conn.cursor()
 
-    # Idempotent — clear and rewrite today's picks on each run
+    # Don't overwrite a date that already has scored results
+    cur.execute("SELECT COUNT(*) FROM picks WHERE date = %s AND result IN ('win','loss','push')", (date_str,))
+    if cur.fetchone()[0] > 0:
+        print(f"  [{date_str}] Skipping save — scored results already exist.")
+        cur.close()
+        conn.close()
+        return
+
+    # Idempotent — clear and rewrite picks for this date
     cur.execute("DELETE FROM picks WHERE date = %s", (date_str,))
 
     if not picks:

@@ -152,8 +152,9 @@ def build_input(team1, team2, team_data):
 
 
 def run_picks():
-    today = datetime.now(PT).date().isoformat()
-    print(f"\n=== Running picks for {today} ===\n")
+    today = datetime.now(PT).date()
+    today_str = today.isoformat()
+    print(f"\n=== Running picks (today: {today_str}) ===\n")
 
     import db
     db.run_migrations()
@@ -165,60 +166,66 @@ def run_picks():
     team_data = fetch_team_data()
     model = tf.keras.models.load_model(MODEL_PATH)
 
-    raw_games = fetch_an_games(today)
-    games = parse_an_games(raw_games, name_map)
+    # Fetch today + next 5 days so upcoming games appear as soon as AN posts them
+    fetch_dates = [(today + timedelta(days=i)).isoformat() for i in range(6)]
 
-    picks = []
-    for game in games:
-        try:
-            X = build_input(game["home_sportsref"], game["away_sportsref"], team_data)
-            model_home_spread = round(-float(model.predict(X, verbose=0)[0][0]), 1)
-            model_away_spread = round(-model_home_spread, 1)
-
-            dk_home = game["dk_home_spread"]
-            dk_away = game["dk_away_spread"]
-
-            home_edge = dk_home - model_home_spread
-            away_edge = dk_away - model_away_spread
-            pick = "home" if home_edge > away_edge else "away"
-
-            pick_obj = {
-                "game_date": game["game_date"],
-                "game_time": game["game_time"],
-                "home_display": game["home_display"],
-                "away_display": game["away_display"],
-                "home_sportsref": game["home_sportsref"],
-                "away_sportsref": game["away_sportsref"],
-                "home_espn_id": game["home_espn_id"],
-                "away_espn_id": game["away_espn_id"],
-                "home_conference": game["home_conference"],
-                "away_conference": game["away_conference"],
-                "model_home_spread": model_home_spread,
-                "model_away_spread": model_away_spread,
-                "dk_home_spread": dk_home,
-                "dk_away_spread": dk_away,
-                "pick": pick,
-            }
-            picks.append(pick_obj)
-
-            pick_team = game["home_display"] if pick == "home" else game["away_display"]
-            pick_spread = dk_home if pick == "home" else dk_away
-            print(f"{game['home_display']} vs {game['away_display']} — model: {model_home_spread:+.1f} | DK: {dk_home:+.1f} | PICK: {pick_team} {pick_spread:+.1f}")
-
-        except Exception as e:
-            print(f"Error on {game.get('home_display')} vs {game.get('away_display')}: {e}")
+    all_picks_by_date: dict = {}
+    for fetch_date in fetch_dates:
+        raw_games = fetch_an_games(fetch_date)
+        if not raw_games:
             continue
+        games = parse_an_games(raw_games, name_map)
 
-    # Only save picks for today — skip future dates (line could still move)
-    today_picks = [p for p in picks if p["game_date"] == today]
-    skipped = len(picks) - len(today_picks)
-    if skipped:
-        print(f"\nSkipping {skipped} picks for future dates")
+        for game in games:
+            try:
+                X = build_input(game["home_sportsref"], game["away_sportsref"], team_data)
+                model_home_spread = round(-float(model.predict(X, verbose=0)[0][0]), 1)
+                model_away_spread = round(-model_home_spread, 1)
 
-    db.save_picks(today, today_picks)
-    print(f"\nSaved {len(today_picks)} picks for {today}")
+                dk_home = game["dk_home_spread"]
+                dk_away = game["dk_away_spread"]
 
-    # Record results for yesterday's games
+                home_edge = dk_home - model_home_spread
+                away_edge = dk_away - model_away_spread
+                pick = "home" if home_edge > away_edge else "away"
+
+                pick_obj = {
+                    "game_date": game["game_date"],
+                    "game_time": game["game_time"],
+                    "home_display": game["home_display"],
+                    "away_display": game["away_display"],
+                    "home_sportsref": game["home_sportsref"],
+                    "away_sportsref": game["away_sportsref"],
+                    "home_espn_id": game["home_espn_id"],
+                    "away_espn_id": game["away_espn_id"],
+                    "home_conference": game["home_conference"],
+                    "away_conference": game["away_conference"],
+                    "model_home_spread": model_home_spread,
+                    "model_away_spread": model_away_spread,
+                    "dk_home_spread": dk_home,
+                    "dk_away_spread": dk_away,
+                    "pick": pick,
+                }
+
+                game_date = game["game_date"]
+                all_picks_by_date.setdefault(game_date, []).append(pick_obj)
+
+                pick_team = game["home_display"] if pick == "home" else game["away_display"]
+                pick_spread = dk_home if pick == "home" else dk_away
+                print(f"[{game_date}] {game['home_display']} vs {game['away_display']} — model: {model_home_spread:+.1f} | DK: {dk_home:+.1f} | PICK: {pick_team} {pick_spread:+.1f}")
+
+            except Exception as e:
+                print(f"Error on {game.get('home_display')} vs {game.get('away_display')}: {e}")
+                continue
+
+    for game_date, picks in all_picks_by_date.items():
+        db.save_picks(game_date, picks)
+        print(f"\nSaved {len(picks)} picks for {game_date}")
+
+    if not all_picks_by_date:
+        print("No games with spreads found in the next 6 days.")
+
+    # Record results for past games
     from record_results import record_results
     record_results()
 

@@ -74,10 +74,19 @@ export async function getAllPicksWithResults(): Promise<PerformancePick[]> {
 }
 
 export async function getLatestPickDate(): Promise<string | null> {
-  const rows = await sql`
+  // Return the earliest upcoming date with picks (today or future),
+  // falling back to the most recent past date if nothing is upcoming.
+  const upcoming = await sql`
+    SELECT date::text FROM picks
+    WHERE date >= CURRENT_DATE
+    ORDER BY date ASC LIMIT 1
+  `;
+  if (upcoming.length > 0) return upcoming[0].date as string;
+
+  const past = await sql`
     SELECT date::text FROM picks
     ORDER BY date DESC LIMIT 1
   `;
-  if (rows.length === 0) return null;
-  return rows[0].date as string;
+  if (past.length === 0) return null;
+  return past[0].date as string;
 }
