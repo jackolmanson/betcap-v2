@@ -121,7 +121,7 @@ export async function getUpcomingPicks(startDate: string, minGames = 25): Promis
   }
 
   const result: Pick[] = [];
-  for (const date of Object.keys(byDate).sort()) {
+  for (const date of Object.keys(byDate).sort().slice(0, 3)) {
     result.push(...byDate[date]);
     if (result.length >= minGames) break;
   }
