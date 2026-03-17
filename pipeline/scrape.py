@@ -46,6 +46,7 @@ def fetch_team_data(year: int = None) -> pd.DataFrame:
     for n in range(len(rows_data)):
         try:
             rows_data[n].append(rows_data2[n][24])
+            rows_data[n][0] = rows_data[n][0].replace("\xa0NCAA", "").replace(" NCAA", "").strip()
             rows_data[n][0] = rows_data[n][0].upper()
             rows_data[n][0] = rows_data[n][0].replace(" ", "-")
             rows_data[n][0] = rows_data[n][0].replace("&", "")
