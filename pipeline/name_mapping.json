@@ -1009,7 +1009,7 @@
     "conference": "Southland Conference",
     "display": "Mcneese State",
     "espn_id": 2377,
-    "sportsref": "MCNEESE-STATE"
+    "sportsref": "MCNEESE"
   },
   "Memphis Tigers": {
     "conference": "American Conference",
@@ -1436,7 +1436,7 @@
     "conference": "SWAC",
     "display": "Prairie View",
     "espn_id": 2504,
-    "sportsref": "PRAIRIE-VIEW"
+    "sportsref": "PRAIRIE-VIEW-AM"
   },
   "Presbyterian Blue Hose": {
     "conference": "Big South Conference",
@@ -1577,7 +1577,7 @@
     "conference": "West Coast Conference",
     "display": "Saint Mary'S Ca",
     "espn_id": 2608,
-    "sportsref": "SAINT-MARYS-CA"
+    "sportsref": "SAINT-MARYS"
   },
   "Sam Houston St Bearkats": {
     "conference": "Conference USA",
@@ -1799,7 +1799,7 @@
     "conference": "Big 12 Conference",
     "display": "TCU",
     "espn_id": 2628,
-    "sportsref": "TCU"
+    "sportsref": "TEXAS-CHRISTIAN"
   },
   "TEXAS-SOUTHERN": {
     "conference": "SWAC",
