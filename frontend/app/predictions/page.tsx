@@ -1,4 +1,4 @@
-import { getPicksForDate, getLatestPickDate } from "@/lib/db";
+import { getUpcomingPicks, getLatestPickDate } from "@/lib/db";
 import MatchupCard from "@/components/MatchupCard";
 import ScoreTodayButton from "@/components/ScoreTodayButton";
 
@@ -16,7 +16,16 @@ function formatDate(isoDate: string): string {
 
 export default async function PredictionsPage() {
   const date = await getLatestPickDate();
-  const picks = date ? await getPicksForDate(date) : [];
+  const picks = date ? await getUpcomingPicks(date) : [];
+
+  // Group by date
+  const byDate: Record<string, typeof picks> = {};
+  for (const pick of picks) {
+    const d = pick.date ?? date!;
+    (byDate[d] ??= []).push(pick);
+  }
+  const dates = Object.keys(byDate).sort();
+  const multiDay = dates.length > 1;
 
   return (
     <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 lg:py-12">
@@ -27,7 +36,7 @@ export default async function PredictionsPage() {
           </h1>
           <ScoreTodayButton />
         </div>
-        {date && (
+        {!multiDay && date && (
           <p className="text-sm sm:text-base mt-1" style={{ color: "var(--text-muted)" }}>
             {formatDate(date)}
           </p>
@@ -47,11 +56,23 @@ export default async function PredictionsPage() {
           <p className="text-sm font-medium mb-5" style={{ color: "var(--text-muted)" }}>
             {picks.length} upcoming game{picks.length !== 1 ? "s" : ""}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-            {picks.map((pick) => (
-              <MatchupCard key={pick.id} pick={pick} />
-            ))}
-          </div>
+          {dates.map((d) => (
+            <div key={d} className="mb-10">
+              {multiDay && (
+                <h2
+                  className="text-base font-bold mb-4"
+                  style={{ color: "var(--text)" }}
+                >
+                  {formatDate(d)}
+                </h2>
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                {byDate[d].map((pick) => (
+                  <MatchupCard key={pick.id} pick={pick} />
+                ))}
+              </div>
+            </div>
+          ))}
         </>
       )}
     </main>

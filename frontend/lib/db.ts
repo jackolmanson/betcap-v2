@@ -4,6 +4,7 @@ const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
 
 export interface Pick {
   id: number;
+  date?: string;
   home_display: string;
   away_display: string;
   home_sportsref: string;
@@ -89,4 +90,40 @@ export async function getLatestPickDate(): Promise<string | null> {
   `;
   if (past.length === 0) return null;
   return past[0].date as string;
+}
+
+export async function getUpcomingPicks(startDate: string, minGames = 25): Promise<Pick[]> {
+  // Fetch picks starting from startDate, spanning additional days until we have minGames.
+  const rows = await sql<Pick[]>`
+    SELECT
+      id, date::text AS date,
+      home_display, away_display,
+      home_sportsref, away_sportsref,
+      home_espn_id, away_espn_id,
+      model_home_spread, model_away_spread,
+      dk_home_spread, dk_away_spread,
+      pick,
+      game_time,
+      home_final_score, away_final_score,
+      result
+    FROM picks
+    WHERE date >= ${startDate}
+    ORDER BY date ASC, game_time ASC NULLS LAST, id
+    LIMIT 200
+  `;
+
+  // Return just the startDate's picks if already >= minGames,
+  // otherwise keep adding days until we reach minGames.
+  const byDate: Record<string, Pick[]> = {};
+  for (const row of rows) {
+    const d = (row as Pick & { date: string }).date;
+    (byDate[d] ??= []).push(row);
+  }
+
+  const result: Pick[] = [];
+  for (const date of Object.keys(byDate).sort()) {
+    result.push(...byDate[date]);
+    if (result.length >= minGames) break;
+  }
+  return result;
 }
