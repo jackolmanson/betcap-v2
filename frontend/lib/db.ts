@@ -92,9 +92,10 @@ export async function getLatestPickDate(): Promise<string | null> {
   return past[0].date as string;
 }
 
-export async function getUpcomingPicks(startDate: string, minGames = 25): Promise<Pick[]> {
-  // Fetch picks starting from startDate, spanning additional days until we have minGames.
-  const rows = await sql<Pick[]>`
+export async function getUpcomingPicks(minGames = 25): Promise<Pick[]> {
+  // Use ET date so today's completed games stay visible all day,
+  // even after midnight UTC (~7 PM ET).
+  const upcoming = await sql<Pick[]>`
     SELECT
       id, date::text AS date,
       home_display, away_display,
@@ -107,23 +108,41 @@ export async function getUpcomingPicks(startDate: string, minGames = 25): Promis
       home_final_score, away_final_score,
       result
     FROM picks
-    WHERE date >= ${startDate}
+    WHERE date >= (CURRENT_TIMESTAMP AT TIME ZONE 'America/New_York')::date
     ORDER BY date ASC, game_time ASC NULLS LAST, id
     LIMIT 200
   `;
 
-  // Return just the startDate's picks if already >= minGames,
-  // otherwise keep adding days until we reach minGames.
-  const byDate: Record<string, Pick[]> = {};
-  for (const row of rows) {
-    const d = (row as Pick & { date: string }).date;
-    (byDate[d] ??= []).push(row);
+  if (upcoming.length > 0) {
+    const byDate: Record<string, Pick[]> = {};
+    for (const row of upcoming) {
+      const d = (row as Pick & { date: string }).date;
+      (byDate[d] ??= []).push(row);
+    }
+    const result: Pick[] = [];
+    for (const date of Object.keys(byDate).sort().slice(0, 3)) {
+      result.push(...byDate[date]);
+      if (result.length >= minGames) break;
+    }
+    return result;
   }
 
-  const result: Pick[] = [];
-  for (const date of Object.keys(byDate).sort().slice(0, 3)) {
-    result.push(...byDate[date]);
-    if (result.length >= minGames) break;
-  }
-  return result;
+  // Fallback: no upcoming picks — show most recent past date
+  const past = await sql<Pick[]>`
+    SELECT
+      id, date::text AS date,
+      home_display, away_display,
+      home_sportsref, away_sportsref,
+      home_espn_id, away_espn_id,
+      model_home_spread, model_away_spread,
+      dk_home_spread, dk_away_spread,
+      pick,
+      game_time,
+      home_final_score, away_final_score,
+      result
+    FROM picks
+    WHERE date = (SELECT MAX(date) FROM picks)
+    ORDER BY game_time ASC NULLS LAST, id
+  `;
+  return past;
 }

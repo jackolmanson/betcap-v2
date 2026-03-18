@@ -1,4 +1,4 @@
-import { getUpcomingPicks, getLatestPickDate } from "@/lib/db";
+import { getUpcomingPicks } from "@/lib/db";
 import MatchupCard from "@/components/MatchupCard";
 import ScoreTodayButton from "@/components/ScoreTodayButton";
 
@@ -15,13 +15,11 @@ function formatDate(isoDate: string): string {
 }
 
 export default async function PredictionsPage() {
-  const date = await getLatestPickDate();
-  const picks = date ? await getUpcomingPicks(date) : [];
+  const picks = await getUpcomingPicks();
 
-  // Group by date
   const byDate: Record<string, typeof picks> = {};
   for (const pick of picks) {
-    const d = pick.date ?? date!;
+    const d = pick.date!;
     (byDate[d] ??= []).push(pick);
   }
   const dates = Object.keys(byDate).sort();
@@ -36,15 +34,15 @@ export default async function PredictionsPage() {
           </h1>
           <ScoreTodayButton />
         </div>
-        {!multiDay && date && (
+        {!multiDay && dates[0] && (
           <p className="text-sm sm:text-base mt-1" style={{ color: "var(--text-muted)" }}>
-            {formatDate(date)}
+            {formatDate(dates[0])}
           </p>
         )}
         <hr className="mt-4" style={{ borderColor: "var(--border)" }} />
       </div>
 
-      {!date || picks.length === 0 ? (
+      {picks.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-lg font-semibold mb-2" style={{ color: "var(--text)" }}>Roadblock!</p>
           <p className="text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
@@ -54,15 +52,12 @@ export default async function PredictionsPage() {
       ) : (
         <>
           <p className="text-sm font-medium mb-5" style={{ color: "var(--text-muted)" }}>
-            {picks.length} upcoming game{picks.length !== 1 ? "s" : ""}
+            {picks.length} game{picks.length !== 1 ? "s" : ""}
           </p>
           {dates.map((d) => (
             <div key={d} className="mb-10">
               {multiDay && (
-                <h2
-                  className="text-base font-bold mb-4"
-                  style={{ color: "var(--text)" }}
-                >
+                <h2 className="text-base font-bold mb-4" style={{ color: "var(--text)" }}>
                   {formatDate(d)}
                 </h2>
               )}
