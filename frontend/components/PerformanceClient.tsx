@@ -13,7 +13,12 @@ type GameTypeFilter = "all" | "conference" | "nonconference";
 function getDateBounds(filter: TimeFilter): { from: string; to: string } {
   if (filter === "all") return { from: "", to: "" };
   const today = new Date();
-  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  const fmt = (d: Date) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
   if (filter === "season") return { from: "2025-11-01", to: "" };
   if (filter === "yesterday") {
     const d = new Date(today);
