@@ -7,7 +7,12 @@ import {
 } from "recharts";
 import type { PerformancePick } from "@/lib/db";
 
-type Strategy = "none" | "favorites" | "underdogs" | "home" | "away";
+type Strategy =
+  | "none"
+  | "favorites" | "underdogs"
+  | "home" | "away"
+  | "home_favorites" | "home_underdogs"
+  | "away_favorites" | "away_underdogs";
 
 interface ChartPoint {
   date: string;
@@ -25,11 +30,20 @@ function hypotheticalResult(
 ): "win" | "loss" | "push" | null {
   if (p.home_final_score == null || p.away_final_score == null) return null;
 
+  const homeFav = p.dk_home_spread < 0;
+  const awayFav = p.dk_away_spread < 0;
+
   let hypPick: "home" | "away";
-  if (strategy === "home") hypPick = "home";
-  else if (strategy === "away") hypPick = "away";
-  else if (strategy === "favorites") hypPick = p.dk_home_spread < 0 ? "home" : "away";
-  else hypPick = p.dk_home_spread > 0 ? "home" : "away"; // underdogs
+  switch (strategy) {
+    case "home":          hypPick = "home"; break;
+    case "away":          hypPick = "away"; break;
+    case "favorites":     hypPick = homeFav ? "home" : "away"; break;
+    case "underdogs":     hypPick = homeFav ? "away" : "home"; break;
+    case "home_favorites":  if (!homeFav) return null; hypPick = "home"; break;
+    case "home_underdogs":  if (!awayFav) return null; hypPick = "home"; break;
+    case "away_favorites":  if (!awayFav) return null; hypPick = "away"; break;
+    case "away_underdogs":  if (!homeFav) return null; hypPick = "away"; break;
+  }
 
   const spread = hypPick === "home" ? p.dk_home_spread : p.dk_away_spread;
   const margin = hypPick === "home"
@@ -98,6 +112,10 @@ const STRATEGY_LABELS: Record<Strategy, string> = {
   underdogs: "Always Underdogs",
   home: "Always Home",
   away: "Always Away",
+  home_favorites: "Home Favorites",
+  home_underdogs: "Home Underdogs",
+  away_favorites: "Away Favorites",
+  away_underdogs: "Away Underdogs",
 };
 
 function CustomTooltip({ active, payload, strategy }: {
