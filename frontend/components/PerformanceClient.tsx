@@ -5,6 +5,52 @@ import type { PerformancePick } from "@/lib/db";
 import WinPctChart from "./WinPctChart";
 
 type TimeFilter = "all" | "season" | "30d" | "14d" | "7d" | "yesterday";
+export type Strategy =
+  | "none"
+  | "favorites" | "underdogs"
+  | "home" | "away"
+  | "home_favorites" | "home_underdogs"
+  | "away_favorites" | "away_underdogs";
+
+export const STRATEGY_LABELS: Record<Strategy, string> = {
+  none: "None",
+  favorites: "Always Favorites",
+  underdogs: "Always Underdogs",
+  home: "Always Home",
+  away: "Always Away",
+  home_favorites: "Home Favorites",
+  home_underdogs: "Home Underdogs",
+  away_favorites: "Away Favorites",
+  away_underdogs: "Away Underdogs",
+};
+
+function hypotheticalPick(p: PerformancePick, strategy: Exclude<Strategy, "none">): "home" | "away" | null {
+  const homeFav = p.dk_home_spread < 0;
+  switch (strategy) {
+    case "home": return "home";
+    case "away": return "away";
+    case "favorites": return homeFav ? "home" : "away";
+    case "underdogs": return homeFav ? "away" : "home";
+    case "home_favorites": return homeFav ? "home" : null;
+    case "home_underdogs": return !homeFav ? "home" : null;
+    case "away_favorites": return !homeFav ? "away" : null;
+    case "away_underdogs": return homeFav ? "away" : null;
+  }
+}
+
+function hypotheticalResult(p: PerformancePick, strategy: Exclude<Strategy, "none">): "win" | "loss" | "push" | null {
+  if (p.home_final_score == null || p.away_final_score == null) return null;
+  const hypPick = hypotheticalPick(p, strategy);
+  if (!hypPick) return null;
+  const spread = hypPick === "home" ? p.dk_home_spread : p.dk_away_spread;
+  const margin = hypPick === "home"
+    ? p.home_final_score - p.away_final_score
+    : p.away_final_score - p.home_final_score;
+  const covered = margin + spread;
+  if (covered > 0) return "win";
+  if (covered < 0) return "loss";
+  return "push";
+}
 type ResultFilter = "all" | "win" | "loss" | "push" | "pending";
 type SideFilter = "all" | "home" | "away";
 type TypeFilter = "all" | "favorite" | "underdog";
@@ -91,6 +137,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
   const [resultFilter, setResultFilter] = useState<ResultFilter>("all");
   const [confFilter, setConfFilter] = useState<Set<string>>(new Set());
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>("all");
+  const [strategy, setStrategy] = useState<Strategy>("none");
   const [scoring, setScoring] = useState(false);
   const [scoreMsg, setScoreMsg] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -157,6 +204,27 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
     ? (roiUnits / (wins + losses)) * 100
     : null;
 
+  // Hypothetical strategy stats
+  const hypStats = useMemo(() => {
+    if (strategy === "none") return null;
+    let hypWins = 0, hypLosses = 0, hypPushes = 0, hypPending = 0, hypTotal = 0;
+    for (const p of filtered) {
+      const hypPick = hypotheticalPick(p, strategy);
+      if (!hypPick) continue;
+      hypTotal++;
+      const r = hypotheticalResult(p, strategy);
+      if (r === "win") hypWins++;
+      else if (r === "loss") hypLosses++;
+      else if (r === "push") hypPushes++;
+      else hypPending++;
+    }
+    const hypSettled = hypWins + hypLosses;
+    const hypWinPct = hypSettled > 0 ? ((hypWins / hypSettled) * 100).toFixed(1) : "—";
+    const hypRoiUnits = hypSettled > 0 ? hypWins * (100 / 110) - hypLosses : null;
+    const hypRoiPct = hypRoiUnits !== null && hypSettled > 0 ? (hypRoiUnits / hypSettled) * 100 : null;
+    return { hypWins, hypLosses, hypPushes, hypPending, hypTotal, hypWinPct, hypRoiUnits, hypRoiPct };
+  }, [filtered, strategy]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <main className="max-w-6xl mx-auto px-6 sm:px-10 py-8 lg:py-12">
       {/* Header */}
@@ -203,8 +271,36 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
         ))}
       </div>
 
+      {/* Hypothetical strategy stats bar */}
+      {hypStats && (
+        <div className="mb-6">
+          <div className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: "#e07b39" }}>
+            {STRATEGY_LABELS[strategy]}
+          </div>
+          <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              { label: "Record", value: `${hypStats.hypWins}-${hypStats.hypLosses}${hypStats.hypPushes > 0 ? `-${hypStats.hypPushes}` : ""}` },
+              { label: "Win %", value: hypStats.hypWinPct === "—" ? "—" : `${hypStats.hypWinPct}%` },
+              { label: "ROI (units)", value: hypStats.hypRoiUnits !== null ? `${hypStats.hypRoiUnits >= 0 ? "+" : ""}${hypStats.hypRoiUnits.toFixed(1)}u` : "—" },
+              { label: "ROI %", value: hypStats.hypRoiPct !== null ? `${hypStats.hypRoiPct >= 0 ? "+" : ""}${hypStats.hypRoiPct.toFixed(1)}%` : "—" },
+              { label: "Picks shown", value: hypStats.hypTotal },
+              { label: "Pending", value: hypStats.hypPending },
+            ].map(({ label, value }) => (
+              <div
+                key={label}
+                className="rounded-lg p-3 sm:p-4 text-center"
+                style={{ background: "var(--card)", border: "1px solid #e07b39" }}
+              >
+                <div className="text-xs font-medium mb-1 leading-tight" style={{ color: "var(--text-muted)" }}>{label}</div>
+                <div className="text-lg sm:text-xl font-bold" style={{ color: "#e07b39" }}>{value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Win % chart */}
-      <WinPctChart picks={filtered} />
+      <WinPctChart picks={filtered} strategy={strategy} onStrategyChange={setStrategy} />
 
       {/* Filters */}
       <div

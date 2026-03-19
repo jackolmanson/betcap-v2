@@ -6,13 +6,8 @@ import {
   ReferenceLine, ReferenceArea, ResponsiveContainer, CartesianGrid,
 } from "recharts";
 import type { PerformancePick } from "@/lib/db";
-
-type Strategy =
-  | "none"
-  | "favorites" | "underdogs"
-  | "home" | "away"
-  | "home_favorites" | "home_underdogs"
-  | "away_favorites" | "away_underdogs";
+import type { Strategy } from "./PerformanceClient";
+import { STRATEGY_LABELS } from "./PerformanceClient";
 
 interface ChartPoint {
   date: string;
@@ -106,17 +101,6 @@ function fmtAxisDate(iso: string): string {
   return `${m}/${d}/${y}`;
 }
 
-const STRATEGY_LABELS: Record<Strategy, string> = {
-  none: "None",
-  favorites: "Always Favorites",
-  underdogs: "Always Underdogs",
-  home: "Always Home",
-  away: "Always Away",
-  home_favorites: "Home Favorites",
-  home_underdogs: "Home Underdogs",
-  away_favorites: "Away Favorites",
-  away_underdogs: "Away Underdogs",
-};
 
 function CustomTooltip({ active, payload, strategy }: {
   active?: boolean;
@@ -169,9 +153,12 @@ const ZoneLabel = ({
   );
 };
 
-export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
+export default function WinPctChart({ picks, strategy, onStrategyChange }: {
+  picks: PerformancePick[];
+  strategy: Strategy;
+  onStrategyChange: (s: Strategy) => void;
+}) {
   const [isMobile, setIsMobile] = useState(false);
-  const [strategy, setStrategy] = useState<Strategy>("none");
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -223,7 +210,7 @@ export default function WinPctChart({ picks }: { picks: PerformancePick[] }) {
           <label className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>Compare:</label>
           <select
             value={strategy}
-            onChange={(e) => setStrategy(e.target.value as Strategy)}
+            onChange={(e) => onStrategyChange(e.target.value as Strategy)}
             className="text-xs rounded px-2 py-1"
             style={{ border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)" }}
           >
