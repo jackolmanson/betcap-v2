@@ -294,40 +294,65 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
               </table>
             </div>
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-4">
-                <button
-                  onClick={() => setPage((p) => Math.max(0, p - 1))}
-                  disabled={page === 0}
-                  className="text-xs px-3 py-1.5 rounded"
-                  style={{
-                    border: "1px solid var(--border)",
-                    color: page === 0 ? "var(--text-muted)" : "var(--text)",
-                    opacity: page === 0 ? 0.4 : 1,
-                  }}
-                >
-                  ← Previous
-                </button>
-                <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-                  Page {page + 1} of {totalPages} &nbsp;·&nbsp; {filtered.length} picks
-                </span>
-                <button
-                  onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-                  disabled={page === totalPages - 1}
-                  className="text-xs px-3 py-1.5 rounded"
-                  style={{
-                    border: "1px solid var(--border)",
-                    color: page === totalPages - 1 ? "var(--text-muted)" : "var(--text)",
-                    opacity: page === totalPages - 1 ? 0.4 : 1,
-                  }}
-                >
-                  Next →
-                </button>
+              <div className="flex items-center justify-center gap-1 mt-4 flex-wrap">
+                {/* Previous */}
+                <PageBtn onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0}>←</PageBtn>
+
+                {/* Page numbers with ellipsis */}
+                {buildPageNums(page, totalPages).map((item, i) =>
+                  item === "..." ? (
+                    <span key={`ellipsis-${i}`} className="px-1 text-xs" style={{ color: "var(--text-muted)" }}>…</span>
+                  ) : (
+                    <PageBtn key={item} onClick={() => setPage(item as number)} active={page === item}>{(item as number) + 1}</PageBtn>
+                  )
+                )}
+
+                {/* Next */}
+                <PageBtn onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}>→</PageBtn>
               </div>
             )}
           </>
         );
       })()}
     </main>
+  );
+}
+
+function buildPageNums(current: number, total: number): (number | "...")[] {
+  if (total <= 9) return Array.from({ length: total }, (_, i) => i);
+  const pages: (number | "...")[] = [];
+  const add = (n: number) => { if (!pages.includes(n)) pages.push(n); };
+  add(0);
+  for (let i = Math.max(1, current - 3); i <= Math.min(total - 2, current + 3); i++) add(i);
+  add(total - 1);
+  const result: (number | "...")[] = [];
+  let prev = -1;
+  for (const p of pages as number[]) {
+    if (p - prev > 1) result.push("...");
+    result.push(p);
+    prev = p;
+  }
+  return result;
+}
+
+function PageBtn({ onClick, disabled, active, children }: {
+  onClick: () => void; disabled?: boolean; active?: boolean; children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="text-xs px-2.5 py-1.5 rounded min-w-[30px] text-center"
+      style={{
+        border: "1px solid var(--border)",
+        background: active ? "var(--accent)" : "transparent",
+        color: active ? "white" : disabled ? "var(--text-muted)" : "var(--text)",
+        opacity: disabled ? 0.4 : 1,
+        fontWeight: active ? 700 : 400,
+      }}
+    >
+      {children}
+    </button>
   );
 }
 
