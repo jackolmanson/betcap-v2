@@ -160,7 +160,7 @@
     "sportsref": "BINGHAMTON"
   },
   "Boise State Broncos": {
-    "conference": "Mountain West Conference",
+    "conference": "Pac-12 Conference",
     "display": "Boise State",
     "espn_id": 68,
     "sportsref": "BOISE-STATE"
@@ -238,7 +238,7 @@
     "sportsref": "CAL-STATE-NORTHRIDGE"
   },
   "Cal Baptist Lancers": {
-    "conference": "WAC",
+    "conference": "Big West Conference",
     "display": "California Baptist",
     "espn_id": 2856,
     "sportsref": "CALIFORNIA-BAPTIST"
@@ -352,7 +352,7 @@
     "sportsref": "COLORADO"
   },
   "Colorado St Rams": {
-    "conference": "Mountain West Conference",
+    "conference": "Pac-12 Conference",
     "display": "Colorado State",
     "espn_id": 36,
     "sportsref": "COLORADO-STATE"
@@ -562,7 +562,7 @@
     "sportsref": "FORDHAM"
   },
   "Fresno St Bulldogs": {
-    "conference": "Mountain West Conference",
+    "conference": "Pac-12 Conference",
     "display": "Fresno State",
     "espn_id": 278,
     "sportsref": "FRESNO-STATE"
@@ -629,7 +629,7 @@
     "sportsref": "GEORGIA-TECH"
   },
   "Gonzaga Bulldogs": {
-    "conference": "West Coast Conference",
+    "conference": "Pac-12 Conference",
     "display": "Gonzaga",
     "espn_id": 2250,
     "sportsref": "GONZAGA"
@@ -666,7 +666,7 @@
   },
   "Hawai'i Rainbow Warriors": {
     "an_location": "Hawai'i",
-    "conference": "Big West Conference",
+    "conference": "Mountain West Conference",
     "display": "Hawaii",
     "espn_id": 62,
     "sportsref": "HAWAII"
@@ -1198,7 +1198,7 @@
     "sportsref": "NEW-MEXICO"
   },
   "New Mexico St Aggies": {
-    "conference": "Mountain West Conference",
+    "conference": "Conference USA",
     "display": "New Mexico St",
     "espn_id": 166,
     "sportsref": "NEW-MEXICO-STATE"
@@ -1288,7 +1288,7 @@
     "sportsref": "NORTHERN-ARIZONA"
   },
   "Northern Illinois Huskies": {
-    "conference": "Mid-American Conference",
+    "conference": "Horizon League",
     "display": "Northern Illinois",
     "espn_id": 2459,
     "sportsref": "NORTHERN-ILLINOIS"
@@ -1549,7 +1549,7 @@
     "sportsref": "SOUTHERN-METHODIST"
   },
   "Sacramento St Hornets": {
-    "conference": "Big Sky Conference",
+    "conference": "Big West Conference",
     "display": "Sacramento State",
     "espn_id": 16,
     "sportsref": "SACRAMENTO-STATE"
@@ -1592,7 +1592,7 @@
     "sportsref": "SAMFORD"
   },
   "San Diego St Aztecs": {
-    "conference": "Mountain West Conference",
+    "conference": "Pac-12 Conference",
     "display": "San Diego State",
     "espn_id": 21,
     "sportsref": "SAN-DIEGO-STATE"
@@ -1706,7 +1706,7 @@
     "sportsref": "SOUTHERN-MISSISSIPPI"
   },
   "Southern Utah Thunderbirds": {
-    "conference": "WAC",
+    "conference": "Big Sky Conference",
     "display": "Southern Utah",
     "espn_id": 253,
     "sportsref": "SOUTHERN-UTAH"
@@ -1875,7 +1875,7 @@
     "sportsref": "TEXAS-SOUTHERN"
   },
   "Texas State Bobcats": {
-    "conference": "Sun Belt Conference",
+    "conference": "Pac-12 Conference",
     "display": "Texas State",
     "espn_id": 326,
     "sportsref": "TEXAS-STATE"
@@ -1929,7 +1929,7 @@
     "sportsref": "UAB"
   },
   "UC Davis Aggies": {
-    "conference": "Big West Conference",
+    "conference": "Mountain West Conference",
     "display": "UC Davis",
     "espn_id": 302,
     "sportsref": "UC-DAVIS"
@@ -2048,7 +2048,7 @@
     "sportsref": "UT-ARLINGTON"
   },
   "UTEP Miners": {
-    "conference": "Conference USA",
+    "conference": "Mountain West Conference",
     "display": "UTEP",
     "espn_id": 2638,
     "sportsref": "UTEP"
@@ -2060,13 +2060,13 @@
     "sportsref": "UTSA"
   },
   "Utah State Aggies": {
-    "conference": "Mountain West Conference",
+    "conference": "Pac-12 Conference",
     "display": "Utah State",
     "espn_id": 328,
     "sportsref": "UTAH-STATE"
   },
   "Utah Tech Trailblazers": {
-    "conference": "WAC",
+    "conference": "Big Sky Conference",
     "display": "Utah Tech",
     "espn_id": 3101,
     "sportsref": "UTAH-TECH"
@@ -2078,7 +2078,7 @@
     "sportsref": "UTAH"
   },
   "Utah Valley Wolverines": {
-    "conference": "WAC",
+    "conference": "Big West Conference",
     "display": "Utah Valley",
     "espn_id": 3084,
     "sportsref": "UTAH-VALLEY"

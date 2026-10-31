@@ -16,14 +16,18 @@ from scrape import fetch_team_data
 
 class TestYearCalculation:
 
+    def _requested_url(self, today=None, year=None):
+        """Run fetch_team_data far enough to capture the first URL it requests."""
+        with patch("scrape.date") as mock_date, \
+             patch("scrape.requests.get", side_effect=Exception("stop early")) as mock_get:
+            mock_date.today.return_value = today or date(2026, 6, 1)
+            with pytest.raises(Exception, match="stop early"):
+                fetch_team_data(year=year)
+            return mock_get.call_args_list[0][0][0]
+
     def _year_for(self, month, day=15, year=2026):
-        fake_date = date(year, month, day)
-        with patch("scrape.date") as mock_date:
-            mock_date.today.return_value = fake_date
-            # Replicate the logic directly (fetch_team_data makes HTTP calls,
-            # so test the formula in isolation)
-            today = mock_date.today()
-            return today.year + 1 if today.month >= 11 else today.year
+        url = self._requested_url(today=date(year, month, day))
+        return int(url.rsplit("/", 1)[1].split("-")[0])
 
     def test_january_uses_current_year(self):
         assert self._year_for(1) == 2026
@@ -34,33 +38,23 @@ class TestYearCalculation:
     def test_october_uses_current_year(self):
         assert self._year_for(10) == 2026
 
-    def test_november_uses_next_year(self):
-        assert self._year_for(11) == 2027
+    def test_november_keeps_last_season(self):
+        assert self._year_for(11) == 2026
 
-    def test_december_uses_next_year(self):
-        assert self._year_for(12) == 2027
+    def test_december_keeps_last_season(self):
+        assert self._year_for(12, day=31) == 2026
 
-    def test_boundary_october_31(self):
-        assert self._year_for(10, day=31) == 2026
-
-    def test_boundary_november_1(self):
-        assert self._year_for(11, day=1) == 2027
+    def test_boundary_january_1_switches_season(self):
+        assert self._year_for(1, day=1, year=2027) == 2027
 
     def test_explicit_year_overrides_auto(self):
         """Passing an explicit year bypasses date logic entirely."""
-        mock_resp = MagicMock()
-        mock_resp.text = "<html></html>"
-        with patch("scrape.requests.get", return_value=mock_resp):
-            with patch("scrape.BeautifulSoup") as mock_bs:
-                # Make it raise so we don't need full HTML parsing
-                mock_bs.side_effect = Exception("stop early")
-                with pytest.raises(Exception):
-                    fetch_team_data(year=2025)
-                # Verify the URL used 2025, not the current year
-                call_urls = [str(c) for c in mock_resp.method_calls]
-                # requests.get was called with the 2025 URL
-                import scrape as s
-                calls = scrape.requests.get.call_args_list if hasattr(scrape.requests.get, 'call_args_list') else []
+        assert "/2025-advanced-school-stats" in self._requested_url(year=2025)
+
+    def test_uses_mens_seasons_path(self):
+        assert self._requested_url().startswith(
+            "https://www.sports-reference.com/cbb/seasons/men/"
+        )
 
 
 # ---------------------------------------------------------------------------

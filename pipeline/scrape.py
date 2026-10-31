@@ -8,12 +8,13 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; betcap-pipeline/1.0)"}
 
 def fetch_team_data(year: int = None) -> pd.DataFrame:
     if year is None:
-        today = date.today()
         # Season URLs use the year the season ends (e.g. 2026-27 → 2027).
-        # November and December belong to the new season.
-        year = today.year + 1 if today.month >= 11 else today.year
+        # Early-season stats are too noisy to use, so through December we keep
+        # using last season's stats and only switch to the new season on Jan 1.
+        # That makes the season year simply the current calendar year.
+        year = date.today().year
 
-    base = "https://www.sports-reference.com/cbb/seasons"
+    base = "https://www.sports-reference.com/cbb/seasons/men"
     url = f"{base}/{year}-advanced-school-stats.html"
     url2 = f"{base}/{year}-advanced-opponent-stats.html"
 

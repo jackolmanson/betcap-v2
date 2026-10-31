@@ -65,7 +65,11 @@ function getDateBounds(filter: TimeFilter): { from: string; to: string } {
     const day = String(d.getDate()).padStart(2, "0");
     return `${y}-${m}-${day}`;
   };
-  if (filter === "season") return { from: "2025-11-01", to: "" };
+  if (filter === "season") {
+    // Seasons start Nov 1; before November we're still in the season that began last year
+    const startYear = today.getMonth() >= 10 ? today.getFullYear() : today.getFullYear() - 1;
+    return { from: `${startYear}-11-01`, to: "" };
+  }
   if (filter === "yesterday") {
     const d = new Date(today);
     d.setDate(d.getDate() - 1);
