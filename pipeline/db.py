@@ -1,8 +1,19 @@
+import hashlib
 import os
+from urllib.parse import unquote, urlsplit
+
 import psycopg2
 from psycopg2.extras import execute_values
 
 DATABASE_URL = os.environ["DATABASE_URL"]
+
+# TEMP diagnostic: log where we connect and a short hash of the password (never the
+# password itself) to debug auth failures. Remove once resolved.
+_u = urlsplit(DATABASE_URL)
+print(
+    f"DB target: user={_u.username} host={_u.hostname} port={_u.port} db={_u.path.lstrip('/')} "
+    f"pw_sha1={hashlib.sha1(unquote(_u.password or '').encode()).hexdigest()[:8]}"
+)
 
 
 def get_conn():
