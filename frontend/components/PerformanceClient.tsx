@@ -4,8 +4,23 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import type { PerformancePick } from "@/lib/db";
 import WinPctChart from "./WinPctChart";
 
-type TimeFilter = "all" | "season" | "lastSeason" | "30d" | "14d" | "7d" | "yesterday";
-const DEFAULT_TIME_FILTER: TimeFilter = "season";
+// A season filter is "season-<start year>", e.g. "season-2026" for 2026-27
+type TimeFilter = "all" | `season-${number}` | "30d" | "14d" | "7d" | "yesterday";
+
+// Seasons start Nov 1; before November a date belongs to the season that began the year before
+function seasonStartYear(isoDate: string): number {
+  const [y, m] = isoDate.split("-").map(Number);
+  return m >= 11 ? y : y - 1;
+}
+
+function seasonLabel(startYear: number): string {
+  return `${startYear}-${String((startYear + 1) % 100).padStart(2, "0")}`;
+}
+
+function currentSeasonFilter(): TimeFilter {
+  const today = new Date();
+  return `season-${today.getMonth() >= 10 ? today.getFullYear() : today.getFullYear() - 1}`;
+}
 export type Strategy =
   | "none"
   | "favorites" | "underdogs"
@@ -66,10 +81,10 @@ function getDateBounds(filter: TimeFilter): { from: string; to: string } {
     const day = String(d.getDate()).padStart(2, "0");
     return `${y}-${m}-${day}`;
   };
-  // Seasons start Nov 1; before November we're still in the season that began last year
-  const seasonStartYear = today.getMonth() >= 10 ? today.getFullYear() : today.getFullYear() - 1;
-  if (filter === "season") return { from: `${seasonStartYear}-11-01`, to: "" };
-  if (filter === "lastSeason") return { from: `${seasonStartYear - 1}-11-01`, to: `${seasonStartYear}-10-31` };
+  if (filter.startsWith("season-")) {
+    const start = Number(filter.slice("season-".length));
+    return { from: `${start}-11-01`, to: `${start + 1}-10-31` };
+  }
   if (filter === "yesterday") {
     const d = new Date(today);
     d.setDate(d.getDate() - 1);
@@ -135,7 +150,8 @@ function ResultBadge({ result }: { result: PerformancePick["result"] }) {
 }
 
 export default function PerformanceClient({ picks }: { picks: PerformancePick[] }) {
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>(DEFAULT_TIME_FILTER);
+  const [defaultTimeFilter] = useState<TimeFilter>(currentSeasonFilter);
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>(defaultTimeFilter);
   const [sideFilter, setSideFilter] = useState<SideFilter>("all");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [resultFilter, setResultFilter] = useState<ResultFilter>("all");
@@ -170,6 +186,15 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
     }
     return Array.from(set).sort();
   }, [picks]);
+
+  // Seasons covered by the data plus the current one (even before it has picks), newest first
+  const seasonOptions = useMemo(() => {
+    const years = new Set<number>([Number(defaultTimeFilter.slice("season-".length))]);
+    for (const p of picks) years.add(seasonStartYear(p.date));
+    return Array.from(years)
+      .sort((a, b) => b - a)
+      .map((y): [string, string] => [`season-${y}`, seasonLabel(y)]);
+  }, [picks, defaultTimeFilter]);
 
   const filtered = useMemo(() => {
     const { from, to } = getDateBounds(timeFilter);
@@ -312,7 +337,7 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
         style={{ background: "var(--card)", border: "1px solid var(--border)" }}
       >
         <FilterSelect label="Time Period" value={timeFilter} onChange={(v) => setTimeFilter(v as TimeFilter)}
-          options={[["season", "This Season"], ["lastSeason", "Last Season"], ["all", "All Time"], ["30d", "Last 30 Days"], ["14d", "Last 14 Days"], ["7d", "Last 7 Days"], ["yesterday", "Yesterday"]]} />
+          options={[...seasonOptions, ["all", "All Time"], ["30d", "Last 30 Days"], ["14d", "Last 14 Days"], ["7d", "Last 7 Days"], ["yesterday", "Yesterday"]]} />
         <FilterSelect label="Pick Side" value={sideFilter} onChange={(v) => setSideFilter(v as SideFilter)}
           options={[["all", "All"], ["home", "Home"], ["away", "Away"]]} />
         <FilterSelect label="Pick Type" value={typeFilter} onChange={(v) => setTypeFilter(v as TypeFilter)}
@@ -326,9 +351,9 @@ export default function PerformanceClient({ picks }: { picks: PerformancePick[] 
           selected={confFilter}
           onChange={setConfFilter}
         />
-        {(timeFilter !== DEFAULT_TIME_FILTER || sideFilter !== "all" || typeFilter !== "all" || resultFilter !== "all" || gameTypeFilter !== "all" || confFilter.size > 0) && (
+        {(timeFilter !== defaultTimeFilter || sideFilter !== "all" || typeFilter !== "all" || resultFilter !== "all" || gameTypeFilter !== "all" || confFilter.size > 0) && (
           <button
-            onClick={() => { setTimeFilter(DEFAULT_TIME_FILTER); setSideFilter("all"); setTypeFilter("all"); setResultFilter("all"); setGameTypeFilter("all"); setConfFilter(new Set()); }}
+            onClick={() => { setTimeFilter(defaultTimeFilter); setSideFilter("all"); setTypeFilter("all"); setResultFilter("all"); setGameTypeFilter("all"); setConfFilter(new Set()); }}
             className="self-end text-xs px-3 py-1 rounded"
             style={{ color: "var(--accent)", border: "1px solid var(--accent)" }}
           >
