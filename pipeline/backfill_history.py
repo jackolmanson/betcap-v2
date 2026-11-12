@@ -20,11 +20,11 @@ import db
 from scrape import fetch_team_data
 
 os.environ.setdefault("ODDS_API_KEY", "unused")
-from run_picks import build_input
+from run_picks import build_input, get_game_spread
 from record_results import fetch_scores, calculate_result
 
 AN_HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
-AN_SCOREBOARD = "https://api.actionnetwork.com/web/v1/scoreboard/ncaab"
+AN_SCOREBOARD = "https://api.actionnetwork.com/web/v2/scoreboard/ncaab"
 DK_BOOK_ID = 68      # DraftKings NJ — same lines as DK nationally
 CONSENSUS_BOOK_ID = 15
 
@@ -51,19 +51,14 @@ def fetch_an_spreads(game_date: str) -> dict:
         if not away_info or not home_info:
             continue
 
-        odds_list = g.get("odds", [])
-
         # Prefer DK NJ, fall back to consensus
-        for book_id in [DK_BOOK_ID, CONSENSUS_BOOK_ID]:
-            book_odds = [o for o in odds_list if o.get("book_id") == book_id and o.get("type") == "game" and o.get("spread_away") is not None]
-            if book_odds:
-                closing = book_odds[-1]  # last game-type entry = closing pre-game line
-                away_spread = float(closing["spread_away"])
-                home_spread = float(closing["spread_home"])
-                key = (away_info["location"].lower(), home_info["location"].lower())
-                start_time = g.get("start_time")  # UTC ISO string e.g. "2026-01-01T19:00:00.000Z"
-                spreads[key] = (away_spread, home_spread, away_info, home_info, start_time)
-                break
+        spread = get_game_spread(g)
+        if spread is None:
+            continue
+        away_spread, home_spread = spread
+        key = (away_info["location"].lower(), home_info["location"].lower())
+        start_time = g.get("start_time")  # UTC ISO string e.g. "2026-01-01T19:00:00.000Z"
+        spreads[key] = (away_spread, home_spread, away_info, home_info, start_time)
 
     return spreads
 

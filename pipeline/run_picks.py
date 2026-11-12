@@ -10,7 +10,7 @@ from typing import Optional
 PT = timezone(timedelta(hours=-8))   # Pacific Time — used for date comparisons
 
 AN_HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
-AN_SCOREBOARD = "https://api.actionnetwork.com/web/v1/scoreboard/ncaab"
+AN_SCOREBOARD = "https://api.actionnetwork.com/web/v2/scoreboard/ncaab"
 DK_BOOK_ID = 68       # DraftKings NJ — same lines as DK nationally
 CONSENSUS_BOOK_ID = 15
 
@@ -28,6 +28,21 @@ def fetch_an_games(game_date: str) -> list:
     games = resp.json().get("games", [])
     print(f"Fetched {len(games)} games from Action Network for {game_date}")
     return games
+
+
+def get_game_spread(g: dict) -> Optional[tuple]:
+    """Return (away_spread, home_spread) from an AN v2 game, preferring DK, then consensus."""
+    markets = g.get("markets") or {}
+    for book_id in [DK_BOOK_ID, CONSENSUS_BOOK_ID]:
+        outcomes = (markets.get(str(book_id)) or {}).get("event", {}).get("spread", [])
+        sides = {}
+        for o in outcomes:
+            if o.get("is_live") or o.get("value") is None:
+                continue
+            sides[o.get("side")] = float(o["value"])
+        if "away" in sides and "home" in sides:
+            return sides["away"], sides["home"]
+    return None
 
 
 def build_display_lookup(name_map: dict) -> dict:
@@ -74,19 +89,10 @@ def parse_an_games(raw_games: list, name_map: dict) -> list:
             continue
 
         # Get DK pre-game spread, fall back to consensus
-        odds_list = g.get("odds", [])
-        dk_home_spread = None
-        dk_away_spread = None
-        for book_id in [DK_BOOK_ID, CONSENSUS_BOOK_ID]:
-            book_odds = [o for o in odds_list if o.get("book_id") == book_id and o.get("type") == "game" and o.get("spread_away") is not None]
-            if book_odds:
-                closing = book_odds[-1]
-                dk_away_spread = float(closing["spread_away"])
-                dk_home_spread = float(closing["spread_home"])
-                break
-
-        if dk_home_spread is None:
+        spread = get_game_spread(g)
+        if spread is None:
             continue
+        dk_away_spread, dk_home_spread = spread
 
         # Match to name_mapping
         home_match = match_team(home_info["location"], display_lookup)
