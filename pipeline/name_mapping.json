@@ -1691,6 +1691,7 @@
   "Southern Indiana Screaming Eagles": {
     "conference": "Ohio Valley Conference",
     "display": "Southern Indiana",
+    "espn_id": 88,
     "sportsref": "SOUTHERN-INDIANA"
   },
   "Southern Jaguars": {
@@ -1701,6 +1702,7 @@
   },
   "Southern Miss Golden Eagles": {
     "conference": "Sun Belt Conference",
+    "an_location": "Southern Miss",
     "display": "Southern Mississippi",
     "espn_id": 2572,
     "sportsref": "SOUTHERN-MISSISSIPPI"

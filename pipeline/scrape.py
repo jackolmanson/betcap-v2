@@ -5,6 +5,11 @@ from datetime import date
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; betcap-pipeline/1.0)"}
 
+SPORTSREF_ALIASES = {
+    "UMBC": "MARYLAND-BALTIMORE-COUNTY",
+    "TAMUCC": "TEXAS-AM-CORPUS-CHRISTI",
+}
+
 
 def fetch_team_data(year: int = None) -> pd.DataFrame:
     if year is None:
@@ -55,6 +60,10 @@ def fetch_team_data(year: int = None) -> pd.DataFrame:
             rows_data[n][0] = rows_data[n][0].replace("(", "")
             rows_data[n][0] = rows_data[n][0].replace(")", "")
             rows_data[n][0] = rows_data[n][0].replace("'", "")
+            # Sports Reference uses en-dashes in some names (e.g. "Arkansas–Pine Bluff")
+            # and abbreviations for a few schools; map them to our canonical names.
+            rows_data[n][0] = rows_data[n][0].replace("\u2013", "-")
+            rows_data[n][0] = SPORTSREF_ALIASES.get(rows_data[n][0], rows_data[n][0])
         except Exception:
             continue
 
