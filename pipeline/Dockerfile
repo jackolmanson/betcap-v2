@@ -11,4 +11,5 @@ COPY output/ ./output/
 
 WORKDIR /app/pipeline
 
-CMD ["python", "run_picks.py"]
+# TEMPORARY (one run): backfill Nov 11 games missed by the late run. Revert to: CMD ["python", "run_picks.py"]
+CMD ["sh", "-c", "python backfill_history.py 2026-11-11 2026-11-11; python run_picks.py"]
