@@ -32,6 +32,7 @@ def make_pick(**overrides):
 def mock_conn():
     conn = MagicMock()
     cur = MagicMock()
+    cur.fetchone.return_value = (0,)  # no already-scored picks for the date
     conn.cursor.return_value = cur
     return conn, cur
 
@@ -158,9 +159,31 @@ class TestSavePicks:
 
         delete_calls = [
             c for c in cur.execute.call_args_list
-            if "DELETE" in str(c)
+            if "DELETE FROM picks WHERE date = %s" in str(c)
         ]
         assert len(delete_calls) == 2
+
+    def test_removes_unscored_copy_of_same_game_on_neighboring_date(self):
+        """A game moved a day leaves an ungradable row under its old date; saving removes it."""
+        conn, cur = mock_conn()
+        with patch("db.psycopg2.connect", return_value=conn):
+            with patch("db.execute_values"):
+                db.save_picks("2026-11-16", [make_pick()])
+
+        stale = [c for c in cur.execute.call_args_list if "date <> %s" in c.args[0]]
+        assert len(stale) == 1
+        sql, params = stale[0].args
+        assert "result IS NULL" in sql
+        assert params[:3] == ("2026-11-16",) * 3
+        assert set(params[3]) == {("DUKE", "KANSAS"), ("KANSAS", "DUKE")}
+
+    def test_skips_save_when_date_already_scored(self):
+        conn, cur = mock_conn()
+        cur.fetchone.return_value = (3,)
+        with patch("db.psycopg2.connect", return_value=conn):
+            with patch("db.execute_values") as mock_ev:
+                db.save_picks("2026-11-16", [make_pick()])
+        assert not mock_ev.called
 
 
 # ---------------------------------------------------------------------------

@@ -16,22 +16,25 @@ ESPN_SCOREBOARD = (
 )
 
 
-def fetch_scores(game_date: str) -> dict:
+# ESPN statuses meaning the game will not be played on its scheduled date.
+CALLED_OFF_STATUSES = {"STATUS_POSTPONED", "STATUS_CANCELED", "STATUS_CANCELLED"}
+
+
+def fetch_scoreboard(game_date: str) -> tuple:
     """
-    Returns {(home_espn_id, away_espn_id): (home_score, away_score)}
-    for all completed games on game_date (YYYY-MM-DD).
+    Returns (scores, called_off) for game_date (YYYY-MM-DD):
+      scores:     {(home_espn_id, away_espn_id): (home_score, away_score)} for completed games
+      called_off: {(home_espn_id, away_espn_id)} for postponed or cancelled games
     """
     date_str = game_date.replace("-", "")  # ESPN wants YYYYMMDD
     resp = requests.get(ESPN_SCOREBOARD, params={"dates": date_str, "limit": 200, "groups": 50})
     resp.raise_for_status()
 
     scores = {}
+    called_off = set()
     for event in resp.json().get("events", []):
         comp = event.get("competitions", [{}])[0]
-
-        # Skip games that haven't finished
-        if not event.get("status", {}).get("type", {}).get("completed", False):
-            continue
+        status = event.get("status", {}).get("type", {})
 
         competitors = comp.get("competitors", [])
         if len(competitors) != 2:
@@ -44,11 +47,28 @@ def fetch_scores(game_date: str) -> dict:
 
         try:
             key = (int(home["id"]), int(away["id"]))
+        except (KeyError, ValueError):
+            continue
+
+        if status.get("name") in CALLED_OFF_STATUSES:
+            called_off.add(key)
+            continue
+
+        # Skip games that haven't finished
+        if not status.get("completed", False):
+            continue
+
+        try:
             scores[key] = (int(home["score"]), int(away["score"]))
         except (KeyError, ValueError):
             continue
 
-    return scores
+    return scores, called_off
+
+
+def fetch_scores(game_date: str) -> dict:
+    """Returns {(home_espn_id, away_espn_id): (home_score, away_score)} for completed games."""
+    return fetch_scoreboard(game_date)[0]
 
 
 def calculate_result(pick: dict, home_score: int, away_score: int) -> str:
@@ -126,7 +146,7 @@ def record_results(game_date: str = None):
     for espn_date, date_picks in sorted(by_espn_date.items()):
         print(f"\n=== Recording results for {espn_date} ({len(date_picks)} picks) ===\n")
 
-        scores = fetch_scores(espn_date)
+        scores, called_off = fetch_scoreboard(espn_date)
 
         # For picks with no game_time, the stored date may be off by one day.
         # Also fetch the next day's scores and merge them in.
@@ -134,16 +154,18 @@ def record_results(game_date: str = None):
             from datetime import datetime as dt, timedelta
             next_date = (dt.strptime(espn_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
             try:
-                next_scores = fetch_scores(next_date)
+                next_scores, next_called_off = fetch_scoreboard(next_date)
                 for k, v in next_scores.items():
                     if k not in scores:
                         scores[k] = v
+                called_off |= next_called_off
             except Exception:
                 pass
 
         print(f"ESPN: {len(scores)} completed games\n")
 
         unmatched = []
+        removed = []
         for pick in date_picks:
             home_id = pick.get("home_espn_id")
             away_id = pick.get("away_espn_id")
@@ -159,6 +181,12 @@ def record_results(game_date: str = None):
             elif flipped in scores:
                 # ESPN home/away designation is reversed vs Odds API — swap scores
                 away_score, home_score = scores[flipped]
+            elif key in called_off or flipped in called_off:
+                # Postponed/cancelled: the pick can never be graded. If the game is
+                # rescheduled, the daily run makes a fresh pick under the new date.
+                db.delete_pick(pick["id"])
+                removed.append(f"{pick['home_display']} vs {pick['away_display']}")
+                continue
             else:
                 unmatched.append(f"{pick['home_display']} vs {pick['away_display']}")
                 continue
@@ -172,6 +200,11 @@ def record_results(game_date: str = None):
                 f"{icon} {pick['home_display']} {home_score}-{away_score} {pick['away_display']}"
                 f"  |  PICK: {pick_team}  |  {result.upper()}"
             )
+
+        if removed:
+            print(f"\nRemoved postponed/cancelled ({len(removed)}):")
+            for m in removed:
+                print(f"  {m}")
 
         if unmatched:
             print(f"\nCould not match ({len(unmatched)}):")

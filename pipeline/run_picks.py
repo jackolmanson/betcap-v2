@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import requests
 import numpy as np
@@ -45,31 +46,42 @@ def get_game_spread(g: dict) -> Optional[tuple]:
     return None
 
 
+def normalize_name(name: str) -> str:
+    """Canonical form for comparing team names across sources.
+
+    "Texas A&M-Corpus Christi" -> "texas am corpus christi", "Washington St" -> "washington state".
+    """
+    s = name.lower().replace("\u2013", " ").replace("-", " ")
+    s = re.sub(r"[&.'()]", "", s)
+    s = " ".join(s.split())
+    if s.endswith(" st"):
+        s = s[:-3] + " state"
+    return s
+
+
 def build_display_lookup(name_map: dict) -> dict:
-    """Build {normalized_location: team_info} from name_mapping."""
+    """Build {normalized_name: team_info} from name_mapping.
+
+    Keys come from each entry's an_location, display and sportsref slug, in that
+    priority: an_location is the explicit Action Network override, so it always wins.
+    """
     lookup = {}
-    for dk_name, info in name_map.items():
-        display = info.get("display", "").lower()
-        if display:
-            lookup[display] = {**info, "dk_name": dk_name}
-        sr = info.get("sportsref", "").lower().replace("-", " ")
-        if sr and sr not in lookup:
-            lookup[sr] = {**info, "dk_name": dk_name}
-        an_loc = info.get("an_location", "").lower()
-        if an_loc and an_loc not in lookup:
-            lookup[an_loc] = {**info, "dk_name": dk_name}
+    for field in ("an_location", "display", "sportsref"):
+        for dk_name, info in name_map.items():
+            key = normalize_name(info.get(field, ""))
+            if key and key not in lookup:
+                lookup[key] = {**info, "dk_name": dk_name}
     return lookup
 
 
 def match_team(an_location: str, display_lookup: dict) -> Optional[dict]:
-    """Match an Action Network team location to our name_mapping."""
-    loc = an_location.lower()
-    if loc in display_lookup:
-        return display_lookup[loc]
-    for key, info in display_lookup.items():
-        if loc in key or key in loc:
-            return info
-    return None
+    """Match an Action Network team location to our name_mapping by normalized name.
+
+    Exact matches only. Substring/prefix guessing assigned games to the wrong school
+    ("Louisiana-Monroe" -> Louisiana, "Charleston" -> Charleston Southern). An unmatched
+    team is skipped and logged so it can be added as an an_location in name_mapping.json.
+    """
+    return display_lookup.get(normalize_name(an_location))
 
 
 def parse_an_games(raw_games: list, name_map: dict) -> list:

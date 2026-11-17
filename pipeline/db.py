@@ -88,6 +88,21 @@ def save_picks(date_str, picks):
         rows,
     )
 
+    # A game that moved to a neighboring date (e.g. postponed a day) would otherwise
+    # leave its old ungradable row behind under the old date.
+    matchups = {(p["home_sportsref"], p["away_sportsref"]) for p in picks}
+    matchups |= {(a, h) for h, a in matchups}
+    cur.execute(
+        """
+        DELETE FROM picks
+        WHERE result IS NULL
+          AND date <> %s
+          AND date BETWEEN %s::date - 1 AND %s::date + 1
+          AND (home_sportsref, away_sportsref) IN %s
+        """,
+        (date_str, date_str, date_str, tuple(matchups)),
+    )
+
     conn.commit()
     cur.close()
     conn.close()
@@ -100,6 +115,15 @@ def update_pick_result(pick_id, home_score, away_score, result):
         "UPDATE picks SET home_final_score=%s, away_final_score=%s, result=%s WHERE id=%s",
         (home_score, away_score, result, pick_id),
     )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+def delete_pick(pick_id):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM picks WHERE id = %s AND result IS NULL", (pick_id,))
     conn.commit()
     cur.close()
     conn.close()

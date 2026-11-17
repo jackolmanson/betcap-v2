@@ -14,13 +14,12 @@ import os
 import requests
 import tensorflow as tf
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 import db
 from scrape import fetch_team_data
 
 os.environ.setdefault("ODDS_API_KEY", "unused")
-from run_picks import build_input, get_game_spread
+from run_picks import build_input, get_game_spread, build_display_lookup, match_team
 from record_results import fetch_scores, calculate_result
 
 AN_HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
@@ -63,35 +62,23 @@ def fetch_an_spreads(game_date: str) -> dict:
     return spreads
 
 
-def build_display_lookup(name_map: dict) -> dict:
-    """Build {normalized_location: team_info} from name_mapping."""
-    lookup = {}
-    for dk_name, info in name_map.items():
-        # Index by display name (normalized)
-        display = info.get("display", "").lower()
-        if display:
-            lookup[display] = {**info, "dk_name": dk_name}
-        # Also index by sportsref slug words
-        sr = info.get("sportsref", "").lower().replace("-", " ")
-        if sr and sr not in lookup:
-            lookup[sr] = {**info, "dk_name": dk_name}
-    return lookup
-
-
-def match_team(an_location: str, display_lookup: dict) -> Optional[dict]:
-    """Try to match an Action Network team location to our name_mapping."""
-    loc = an_location.lower()
-
-    # Direct match
-    if loc in display_lookup:
-        return display_lookup[loc]
-
-    # Partial match — AN location is typically just the school name
-    for key, info in display_lookup.items():
-        if loc in key or key in loc:
-            return info
-
-    return None
+def index_spreads_by_espn_id(an_spreads: dict, display_lookup: dict) -> dict:
+    """
+    Re-key AN spreads by ESPN ids: {(home_espn_id, away_espn_id): (away_spread, home_spread, start_time)}.
+    Teams are resolved with run_picks.match_team, the same matcher the daily run uses.
+    Each game is also indexed under the flipped orientation (spreads swapped) for
+    neutral-site games where ESPN and AN disagree on which team is home.
+    """
+    by_ids, flipped = {}, {}
+    for away_spread, home_spread, away_info, home_info, start_time in an_spreads.values():
+        home = match_team(home_info["location"], display_lookup)
+        away = match_team(away_info["location"], display_lookup)
+        if not home or not away or not home.get("espn_id") or not away.get("espn_id"):
+            continue
+        h, a = int(home["espn_id"]), int(away["espn_id"])
+        by_ids[(h, a)] = (away_spread, home_spread, start_time)
+        flipped[(a, h)] = (home_spread, away_spread, start_time)
+    return {**flipped, **by_ids}
 
 
 def build_espn_id_lookup(name_map: dict) -> dict:
@@ -116,18 +103,21 @@ def save_backfill_picks(date_str: str, picks: list):
     from psycopg2.extras import execute_values
     conn = db.get_conn()
     cur = conn.cursor()
+    # ESPN's date can be a day off from the date the daily run stored (late tips), so
+    # treat a game as present if either orientation exists within a day.
     cur.execute(
-        "SELECT home_espn_id, away_espn_id FROM picks WHERE date = %s",
-        (date_str,)
+        "SELECT home_espn_id, away_espn_id FROM picks WHERE date BETWEEN %s::date - 1 AND %s::date + 1",
+        (date_str, date_str)
     )
-    existing = {(row[0], row[1]) for row in cur.fetchall()}
+    nearby = {(row[0], row[1]) for row in cur.fetchall()}
+    existing = nearby | {(a, h) for h, a in nearby}
 
     # Update game_time on existing records where it's still null
     for p in picks:
         if (p["home_espn_id"], p["away_espn_id"]) in existing and p.get("game_time"):
             cur.execute(
-                "UPDATE picks SET game_time = %s WHERE home_espn_id = %s AND away_espn_id = %s AND date = %s AND game_time IS NULL",
-                (p["game_time"], p["home_espn_id"], p["away_espn_id"], date_str)
+                "UPDATE picks SET game_time = %s WHERE home_espn_id = %s AND away_espn_id = %s AND date BETWEEN %s::date - 1 AND %s::date + 1 AND game_time IS NULL",
+                (p["game_time"], p["home_espn_id"], p["away_espn_id"], date_str, date_str)
             )
 
     picks = [p for p in picks if (p["home_espn_id"], p["away_espn_id"]) not in existing]
@@ -204,6 +194,8 @@ def run_backfill(start_date: str, end_date: str):
             print(f"[{game_date}] No spreads from Action Network — skipping")
             continue
 
+        an_by_ids = index_spreads_by_espn_id(an_spreads, display_lookup)
+
         picks_for_date = []
         print(f"\n[{game_date}] ESPN: {len(scores)} games | AN: {len(an_spreads)} spreads")
 
@@ -217,29 +209,12 @@ def run_backfill(start_date: str, end_date: str):
             home_sr = home_info["sportsref"]
             away_sr = away_info["sportsref"]
 
-            # Match to AN spread using team location names
-            home_loc = home_info["display"].lower()
-            away_loc = away_info["display"].lower()
-            home_an = home_info.get("an_location", "").lower()
-            away_an = away_info.get("an_location", "").lower()
-
-            def loc_matches(an_key, display, an_override):
-                if an_override and an_key == an_override:
-                    return True
-                return an_key in display or display in an_key
-
-            spread_entry = None
-            for (an_away, an_home), entry in an_spreads.items():
-                if loc_matches(an_away, away_loc, away_an) and \
-                   loc_matches(an_home, home_loc, home_an):
-                    spread_entry = entry
-                    break
-
+            spread_entry = an_by_ids.get((home_id, away_id))
             if not spread_entry:
                 total_no_spread += 1
                 continue
 
-            dk_away_spread, dk_home_spread, _, _, game_time = spread_entry
+            dk_away_spread, dk_home_spread, game_time = spread_entry
 
             # Run model
             try:

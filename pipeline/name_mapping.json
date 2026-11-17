@@ -289,7 +289,8 @@
     "conference": "Coastal Athletic Association",
     "display": "College Of Charleston",
     "espn_id": 232,
-    "sportsref": "COLLEGE-OF-CHARLESTON"
+    "sportsref": "COLLEGE-OF-CHARLESTON",
+    "an_location": "Charleston"
   },
   "Charleston Southern Buccaneers": {
     "conference": "Big South Conference",
@@ -638,7 +639,8 @@
     "conference": "SWAC",
     "display": "Grambling",
     "espn_id": 2755,
-    "sportsref": "GRAMBLING"
+    "sportsref": "GRAMBLING",
+    "an_location": "Grambling State"
   },
   "Grand Canyon Antelopes": {
     "conference": "Mountain West Conference",
@@ -947,7 +949,8 @@
     "conference": "Patriot League",
     "display": "Loyola Md",
     "espn_id": 2352,
-    "sportsref": "LOYOLA-MD"
+    "sportsref": "LOYOLA-MD",
+    "an_location": "Loyola Maryland"
   },
   "Loyola Marymount Lions": {
     "conference": "West Coast Conference",
@@ -1698,7 +1701,8 @@
     "conference": "SWAC",
     "display": "Southern",
     "espn_id": 2582,
-    "sportsref": "SOUTHERN"
+    "sportsref": "SOUTHERN",
+    "an_location": "Southern University"
   },
   "Southern Miss Golden Eagles": {
     "conference": "Sun Belt Conference",
@@ -2003,7 +2007,8 @@
     "conference": "America East Conference",
     "display": "Massachusetts Lowell",
     "espn_id": 2349,
-    "sportsref": "MASSACHUSETTS-LOWELL"
+    "sportsref": "MASSACHUSETTS-LOWELL",
+    "an_location": "UMass Lowell"
   },
   "UNC Asheville Bulldogs": {
     "conference": "Big South Conference",

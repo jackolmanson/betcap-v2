@@ -230,3 +230,58 @@ class TestFetchScores:
         with patch("record_results.requests.get", return_value=mock):
             with pytest.raises(Exception, match="503"):
                 fetch_scores("2026-03-12")
+
+
+# ---------------------------------------------------------------------------
+# fetch_scoreboard / record_results — postponed and cancelled games
+# ---------------------------------------------------------------------------
+
+def _status_event(home_id, away_id, status_name, completed=False):
+    return {
+        "status": {"type": {"name": status_name, "completed": completed}},
+        "competitions": [{
+            "competitors": [
+                {"homeAway": "home", "id": str(home_id), "score": "0"},
+                {"homeAway": "away", "id": str(away_id), "score": "0"},
+            ]
+        }]
+    }
+
+
+def _response(events):
+    mock = MagicMock()
+    mock.json.return_value = {"events": events}
+    return mock
+
+
+class TestCalledOffGames:
+
+    def test_postponed_and_cancelled_reported_separately(self):
+        from record_results import fetch_scoreboard
+        events = [
+            _status_event(172, 2430, "STATUS_POSTPONED"),
+            _status_event(2483, 2492, "STATUS_CANCELED"),
+            _status_event(1, 2, "STATUS_SCHEDULED"),
+        ]
+        with patch("record_results.requests.get", return_value=_response(events)):
+            scores, called_off = fetch_scoreboard("2026-11-14")
+        assert scores == {}
+        assert called_off == {(172, 2430), (2483, 2492)}
+
+    def test_record_results_deletes_called_off_pick_and_grades_others(self):
+        import record_results
+        picks = [
+            {"id": 1, "date": "2026-11-14", "game_time": None, "home_display": "Cornell",
+             "away_display": "Unc Greensboro", "home_espn_id": 172, "away_espn_id": 2430,
+             "dk_home_spread": -2.5, "pick": "home"},
+            {"id": 2, "date": "2026-11-14", "game_time": None, "home_display": "A",
+             "away_display": "B", "home_espn_id": 10, "away_espn_id": 20,
+             "dk_home_spread": -3.0, "pick": "home"},
+        ]
+        board = ({(10, 20): (80, 70)}, {(2430, 172)})  # flipped orientation still matches
+        with patch.object(record_results, "db") as mock_db, \
+             patch.object(record_results, "fetch_scoreboard", return_value=board):
+            mock_db.get_pending_picks.return_value = picks
+            record_results.record_results()
+        mock_db.delete_pick.assert_called_once_with(1)
+        mock_db.update_pick_result.assert_called_once_with(2, 80, 70, "win")
