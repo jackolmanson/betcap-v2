@@ -169,3 +169,16 @@ class TestFetchTeamData:
             urls = [c[0][0] for c in mock_get.call_args_list]
             assert any("2025-advanced-school-stats" in u for u in urls)
             assert any("2025-advanced-opponent-stats" in u for u in urls)
+
+
+class TestEncoding:
+
+    def test_decodes_sports_reference_pages_as_utf8(self):
+        """SR omits the charset header; en-dash names must survive decoding."""
+        from scrape import _get_html
+        import requests as real_requests
+        resp = real_requests.models.Response()
+        resp._content = "<td>Nevada–Las Vegas</td>".encode("utf-8")
+        resp.headers["Content-Type"] = "text/html"  # no charset -> requests would guess Latin-1
+        with patch("scrape.requests.get", return_value=resp):
+            assert "Nevada–Las Vegas" in _get_html("https://example.com")

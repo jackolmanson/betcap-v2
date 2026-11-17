@@ -11,6 +11,15 @@ SPORTSREF_ALIASES = {
 }
 
 
+def _get_html(url: str) -> str:
+    resp = requests.get(url, headers=HEADERS, timeout=60)
+    # Sports Reference serves UTF-8 without a charset header, so requests falls back to
+    # Latin-1 and en-dashes ("Nevada\u2013Las Vegas") arrive as mojibake that no name
+    # mapping matches, silently dropping those teams' stats.
+    resp.encoding = "utf-8"
+    return resp.text
+
+
 def fetch_team_data(year: int = None) -> pd.DataFrame:
     if year is None:
         # Season URLs use the year the season ends (e.g. 2026-27 → 2027).
@@ -24,8 +33,8 @@ def fetch_team_data(year: int = None) -> pd.DataFrame:
     url2 = f"{base}/{year}-advanced-opponent-stats.html"
 
     print(f"Scraping team stats for {year}...")
-    html = requests.get(url, headers=HEADERS).text
-    html2 = requests.get(url2, headers=HEADERS).text
+    html = _get_html(url)
+    html2 = _get_html(url2)
 
     soup = BeautifulSoup(html, features="lxml")
     soup2 = BeautifulSoup(html2, features="lxml")
